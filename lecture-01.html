@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Вступ до вебдизайну</title>
+<meta name="description" content="Лекція 1 курсу «Вебдизайн»: історія, види, ролі, ринок праці та інструменти">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B1D24;
+    --ink-soft:#3A3D4C;
+    --ink-muted:#5B5E70;
+    --paper:#EAEDF3;
+    --surface:#FFFFFF;
+    --surface-2:#F4F5F9;
+    --line:#D7DAE3;
+    --accent:#2B4FE0;
+    --accent-ink:#1636B0;
+    --accent-tint:#E4E9FC;
+    --task:#0E9C7E;
+    --task-ink:#0B7A63;
+    --task-tint:#E1F5EF;
+    --test:#C2660A;
+    --test-ink:#9C5108;
+    --test-tint:#FBEBD8;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
+    --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Manrope',system-ui,'Segoe UI',sans-serif;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+  a{color:var(--accent);}
+  img{max-width:100%;}
+
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{
+    max-width:1000px;
+    margin:28px auto 0;
+    padding:0 24px;
+  }
+  .browser{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px 16px 0 0;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .browser-bar{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:12px 16px;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--line);
+  }
+  .dots{display:flex;gap:7px;flex:none;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
+  .dots span:nth-child(1){background:#E5695A;}
+  .dots span:nth-child(2){background:#E3B341;}
+  .dots span:nth-child(3){background:#57B975;}
+  .addr{
+    flex:1;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--ink-muted);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:6px 12px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .hero{
+    padding:56px 40px 48px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
+    background:var(--accent-tint);
+    display:inline-block;
+    padding:5px 11px;
+    border-radius:99px;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(30px,4.4vw,46px);
+    line-height:1.14;
+    font-weight:800;
+  }
+  .hero .theme{
+    margin-top:14px;
+    font-size:clamp(16px,2vw,19px);
+    color:var(--ink-soft);
+    font-weight:500;
+    max-width:34em;
+  }
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:26px;
+  }
+  .meta-chip{
+    font-size:13px;
+    color:var(--ink-muted);
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:99px;
+    padding:6px 13px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
+
+  /* ---------- sticky toc ---------- */
+  .toc-bar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .toc-inner{
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 24px;
+    display:flex;
+    gap:4px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--ink-muted);
+    text-decoration:none;
+    padding:13px 12px;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
+
+  .lit{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 26px;
+    margin:36px 0 0;
+    box-shadow:var(--shadow);
+  }
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
+
+  section.topic{
+    margin-top:64px;
+    padding-top:8px;
+  }
+  .topic-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:22px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line);
+  }
+  .topic-num{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:14px;
+    color:var(--accent);
+    background:var(--accent-tint);
+    border-radius:8px;
+    padding:4px 10px;
+    flex:none;
+  }
+  .topic h2{
+    font-size:clamp(21px,2.6vw,27px);
+    font-weight:700;
+  }
+  .topic p{
+    color:var(--ink-soft);
+    font-size:16px;
+    margin:0 0 16px;
+  }
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{
+    margin:0 0 18px;
+    padding-left:22px;
+    color:var(--ink-soft);
+    font-size:15.5px;
+  }
+  .topic ul li{margin-bottom:9px;}
+  .callout{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    padding:14px 18px;
+    margin:0 0 18px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 20px 16px;
+    margin:26px 0 30px;
+    box-shadow:var(--shadow);
+  }
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{
+    margin-top:14px;
+    font-size:13px;
+    color:var(--ink-muted);
+    text-align:center;
+  }
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+
+  /* ---------- task / test boxes ---------- */
+  .box{
+    border-radius:var(--radius);
+    padding:24px 26px 20px;
+    margin:24px 0 30px;
+    box-shadow:var(--shadow);
+    border:1px solid;
+  }
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{
+    font-family:'Unbounded',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.05em;
+    padding:3px 9px;
+    border-radius:6px;
+    color:#fff;
+  }
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:1px 6px;
+  }
+  .box-close{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    font-style:italic;
+    font-size:14px;
+    color:var(--ink-muted);
+  }
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+  .test-opt{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    padding:6px 0;
+  }
+  .test-opt::before{
+    content:"";
+    width:15px;height:15px;
+    border:1.5px solid var(--test);
+    border-radius:4px;
+    flex:none;
+    margin-top:2px;
+  }
+
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-weight:600;
+    font-size:11.5px;
+    letter-spacing:.02em;
+    padding:3px 9px;
+    border-radius:99px;
+    background:var(--surface);
+    color:var(--ink-muted);
+    border:1px solid var(--line);
+    white-space:nowrap;
+  }
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
+
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .step .num{
+    flex:none;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1.5px solid var(--line);
+    color:var(--ink-muted);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:1px;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num,
+  .step:has(.chk:checked) .num,
+  .step.checked .num{
+    background:var(--task);
+    border-color:var(--task);
+    color:#fff;
+  }
+  .step:has(.chk:checked) .step-text,
+  .step.checked .step-text{
+    color:var(--ink-muted);
+    text-decoration:line-through;
+    text-decoration-color:var(--line);
+    text-decoration-thickness:1.5px;
+  }
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;
+    width:100%;
+    gap:10px;
+    align-items:flex-start;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    padding:9px 12px;
+    margin:0 0 6px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    background:var(--surface);
+    font-family:inherit;
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{
+    content:"";
+    width:15px;height:15px;
+    border:1.5px solid var(--test);
+    border-radius:50%;
+    flex:none;
+    margin-top:2px;
+  }
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:#C0392B;background:color-mix(in srgb, #C0392B 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:#C0392B;border-color:#C0392B;}
+  .test-feedback{
+    margin-top:10px;
+    font-size:13.5px;
+    font-weight:600;
+    display:none;
+  }
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:#C0392B;}
+
+  /* ---------- overall progress bar in toc ---------- */
+  .progress-track{
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 24px;
+    height:3px;
+  }
+  .progress-track .fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg, var(--task), var(--accent));
+    transition:width .3s ease;
+  }
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{
+    flex:none;
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-muted);
+    padding:13px 0 13px 14px;
+    white-space:nowrap;
+  }
+  .toc-progress b{color:var(--accent);}
+
+  .reset-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ink-muted);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:6px 12px;
+    cursor:pointer;
+  }
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{
+    max-width:1000px;
+    margin:0 auto;
+    padding:40px 24px 60px;
+    border-top:1px solid var(--line);
+    color:var(--ink-muted);
+    font-size:13.5px;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  footer .mono{color:var(--ink-muted);}
+
+  @media (max-width:640px){
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
+  }
+</style>
+</head>
+<body>
+
+
+<div class="chrome">
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <div class="addr">вебдизайн-курс.ua/лекція-1/вступ-до-вебдизайну</div>
+    </div>
+    <div class="hero">
+      <span class="eyebrow">Лекція 1 · Тема 1</span>
+      <h1>Вступ до вебдизайну</h1>
+      <p class="theme">Сучасні тренди та професія веб-дизайнера — від першої сторінки в CERN до Figma, дизайн-систем і команд, де межі між дизайном і кодом стираються.</p>
+      <div class="meta-row">
+        <span class="meta-chip">📚 <b>5</b> розділів</span>
+        <span class="meta-chip">🧩 <b>4</b> практичні завдання</span>
+        <span class="meta-chip">✅ <b>2</b> тести на розуміння</span>
+        <span class="meta-chip">🎓 Курс «Вебдизайн», коледж</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a href="#history" data-toc="history">1. Історія</a>
+    <a href="#types" data-toc="types">2. Види вебдизайну</a>
+    <a href="#roles" data-toc="roles">3. Роль у команді</a>
+    <a href="#market" data-toc="market">4. Ринок праці</a>
+    <a href="#tools" data-toc="tools">5. Інструменти</a>
+    <a href="#wrapup" data-toc="wrapup">Завдання 4</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
+
+<main>
+
+  <div class="lit" id="literature">
+    <h2>Література до теми</h2>
+    <ol>
+      <li>Krug S. <i>Don't Make Me Think, Revisited: A Common Sense Approach to Web Usability.</i> 3rd ed. New Riders, 2014. 216 p.</li>
+      <li>Дія.Освіта. UI/UX дизайнер. URL: <a href="https://osvita.diia.gov.ua/courses/ui-ux-designer" target="_blank" rel="noopener">osvita.diia.gov.ua/courses/ui-ux-designer</a> (дата звернення: 01.09.2026).</li>
+      <li>Figma. Help Center. URL: <a href="https://help.figma.com" target="_blank" rel="noopener">help.figma.com</a> (дата звернення: 01.09.2026).</li>
+    </ol>
+  </div>
+
+  <!-- ================= 1. ІСТОРІЯ ================= -->
+  <section class="topic" id="history">
+    <div class="topic-head">
+      <span class="topic-num">01</span>
+      <h2>Поняття та історія розвитку вебдизайну</h2>
+    </div>
+
+    <p><b>Вебдизайн</b> — це процес проєктування зовнішнього вигляду, структури та взаємодії користувача з вебсайтами й вебзастосунками. Він поєднує два начебто різні завдання: зробити продукт естетично привабливим (це територія графічного дизайну) і зробити його зручним та зрозумілим у користуванні (це територія usability). Гарний вебдизайн непомітний: користувач не думає про кнопки й меню, він просто досягає своєї мети.</p>
+
+    <p>Історія вебдизайну — це історія технологічних обмежень, які поступово зникали. Перший сайт запустив <b>Тім Бернерс-Лі</b> 6 серпня 1991 року в CERN: суцільний текст без жодного форматування, бо мова HTML тоді не мала засобів оформлення. Поява браузера <b>Mosaic</b> 1993 року, який умів показувати зображення просто в тексті сторінки, і стала першим кроком до дизайну як такого.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 920 250" role="img" aria-label="Часова шкала вебдизайну від 1991 до сьогодні: текстовий сайт CERN, браузер Mosaic, епоха HTML-таблиць, епоха Flash, вебстандарти й CSS Zen Garden, адаптивний дизайн, сучасні хмарні інструменти">
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g class="svg-ink" color="var(--ink-muted)">
+          <line x1="40" y1="125" x2="880" y2="125" stroke="currentColor" stroke-width="2" marker-end="url(#arrowhead)"/>
+        </g>
+        <!-- nodes: x positions spread across timeline -->
+        <!-- 1991 -->
+        <g font-family="JetBrains Mono, monospace">
+          <circle cx="60" cy="125" r="7" fill="var(--accent)"/>
+          <line x1="60" y1="118" x2="60" y2="72" stroke="var(--line)" stroke-width="2"/>
+          <text x="60" y="60" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink">1991</text>
+          <text x="60" y="42" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">Перший сайт</text>
+          <text x="60" y="56" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif"></text>
+          <text x="60" y="150" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">Бернерс-Лі,</text>
+          <text x="60" y="163" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">CERN</text>
+        </g>
+        <!-- 1993 Mosaic -->
+        <g font-family="JetBrains Mono, monospace">
+          <circle cx="205" cy="125" r="7" fill="var(--accent)"/>
+          <line x1="205" y1="132" x2="205" y2="178" stroke="var(--line)" stroke-width="2"/>
+          <text x="205" y="196" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink">1993</text>
+          <text x="205" y="100" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">Браузер</text>
+          <text x="205" y="113" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">Mosaic</text>
+        </g>
+        <!-- ~1996 tables -->
+        <g font-family="JetBrains Mono, monospace">
+          <circle cx="350" cy="125" r="7" fill="var(--task)"/>
+          <line x1="350" y1="118" x2="350" y2="72" stroke="var(--line)" stroke-width="2"/>
+          <text x="350" y="60" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink">сер. 1990-х</text>
+          <text x="350" y="42" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">HTML-таблиці</text>
+          <text x="350" y="150" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">верстка</text>
+          <text x="350" y="163" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">імітується</text>
+        </g>
+        <!-- late 90s-2000s Flash -->
+        <g font-family="JetBrains Mono, monospace">
+          <circle cx="495" cy="125" r="7" fill="var(--test)"/>
+          <line x1="495" y1="132" x2="495" y2="178" stroke="var(--line)" stroke-width="2"/>
+          <text x="495" y="196" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink">кін. 1990-х</text>
+          <text x="495" y="100" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">Ера Flash</text>
+        </g>
+        <!-- 2003 CSS Zen Garden -->
+        <g font-family="JetBrains Mono, monospace">
+          <circle cx="630" cy="125" r="7" fill="var(--accent)"/>
+          <line x1="630" y1="118" x2="630" y2="72" stroke="var(--line)" stroke-width="2"/>
+          <text x="630" y="60" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink">2003</text>
+          <text x="630" y="42" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">CSS Zen Garden</text>
+          <text x="630" y="150" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">HTML/CSS</text>
+          <text x="630" y="163" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">розділені</text>
+        </g>
+        <!-- 2010 RWD -->
+        <g font-family="JetBrains Mono, monospace">
+          <circle cx="765" cy="125" r="7" fill="var(--task)"/>
+          <line x1="765" y1="132" x2="765" y2="178" stroke="var(--line)" stroke-width="2"/>
+          <text x="765" y="196" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink">2010</text>
+          <text x="765" y="100" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">Responsive</text>
+          <text x="765" y="113" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">Web Design</text>
+        </g>
+        <!-- today -->
+        <g font-family="JetBrains Mono, monospace">
+          <circle cx="870" cy="125" r="8" fill="var(--ink)"/>
+          <line x1="870" y1="118" x2="870" y2="72" stroke="var(--line)" stroke-width="2"/>
+          <text x="870" y="60" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink">сьогодні</text>
+          <text x="870" y="42" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">дизайн-системи</text>
+          <text x="870" y="150" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">хмарні</text>
+          <text x="870" y="163" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">інструменти</text>
+        </g>
+      </svg>
+      <figcaption>Кожна епоха вебдизайну знімала одне технічне обмеження попередньої — від відсутності зображень до відсутності стандартів і однакового вигляду на різних екранах.</figcaption>
+    </figure>
+
+    <p>Далі вебдизайн пройшов кілька виразних епох: <b>епоха HTML-таблиць</b> (середина 1990-х) — верстку сторінок імітували таблицями, дизайн обмежувався тегом <span class="mono">&lt;font&gt;</span> та анімованими GIF-банерами; <b>епоха Flash</b> (кінець 1990-х — 2000-і) — сайти в Macromedia/Adobe Flash виглядали яскраво й анімовано, але повільно вантажилися, були недоступні для пошукових систем і непридатні для людей з допоміжними технологіями; <b>епоха вебстандартів</b> (2000-і) — специфікацію CSS1 W3C затвердив ще 1996 року, але масово індустрія перейшла на розділення вмісту (HTML) й оформлення (CSS) лише за десятиліття; проєкт <b>CSS Zen Garden</b> 2003 року наочно показав, що той самий HTML-код можна оформити необмеженою кількістю способів, змінюючи лише CSS; <b>епоха адаптивного дизайну</b> (з 2010-х) — після виходу iPhone 2007 року дизайнерам довелося рахуватися з десятками розмірів екранів, і 2010 року <b>Ітан Маркотт</b> запропонував термін <b>Responsive Web Design</b>.</p>
+
+    <p>Сьогоднішній етап характеризується не появою нової технології показу сторінок, а зміною самого процесу створення дизайну: хмарні інструменти дають змогу кільком дизайнерам редагувати один макет одночасно, а системи дизайну (design systems) перетворюють окремі елементи інтерфейсу на бібліотеку готових, наперед узгоджених компонентів.</p>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Історія вебдизайну<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Що саме дало змогу відокремити оформлення сторінки від її змісту й відмовитися від верстки таблицями?</div>
+      <div class="quiz" data-correct="0">
+        <button class="test-opt" type="button">поява мови CSS та рух за вебстандарти</button>
+        <button class="test-opt" type="button">винайдення тега &lt;font&gt;</button>
+        <button class="test-opt" type="button">поява анімованих GIF-банерів</button>
+        <button class="test-opt" type="button">збільшення роздільної здатності моніторів</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. ВИДИ ВЕБДИЗАЙНУ ================= -->
+  <section class="topic" id="types">
+    <div class="topic-head">
+      <span class="topic-num">02</span>
+      <h2>Види вебдизайну: UX/UI, графічний, motion</h2>
+    </div>
+
+    <p><b>UX-дизайн (User Experience)</b> — проєктування <b>досвіду</b> користувача: як людина знаходить потрібну інформацію, скільки кроків їй треба зробити, чи виникають труднощі на шляху до мети. UX-дизайнер досліджує аудиторію, будує структуру сайту (інформаційну архітектуру) та створює каркасні макети (wireframes). Просте формулювання: UX відповідає на запитання <b>«як це працює»</b>.</p>
+
+    <p><b>UI-дизайн (User Interface)</b> — проєктування <b>візуального шару</b> поверх готової структури: кольорова палітра, типографіка, іконки, кнопки, стан елементів. UI відповідає на запитання <b>«як це виглядає»</b>. На практиці UX і UI рідко поділяють між різними людьми, тому в оголошеннях найчастіше трапляється об'єднана позиція «UX/UI-дизайнер».</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 320" role="img" aria-label="Розібраний на шари макет сайту: нижній шар UX-структура (каркас без кольору), над ним UI-шар з кольорами й кнопками, над ним графічний шар з логотипом та ілюстраціями, і зверху motion-шар зі стрілками руху й переходів">
+          <!-- exploded stack: base screen frame + 3 offset layers above -->
+          <!-- layer 4: motion (top) -->
+          <g transform="translate(0,-6)">
+            <rect x="330" y="18" width="360" height="70" rx="10" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="3 4"/>
+            <text x="350" y="14" font-size="11.5" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">MOTION-ШАР</text>
+            <path d="M355,53 C400,35 430,72 470,53" fill="none" stroke="var(--test)" stroke-width="2.4" marker-end="url(#arrowhead)"/>
+            <circle cx="560" cy="53" r="14" fill="none" stroke="var(--test)" stroke-width="2.4"/>
+            <path d="M596,42 L622,53 L596,64 Z" fill="var(--test)"/>
+            <text x="650" y="58" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">переходи, анімації</text>
+          </g>
+          <!-- connector -->
+          <line x1="510" y1="88" x2="510" y2="110" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="2 4"/>
+          <!-- layer 3: graphic -->
+          <g>
+            <rect x="270" y="110" width="360" height="70" rx="10" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="3 4"/>
+            <text x="290" y="106" font-size="11.5" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">ГРАФІЧНИЙ ШАР</text>
+            <rect x="296" y="132" width="26" height="26" rx="6" fill="var(--accent)" opacity=".85"/>
+            <path d="M340,158 L358,132 L376,150 L392,132 L410,158 Z" fill="var(--ink-muted)" opacity=".6"/>
+            <text x="500" y="150" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">логотип, ілюстрації, банери</text>
+          </g>
+          <line x1="450" y1="180" x2="450" y2="202" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="2 4"/>
+          <!-- layer 2: UI -->
+          <g>
+            <rect x="210" y="202" width="360" height="70" rx="10" fill="none" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="3 4"/>
+            <text x="230" y="198" font-size="11.5" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">UI-ШАР</text>
+            <rect x="236" y="224" width="82" height="24" rx="12" fill="var(--accent)"/>
+            <text x="277" y="240" text-anchor="middle" font-size="11" fill="#fff" font-family="Manrope, sans-serif" font-weight="700">Кнопка</text>
+            <circle cx="352" cy="236" r="11" fill="var(--task)"/>
+            <rect x="382" y="228" width="150" height="16" rx="4" fill="var(--line)"/>
+            <text x="500" y="264" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">кольори, шрифти, стани</text>
+          </g>
+          <line x1="390" y1="272" x2="390" y2="294" stroke="var(--line)" stroke-width="1.4" stroke-dasharray="2 4"/>
+          <!-- base layer: UX wireframe -->
+          <g>
+            <rect x="150" y="294" width="600" height="0" fill="none"/>
+          </g>
+      </svg>
+      <figcaption>Готовий сайт — це чотири шари рішень, накладені один на одний: структура (UX), візуальний стиль (UI), графічні матеріали та рух.</figcaption>
+    </figure>
+
+    <p style="margin-top:-6px">Насправді ще нижче лежить основа — <b>UX-шар</b>: чорно-білий каркас (wireframe) без кольору й шрифтів, який лише показує розташування елементів. Саме на ньому послідовно «збираються» UI, графіка та рух — якщо базова структура незручна, жоден візуальний шар цього не виправить.</p>
+
+    <p><b>Графічний вебдизайн</b> зосереджений на <b>візуальних матеріалах</b>, які наповнюють інтерфейс: логотип, ілюстрації, банери, промографіка для акцій. Тут важлива не так зручність користування, як впізнаваність бренду й естетична цілісність сторінки.</p>
+
+    <p><b>Motion-дизайн</b> — це <b>рух в інтерфейсі</b>: анімація завантаження, плавні переходи між екранами, реакція кнопки на наведення курсора. Продумана анімація показує користувачу, що система «жива» й відреагувала на його дію, і непомітно спрямовує увагу туди, куди потрібно дизайнеру. Готові анімації найчастіше готують у Adobe After Effects, а експортують у формат <b>Lottie</b> — легкий файл, який відтворюється прямо в браузері без втрати якості.</p>
+
+    <p>На практиці один лендінг зазвичай потребує всіх трьох видів роботи одразу, але рідко виконує їх одна людина: у команді середнього розміру над цим працюють UX/UI-дизайнер, графічний дизайнер і, за потреби окремого рівня анімації, — motion-дизайнер.</p>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Аналіз видів вебдизайну на реальних сайтах<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Відкрийте <b>Google Диск (drive.google.com)</b> під своїм навчальним обліковим записом, натисніть кнопку <b>«+ Створити» → «Google Документи» → «Новий документ»</b>. У лівому верхньому куті клацніть на напис «Новий документ» і перейменуйте файл на <b>Лекція1_Прізвище</b>. Google Документи зберігають зміни автоматично.</li>
+        <li>Оберіть <b>три різні за призначенням сайти</b>, наприклад: інтернет-магазин, портфоліо дизайнера на Behance чи Dribbble, і лендінг стартапу. Для кожного створіть окремий заголовок з назвою та посиланням.</li>
+        <li>Для кожного сайту складіть таблицю з трьох рядків <span class="kbd">Вставка → Таблиця</span>: у першому стовпці — вид дизайну (<b>UX/UI</b>, <b>графічний</b>, <b>motion</b>), у другому — конкретні елементи сайту, які до нього належать.</li>
+        <li>Зробіть знімок екрана кожного сайту (<span class="kbd">Win+Shift+S</span> / <span class="kbd">Cmd+Shift+4</span>), вставте під відповідним заголовком і підпишіть 2–3 позначені елементи.</li>
+        <li>Додайте розділ «Висновок»: який вид вебдизайну переважає на кожному сайті й чому саме такий баланс виправданий для цього типу сайту.</li>
+        <li>Перевірка перед відправкою: 3 сайти × 1 таблиця × 1 знімок екрана з підписами + висновок від 3 речень. Відкрийте доступ <span class="kbd">Спільний доступ → Будь-хто з посиланням → Читач</span> і скопіюйте посилання.</li>
+      </ol>
+      <div class="box-close">Відправте посилання на документ у Classroom.</div>
+    </div>
+  </section>
+
+  <!-- ================= 3. РОЛЬ У КОМАНДІ ================= -->
+  <section class="topic" id="roles">
+    <div class="topic-head">
+      <span class="topic-num">03</span>
+      <h2>Роль веб-дизайнера в ІТ-команді</h2>
+    </div>
+
+    <p>Дизайнер у сучасній ІТ-команді працює не сам: макет проходить шлях <b>дослідження → каркасний макет (wireframe) → інтерактивний прототип → візуальний дизайн → передавання розробнику (handoff) → перевірка (QA)</b>, і на кожному етапі з дизайнером взаємодіють інші фахівці.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 920 260" role="img" aria-label="Конвеєр створення продукту з шести кроків: дослідження, каркасний макет, прототип, візуальний дизайн, передавання розробнику, перевірка. Над кроками показано, за який діапазон кроків відповідає кожна роль: Product Designer охоплює майже все, UI/UX Designer — дослідження й дизайн, Front-end Developer — передавання й перевірку">
+        <!-- pipeline steps -->
+        <g font-family="Manrope, sans-serif">
+          <!-- step boxes -->
+          <!-- x positions: 6 steps spaced -->
+          <!-- step 1 -->
+          <g>
+            <rect x="20" y="150" width="130" height="46" rx="9" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="85" y="178" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600">Дослідження</text>
+          </g>
+          <line x1="150" y1="173" x2="180" y2="173" stroke="var(--ink-muted)" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <g>
+            <rect x="180" y="150" width="130" height="46" rx="9" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="245" y="172" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600">Каркасний</text>
+            <text x="245" y="186" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600">макет</text>
+          </g>
+          <line x1="310" y1="173" x2="340" y2="173" stroke="var(--ink-muted)" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <g>
+            <rect x="340" y="150" width="130" height="46" rx="9" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="405" y="178" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600">Прототип</text>
+          </g>
+          <line x1="470" y1="173" x2="500" y2="173" stroke="var(--ink-muted)" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <g>
+            <rect x="500" y="150" width="140" height="46" rx="9" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="570" y="172" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600">Візуальний</text>
+            <text x="570" y="186" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600">дизайн</text>
+          </g>
+          <line x1="640" y1="173" x2="670" y2="173" stroke="var(--ink-muted)" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <g>
+            <rect x="670" y="150" width="120" height="46" rx="9" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="730" y="172" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600">Handoff</text>
+            <text x="730" y="186" text-anchor="middle" font-size="10.5" class="svg-muted">розробнику</text>
+          </g>
+          <line x1="790" y1="173" x2="820" y2="173" stroke="var(--ink-muted)" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <g>
+            <rect x="820" y="150" width="80" height="46" rx="9" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="860" y="178" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600">QA</text>
+          </g>
+        </g>
+        <!-- role brackets above -->
+        <g font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">
+          <!-- Product Designer: 20-790 -->
+          <path d="M20,66 L20,58 L790,58 L790,66" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+          <text x="405" y="48" text-anchor="middle" fill="var(--accent)">PRODUCT DESIGNER</text>
+          <!-- UI/UX Designer: 20-640 -->
+          <path d="M20,100 L20,92 L640,92 L640,100" fill="none" stroke="var(--task)" stroke-width="2.2"/>
+          <text x="330" y="82" text-anchor="middle" fill="var(--task-ink)">UI/UX DESIGNER</text>
+          <!-- Front-end: 670-900 -->
+          <path d="M670,132 L670,124 L900,124 L900,132" fill="none" stroke="var(--test)" stroke-width="2.2"/>
+          <text x="785" y="114" text-anchor="middle" fill="var(--test-ink)">FRONT-END DEVELOPER</text>
+        </g>
+      </svg>
+      <figcaption>Ролі не відповідають окремим коробкам процесу — вони перекриваються: Product Designer охоплює майже весь шлях, UI/UX Designer зосереджений на дизайні, Front-end Developer підключається на handoff і QA.</figcaption>
+    </figure>
+
+    <p><b>Product Designer</b> — найширша роль: відповідає за весь досвід користування продуктом, а не лише за окремі екрани. Часто сам проводить дослідження й формулює гіпотези. Головний критерій якості його роботи — не «красиво», а <b>бізнес-показники</b>: чи виросла конверсія, чи впав відсоток відмов.</p>
+
+    <p><b>UI/UX Designer</b> — вужча й найпоширеніша в українських вакансіях позиція: дослідження аудиторії, побудова wireframe і прототипів, візуальний дизайн екранів, участь у юзабіліті-тестуванні. Саме з цієї посади найчастіше починають кар'єру в дизайні.</p>
+
+    <p><b>Front-end Developer</b> — втілює затверджений дизайн у робочий код: HTML, CSS, JavaScript. Отримує готовий макет на етапі handoff і ставить дизайнеру найкорисніші запитання: чи однакові відступи на всіх екранах, що відбувається з текстом, якщо він довший за очікуваний.</p>
+
+    <div class="callout"><b>Важливо.</b> Межа між ролями розмивається: інструменти на кшталт <b>Figma Dev Mode</b> автоматично генерують CSS-властивості з макета. Спільною мовою команди залишається <b>система дизайну (design system)</b> — бібліотека узгоджених компонентів, яку однаково розуміють і дизайнер, і розробник.</div>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Ролі в команді<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Хто в ІТ-команді відповідає передусім за втілення вже затвердженого дизайну в робочий код сторінки?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button">Product Designer</button>
+        <button class="test-opt" type="button">UI/UX Designer</button>
+        <button class="test-opt" type="button">Front-end Developer</button>
+        <button class="test-opt" type="button">Project Manager</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 4. РИНОК ПРАЦІ ================= -->
+  <section class="topic" id="market">
+    <div class="topic-head">
+      <span class="topic-num">04</span>
+      <h2>Ринок праці та вимоги роботодавців</h2>
+    </div>
+
+    <p>За зимовим звітом DOU.ua 2025 року про заробітні плати дизайнерів в Україні, медіанна оплата зростає нерівномірно залежно від напряму — і найпомітніше зростання саме в Product і UI/UX, а не в суто графічному дизайні.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 760 340" role="img" aria-label="Стовпчикова діаграма медіанної місячної зарплати дизайнерів в Україні за звітом DOU.ua 2025: Product Designer 3000 доларів, UI/UX Designer 1650 доларів, графічний та веб-дизайнер 925 доларів">
+        <!-- axis -->
+        <line x1="80" y1="270" x2="720" y2="270" stroke="var(--line)" stroke-width="1.4"/>
+        <!-- gridlines at 1000/2000/3000 -->
+        <g class="svg-muted" font-family="JetBrains Mono, monospace" font-size="11">
+          <line x1="80" y1="210" x2="720" y2="210" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 5"/>
+          <text x="70" y="214" text-anchor="end">$1000</text>
+          <line x1="80" y1="150" x2="720" y2="150" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 5"/>
+          <text x="70" y="154" text-anchor="end">$2000</text>
+          <line x1="80" y1="90" x2="720" y2="90" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 5"/>
+          <text x="70" y="94" text-anchor="end">$3000</text>
+        </g>
+        <!-- bars: baseline 270, scale 0.06 px per $ -->
+        <!-- Product Designer 3000 -> height 180 -> y=90 -->
+        <rect x="150" y="90" width="110" height="180" rx="6" fill="var(--accent)"/>
+        <text x="205" y="76" text-anchor="middle" font-size="14" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">$3000</text>
+        <text x="205" y="292" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600" font-family="Manrope, sans-serif">Product</text>
+        <text x="205" y="306" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600" font-family="Manrope, sans-serif">Designer</text>
+        <!-- UI/UX 1650 -> height 99 -> y=171 -->
+        <rect x="325" y="171" width="110" height="99" rx="6" fill="var(--task)"/>
+        <text x="380" y="157" text-anchor="middle" font-size="14" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">$1650</text>
+        <text x="380" y="292" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600" font-family="Manrope, sans-serif">UI/UX</text>
+        <text x="380" y="306" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600" font-family="Manrope, sans-serif">Designer</text>
+        <!-- Graphic/web 925 -> height 55.5 -> y=214.5 -->
+        <rect x="500" y="214" width="110" height="56" rx="6" fill="var(--test)"/>
+        <text x="555" y="200" text-anchor="middle" font-size="14" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">$900–950</text>
+        <text x="555" y="292" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600" font-family="Manrope, sans-serif">Графічний /</text>
+        <text x="555" y="306" text-anchor="middle" font-size="12" class="svg-ink" font-weight="600" font-family="Manrope, sans-serif">веб-дизайнер</text>
+      </svg>
+      <figcaption>Медіанна місячна зарплата дизайнерів в Україні, $ (DOU.ua, зимовий звіт 2025). У UI/UX Designer із досвідом 5+ років медіана піднімається до $3300.</figcaption>
+    </figure>
+
+    <p>Той самий звіт показує ще дві тенденції. По-перше, рівень англійської мови сильніше впливає на зарплату UI/UX-дизайнера, ніж продуктового: 73% продуктових дизайнерів уже мають рівень Upper-Intermediate і вище. По-друге, понад 80% дизайнерів регулярно використовують ChatGPT у роботі, а Midjourney — від чверті до половини залежно від спеціалізації: роботодавці дедалі частіше очікують впевненого користування ШІ-інструментами як базової навички.</p>
+
+    <p>У вакансіях для junior-дизайнера без досвіду вимоги, як правило, зводяться до такого переліку:</p>
+    <ul>
+      <li><b>портфоліо</b> — навіть кілька навчальних кейсів на Behance чи Dribbble важать більше за диплом чи сертифікат;</li>
+      <li><b>впевнене володіння Figma</b> — базовий інструмент, без якого співбесіда, як правило, не відбудеться;</li>
+      <li><b>розуміння основ UX</b> — уміння пояснити, чому макет виглядає саме так, а не просто «мені так подобається»;</li>
+      <li><b>уміння працювати із системою дизайну</b> — використовувати вже створені компоненти, а не малювати кожну кнопку заново;</li>
+      <li><b>англійська мова</b> — щонайменше на рівні читання документації та спілкування в чаті з міжнародною командою.</li>
+    </ul>
+
+    <div class="callout"><b>Портфоліо важливіше за резюме.</b> Для людини без досвіду роботи сильні навчальні кейси (навіть на вигаданих проєктах, головне — з поясненим ходом думок) переконують роботодавця значно краще, ніж перелік пройдених курсів.</div>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> Аналіз вакансій веб-дизайнера<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Відкрийте <b>Djinni.co</b>, <b>DOU.ua</b> (розділ «Вакансії») або <b>Work.ua</b> й знайдіть три активні вакансії за запитом «веб-дизайнер» або «UI/UX дизайнер».</li>
+        <li>У документі Лекція1_Прізвище додайте розділ «Аналіз вакансій» і таблицю на 5 рядків × 4 стовпці: <b>«Назва компанії»</b>, <b>«Необхідні інструменти»</b>, <b>«Обов'язкові навички»</b>, <b>«Рівень англійської мови»</b>.</li>
+        <li>Для кожної вакансії уважно прочитайте розділ «Вимоги» і заповніть відповідний рядок: інструменти (Figma, Photoshop...), 3–5 навичок формулюваннями з оголошення, точний рівень англійської (або «не вказано»).</li>
+        <li>Під таблицею виділіть кольором ті вимоги, що повторюються у двох-трьох вакансіях одночасно — це найбільш затребувані навички ринку.</li>
+        <li>У «Висновку» конкретно, без загальних фраз, напишіть, яких 2–3 навичок з таблиці вам поки бракує.</li>
+        <li>Перевірка: таблиця містить дані трьох реальних вакансій, є речення-порівняння з виділенням кольором і висновок від 2 речень.</li>
+      </ol>
+      <div class="box-close">Відправте посилання на той самий документ Лекція1_Прізвище у Classroom.</div>
+    </div>
+  </section>
+
+  <!-- ================= 5. ІНСТРУМЕНТИ ================= -->
+  <section class="topic" id="tools">
+    <div class="topic-head">
+      <span class="topic-num">05</span>
+      <h2>Провідні інструменти вебдизайну</h2>
+    </div>
+
+    <p><b>Figma</b> — хмарний інструмент для UI/UX-дизайну, який працює прямо в браузері й дає змогу кільком людям редагувати один файл одночасно, як у Google Документах. Сьогодні це фактичний стандарт індустрії: наприкінці 2023 року Adobe й Figma офіційно відмовилися від угоди про поглинання компанії за $20 млрд через тиск регуляторів, а 2025 року Figma провела власне IPO — вийшла на біржу як самостійна публічна компанія.</p>
+
+    <p><b>Adobe XD</b> був одним із трьох провідних інструментів UI/UX-дизайну поряд із Figma та Sketch. Однак від початку 2024 року Adobe офіційно припинила вкладати кошти в розвиток нових можливостей: XD більше не продають окремим клієнтам, а наявним користувачам Creative Cloud програма залишається доступною лише в режимі підтримки.</p>
+
+    <p><b>Webflow</b> — інструмент іншого типу: він не просто малює макет, а одразу створює робочий сайт із чистим HTML і CSS без написання коду вручну. Це стирає межу між дизайном і розробкою: дизайнер бачить не імітацію сторінки, а її реальну працездатну версію.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 700 480" role="img" aria-label="Квадрант позиціонування трьох інструментів вебдизайну. Вертикальна вісь: від макета-імітації внизу до готового робочого коду вгорі. Горизонтальна вісь: від локального застосунку зліва до хмарної спільної роботи справа. Figma — хмарна, дає лише макет. Adobe XD — локальніша, дає лише макет, позначена як застаріла. Webflow — хмарна і одразу видає робочий сайт">
+        <!-- quadrant axes -->
+        <line x1="80" y1="40" x2="80" y2="420" stroke="var(--line)" stroke-width="1.4"/>
+        <line x1="80" y1="420" x2="650" y2="420" stroke="var(--line)" stroke-width="1.4"/>
+        <text x="80" y="26" text-anchor="middle" font-size="11.5" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">РОБОЧИЙ КОД</text>
+        <text x="80" y="440" text-anchor="middle" font-size="11.5" font-weight="700" class="svg-muted" font-family="JetBrains Mono, monospace">ЛИШЕ МАКЕТ</text>
+        <text x="60" y="425" text-anchor="end" font-size="11.5" font-weight="700" class="svg-muted" font-family="JetBrains Mono, monospace">ЛОКАЛЬНО</text>
+        <text x="650" y="440" text-anchor="end" font-size="11.5" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">ХМАРА / СПІЛЬНА РОБОТА</text>
+        <!-- Figma: cloud, mockup-only, active -->
+        <g>
+          <circle cx="520" cy="330" r="18" fill="var(--accent)"/>
+          <text x="520" y="335" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="Unbounded, sans-serif">F</text>
+          <text x="520" y="368" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Figma</text>
+          <text x="520" y="384" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">стандарт індустрії</text>
+        </g>
+        <!-- Adobe XD: local-ish, mockup-only, maintenance (faded/dashed) -->
+        <g opacity=".62">
+          <circle cx="230" cy="345" r="18" fill="none" stroke="var(--ink-muted)" stroke-width="2" stroke-dasharray="3 3"/>
+          <text x="230" y="350" text-anchor="middle" font-size="12" font-weight="700" class="svg-muted" font-family="Unbounded, sans-serif">XD</text>
+          <text x="230" y="383" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-muted" font-family="Manrope, sans-serif">Adobe XD</text>
+          <text x="230" y="399" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">режим підтримки</text>
+        </g>
+        <!-- Webflow: cloud, produces real code -->
+        <g>
+          <circle cx="540" cy="110" r="18" fill="var(--task)"/>
+          <text x="540" y="115" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Unbounded, sans-serif">W</text>
+          <text x="540" y="148" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Webflow</text>
+          <text x="540" y="164" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">макет = сайт</text>
+        </g>
+      </svg>
+      <figcaption>Figma домінує саме завдяки хмарній спільній роботі; Adobe XD відстає на обох осях і застиг у розвитку; Webflow — єдиний з трьох, що видає готовий робочий сайт, а не лише його імітацію.</figcaption>
+    </figure>
+
+    <div class="callout"><b>Важливо.</b> Конкретний інструмент — річ тимчасова: ще п'ять років тому «великою трійкою» вважали Figma, Sketch і Adobe XD, а сьогодні лідерство практично одноосібне. Натомість принципи, закладені в основі UX/UI-дизайну — зрозуміла структура, читабельна типографіка, послідовна система компонентів — залишаються чинними незалежно від того, у якій програмі ви працюєте.</div>
+
+    <div class="box task" id="task-3">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 3</span> Перше знайомство з Figma<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Перейдіть на <b>figma.com</b> і зареєструйтеся (кнопкою <b>«Continue with Google»</b>, якщо пошта на Gmail). За наявності навчального email-домену коледжу оберіть тариф «Education».</li>
+        <li>На головному екрані натисніть <b>«+ Design file»</b>, перейменуйте файл на <b>Лекція1_Прізвище</b>.</li>
+        <li>Роздивіться три ключові панелі: <b>Layers</b> (ліворуч — список об'єктів), <b>Design</b> (праворуч — розмір, колір, положення), <b>Toolbar</b> (згори — інструменти малювання).</li>
+        <li>Намалюйте прямокутник: клавіша <span class="kbd">R</span>, затисніть ліву кнопку миші й намалюйте фігуру. Перевірте, що вона з'явилась у панелі Layers.</li>
+        <li>У панелі Design змініть колір заливки (<b>Fill</b>) та впишіть точні розміри в поля <b>W</b> і <b>H</b> (наприклад, 300×150), натисніть <span class="kbd">Tab</span>.</li>
+        <li>Зробіть знімок екрана всього вікна Figma і вставте в документ Лекція1_Прізвище з підписами до панелей.</li>
+        <li>Відкрийте доступ: <span class="kbd">Share → Anyone with the link → can view → Copy link</span>.</li>
+      </ol>
+      <div class="box-close">Відправте посилання на файл Figma у Classroom (доступ — View).</div>
+    </div>
+  </section>
+
+  <!-- ================= ЗАВЕРШЕННЯ ================= -->
+  <section class="topic" id="wrapup">
+    <div class="topic-head">
+      <span class="topic-num">✓</span>
+      <h2>Упорядкування робочого простору</h2>
+    </div>
+    <p>Перш ніж закрити заняття, наведіть лад у своєму навчальному просторі на Google Диску — ця структура папок супроводжуватиме вас увесь курс, під час роботи над наскрізним вебпроєктом.</p>
+
+    <div class="box task" id="task-4">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 4</span> Упорядкування робочого простору<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>На Google Диску створіть папку <b>Вебдизайн_Прізвище</b> (<span class="kbd">+ Створити → Папка</span>).</li>
+        <li>Усередині створіть чотири підпапки: <b>Лекції</b>, <b>Практичні</b>, <b>Самостійна</b>, <b>Проєкт</b>.</li>
+        <li>У папці <b>Проєкт</b> створіть ще три підпапки: <b>Вихідні матеріали</b>, <b>Робочі файли</b>, <b>Готові матеріали</b>.</li>
+        <li>Відкрийте спільний доступ до папки <b>Вебдизайн_Прізвище</b> для викладача з роллю <b>«Коментатор»</b> (не «Редактор»).</li>
+        <li>Перемістіть документ Лекція1_Прізвище (<span class="kbd">Файл → Перемістити</span>) у підпапку <b>Лекції</b>.</li>
+        <li>Перевірка: 4 підпапки верхнього рівня, 3 вкладені в Проєкт, доступ викладачу відкрито, конспект лежить у Лекції. Скопіюйте посилання на головну папку.</li>
+      </ol>
+      <div class="box-close">Відправте посилання на папку Вебдизайн_Прізвище у Classroom.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Лекція 1 · Тема 1 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 03.09.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture1-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState(); // { "task-1": [true,false,...], "test-1": 0 (chosen index) }
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx, silent){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId], true);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
+
+</body>
+</html>
