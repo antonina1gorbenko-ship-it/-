@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>UX-дослідження та інформаційна архітектура — Вебдизайн</title>
-<meta name="description" content="Лекція 2. UX-дослідження та інформаційна архітектура. Конспект готується.">
+<title>UX-дослідження та інформаційна архітектура</title>
+<meta name="description" content="Лекція 2 курсу «Вебдизайн»: методи UX-досліджень, персони та CJM, sitemap, card sorting і user flow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +26,53 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,26 +85,40 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{
+    max-width:1000px;
+    margin:28px auto 0;
+    padding:0 24px;
+  }
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
+    display:flex;
+    align-items:center;
+    gap:14px;
     padding:12px 16px;
     background:var(--surface-2);
     border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
@@ -89,91 +131,941 @@
     border:1px solid var(--line);
     border-radius:8px;
     padding:6px 12px;
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
+  .hero{
+    padding:56px 40px 48px;
   }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
   .eyebrow{
     font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-size:12.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
+    background:var(--accent-tint);
+    display:inline-block;
+    padding:5px 11px;
+    border-radius:99px;
+    margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{
+    font-size:clamp(30px,4.4vw,46px);
+    line-height:1.14;
+    font-weight:800;
+  }
+  .hero .theme{
+    margin-top:14px;
+    font-size:clamp(16px,2vw,19px);
+    color:var(--ink-soft);
+    font-weight:500;
+    max-width:34em;
+  }
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:26px;
+  }
+  .meta-chip{
+    font-size:13px;
+    color:var(--ink-muted);
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:99px;
+    padding:6px 13px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
+
+  /* ---------- sticky toc ---------- */
+  .toc-bar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .toc-inner{
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 24px;
+    display:flex;
+    gap:4px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--ink-muted);
+    text-decoration:none;
+    padding:13px 12px;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
+
+  .lit{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 26px;
+    margin:36px 0 0;
+    box-shadow:var(--shadow);
+  }
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
+
+  section.topic{
+    margin-top:64px;
+    padding-top:8px;
+  }
+  .topic-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:22px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line);
+  }
+  .topic-num{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:14px;
+    color:var(--accent);
+    background:var(--accent-tint);
+    border-radius:8px;
+    padding:4px 10px;
+    flex:none;
+  }
+  .topic h2{
+    font-size:clamp(21px,2.6vw,27px);
+    font-weight:700;
+  }
+  .topic p{
+    color:var(--ink-soft);
+    font-size:16px;
+    margin:0 0 16px;
+  }
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{
+    margin:0 0 18px;
+    padding-left:22px;
+    color:var(--ink-soft);
+    font-size:15.5px;
+  }
+  .topic ul li{margin-bottom:9px;}
+  .callout{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    padding:14px 18px;
+    margin:0 0 18px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 20px 16px;
+    margin:26px 0 30px;
+    box-shadow:var(--shadow);
+  }
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{
+    margin-top:14px;
+    font-size:13px;
+    color:var(--ink-muted);
+    text-align:center;
+  }
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+
+  /* ---------- task / test boxes ---------- */
+  .box{
+    border-radius:var(--radius);
+    padding:24px 26px 20px;
+    margin:24px 0 30px;
+    box-shadow:var(--shadow);
+    border:1px solid;
+  }
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{
+    font-family:'Unbounded',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.05em;
+    padding:3px 9px;
+    border-radius:6px;
+    color:#fff;
+  }
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:1px 6px;
+  }
+  .box-close{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    font-style:italic;
+    font-size:14px;
+    color:var(--ink-muted);
+  }
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+  .test-opt{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    padding:6px 0;
+  }
+  .test-opt::before{
+    content:"";
+    width:15px;height:15px;
+    border:1.5px solid var(--test);
+    border-radius:4px;
+    flex:none;
+    margin-top:2px;
   }
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-weight:600;
+    font-size:11.5px;
+    letter-spacing:.02em;
+    padding:3px 9px;
+    border-radius:99px;
+    background:var(--surface);
+    color:var(--ink-muted);
+    border:1px solid var(--line);
+    white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
   }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  .step .num{
+    flex:none;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1.5px solid var(--line);
+    color:var(--ink-muted);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:1px;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num,
+  .step:has(.chk:checked) .num,
+  .step.checked .num{
+    background:var(--task);
+    border-color:var(--task);
+    color:#fff;
+  }
+  .step:has(.chk:checked) .step-text,
+  .step.checked .step-text{
+    color:var(--ink-muted);
+    text-decoration:line-through;
+    text-decoration-color:var(--line);
+    text-decoration-thickness:1.5px;
+  }
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;
+    width:100%;
+    gap:10px;
+    align-items:flex-start;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    padding:9px 12px;
+    margin:0 0 6px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    background:var(--surface);
+    font-family:inherit;
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{
+    content:"";
+    width:15px;height:15px;
+    border:1.5px solid var(--test);
+    border-radius:50%;
+    flex:none;
+    margin-top:2px;
+  }
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:#C0392B;background:color-mix(in srgb, #C0392B 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:#C0392B;border-color:#C0392B;}
+  .test-feedback{
+    margin-top:10px;
+    font-size:13.5px;
+    font-weight:600;
+    display:none;
+  }
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:#C0392B;}
+
+  /* ---------- overall progress bar in toc ---------- */
+  .progress-track{
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 24px;
+    height:3px;
+  }
+  .progress-track .fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg, var(--task), var(--accent));
+    transition:width .3s ease;
+  }
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{
+    flex:none;
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-muted);
+    padding:13px 0 13px 14px;
+    white-space:nowrap;
+  }
+  .toc-progress b{color:var(--accent);}
+
+  .reset-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ink-muted);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:6px 12px;
+    cursor:pointer;
+  }
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
 
   footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
+    max-width:1000px;
+    margin:0 auto;
+    padding:40px 24px 60px;
+    border-top:1px solid var(--line);
+    color:var(--ink-muted);
+    font-size:13.5px;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
   }
-
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
 </style>
+
 </head>
 <body>
-
 
 <div class="chrome">
   <div class="browser">
     <div class="browser-bar">
       <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-02</div>
+      <div class="addr">вебдизайн-курс.ua/лекція-2/ux-дослідження-та-ia</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль I · Лекція 2</div>
-      <span class="eyebrow">Дисципліна · Лекція 2</span>
+      <span class="eyebrow">Лекція 2 · Тема 2</span>
       <h1>UX-дослідження та інформаційна архітектура</h1>
-      <p class="sub">Модуль I «Проєктування користувацького досвіду (UX) та інформаційна архітектура»</p>
-
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
+      <p class="theme">Як зрозуміти користувача, перш ніж малювати перший екран: методи UX-досліджень, персони та карта подорожі клієнта, а також дві мови структури сайту — sitemap і user flow.</p>
+      <div class="meta-row">
+        <span class="meta-chip">📚 <b>4</b> розділи</span>
+        <span class="meta-chip">🧩 <b>2</b> практичні завдання</span>
+        <span class="meta-chip">✅ <b>2</b> тести на розуміння</span>
+        <span class="meta-chip">🎓 Курс «Вебдизайн», коледж</span>
       </div>
     </div>
   </div>
 </div>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a href="#research" data-toc="research">1. Методи досліджень</a>
+    <a href="#personas" data-toc="personas">2. Персони та CJM</a>
+    <a href="#ia" data-toc="ia">3. Інформаційна архітектура</a>
+    <a href="#userflow" data-toc="userflow">4. User flow</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
+
+<main>
+
+  <div class="lit" id="literature">
+    <h2>Література до теми</h2>
+    <ol>
+      <li>Spencer D. <i>Card Sorting: Designing Usable Categories.</i> Brooklyn: Rosenfeld Media, 2009. 176 p.</li>
+      <li>Nielsen J. Why You Only Need to Test with 5 Users. Nielsen Norman Group, 2000. URL: <a href="https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/" target="_blank" rel="noopener">nngroup.com/articles/why-you-only-need-to-test-with-5-users</a> (дата звернення: 10.09.2026).</li>
+      <li>diagrams.net. URL: <a href="https://www.diagrams.net" target="_blank" rel="noopener">diagrams.net</a> (дата звернення: 10.09.2026).</li>
+    </ol>
+  </div>
+
+  <!-- ================= 1. МЕТОДИ UX-ДОСЛІДЖЕНЬ ================= -->
+  <section class="topic" id="research">
+    <div class="topic-head">
+      <span class="topic-num">01</span>
+      <h2>Методи UX-досліджень: інтерв’ю, опитування, аналіз конкурентів</h2>
+    </div>
+
+    <p><b>UX-дослідження</b> — систематичний збір інформації про користувачів продукту: хто вони, яку задачу намагаються виконати і що їм заважає. За моделлю <b>Double Diamond</b>, яку 2005 року запропонувала британська організація Design Council, процес дизайну складається з чотирьох фаз: <b>Discover (дослідити) → Define (визначити) → Develop (розробити) → Deliver (передати)</b>. Дослідження — перша фаза, і саме тому вона передує, а не йде за створенням макетів: рішення, ухвалене раніше за дослідження, найчастіше виявляється рішенням проблеми, якої в користувача насправді не було.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 780 300" role="img" aria-label="Модель Double Diamond з чотирьох фаз: Дослідити, Визначити, Розробити, Передати. Перші дві фази — Дослідити і Визначити — утворюють перший ромб і виділені кольором як тема цієї лекції, дві наступні фази показані приглушеним пунктиром">
+        <defs>
+          <marker id="arrowhead2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <text x="390" y="22" text-anchor="middle" font-size="11" letter-spacing=".06em" class="svg-muted" font-family="JetBrains Mono, monospace">ПРОЦЕС ДИЗАЙНУ (DESIGN COUNCIL, 2005)</text>
+
+        <!-- diamond 2: Develop + Deliver, muted, dashed -->
+        <polygon points="340,150 485,70 630,150 485,230" fill="none" stroke="var(--ink-muted)" stroke-width="1.6" stroke-dasharray="4 5" opacity=".65"/>
+        <!-- diamond 1: Discover + Define, accent, highlighted -->
+        <polygon points="50,150 195,70 340,150 195,230" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="2.6"/>
+
+        <line x1="20" y1="150" x2="46" y2="150" stroke="var(--ink-muted)" stroke-width="2" marker-end="url(#arrowhead2)"/>
+        <circle cx="50" cy="150" r="5" fill="var(--accent)"/>
+        <circle cx="340" cy="150" r="5" fill="var(--accent)"/>
+        <circle cx="630" cy="150" r="5" fill="var(--ink-muted)"/>
+
+        <text x="122" y="50" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Дослідити</text>
+        <text x="267" y="50" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Визначити</text>
+        <text x="412" y="50" text-anchor="middle" font-size="13" font-weight="600" class="svg-muted" font-family="Manrope, sans-serif">Розробити</text>
+        <text x="557" y="50" text-anchor="middle" font-size="13" font-weight="600" class="svg-muted" font-family="Manrope, sans-serif">Передати</text>
+
+        <text x="340" y="270" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">проблему визначено</text>
+        <text x="630" y="270" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">рішення передано</text>
+
+        <text x="122" y="255" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--accent-ink)" font-family="Manrope, sans-serif">↑ цій фазі присвячена лекція 2</text>
+      </svg>
+      <figcaption>UX-дослідження — перший ромб моделі Double Diamond: розширення (Discover) і звуження (Define) до чіткого формулювання проблеми, ще до розробки й передавання рішення.</figcaption>
+    </figure>
+
+    <p>Усі методи UX-дослідження поділяють на дві великі групи за типом даних, які вони дають. <b>Якісні методи (qualitative)</b> відповідають на запитання «чому» і «як саме»: дають глибоке розуміння небагатьох випадків, але результат не можна узагальнити числом на всю аудиторію. <b>Кількісні методи (quantitative)</b> відповідають на запитання «скільки» і «як часто»: дають число, придатне для порівняння, але не пояснюють причину. Досвідчена команда не обирає один тип методів назавжди, а комбінує їх: якісні дослідження на початку підказують, що саме питати, а кількісні — підтверджують, наскільки поширена знайдена проблема.</p>
+
+    <p><b>Інтерв’ю</b> — головний якісний метод. Розрізняють <b>структуроване інтерв’ю</b> (той самий чіткий перелік запитань для кожного учасника — легко порівнювати відповіді, але важко піти за несподіваною думкою співрозмовника), <b>неструктуроване</b> (вільна розмова навколо теми — багато живих деталей, важко зіставляти) і найпоширеніше на практиці <b>напівструктуроване</b> — заздалегідь підготовлений каркас запитань, який дослідник вільно доповнює уточнювальним «чому?» залежно від відповіді. Ключове практичне правило: питати про минулий досвід («розкажіть, як ви востаннє замовляли…»), а не про гіпотетичне майбутнє («чи купили б ви…») — людина погано прогнозує власну майбутню поведінку, зате точно пам’ятає, що робила вчора.</p>
+
+    <p>Скільки учасників досить для якісного дослідження? Дослідження <b>Якоба Нільсена</b> і Томаса Ландауера 1993 року, яке 2000 року Нільсен узагальнив у статті «Why You Only Need to Test with 5 Users», показало: <b>п’ять учасників виявляють близько 85 % проблем взаємодії</b>, а кожен наступний учасник понад п’ятьох здебільшого лише повторює вже почуте. Тому в навчальних і невеликих комерційних проєктах коротке інтерв’ю з 5 учасниками — це не «спрощення заради економії часу», а методично обґрунтований мінімум.</p>
+
+    <p><b>Опитування (survey)</b> — головний кількісний метод: та сама анкета для десятків чи сотень респондентів, здебільшого із закритими запитаннями (вибір варіанту, шкала від 1 до 5) — саме закрита форма й робить відповіді придатними для підрахунку. Типова помилка початківця — намагатися опитуванням дослідити невідому проблему: анкета добре підтверджує чи спростовує вже сформульовану гіпотезу, але майже нездатна підказати проблему, про існування якої дослідник навіть не здогадувався, — респондент може відповісти лише на те запитання, яке йому поставили.</p>
+
+    <p>Третій метод — <b>аналіз конкурентів (бенчмаркінг)</b>: систематичне порівняння власного продукту з продуктами конкурентів за заздалегідь визначеними критеріями (детально розглянуто в практичній роботі №1). У ролі методу UX-дослідження бенчмаркінг показує патерни взаємодії, до яких користувач уже звик на інших сайтах тієї самої категорії, — і невмотивований відхід від такого звичного патерна користувач сприймає як незручність, навіть якщо саме по собі нове рішення технічно не гірше за звичне.</p>
+
+    <p>У командах без бюджету на повноцінне дослідження в UX-індустрії поширений мінімалістичний підхід, який називають <b>«партизанським» дослідженням (guerrilla research)</b>: дослідник за кавою чи в коридорі за 5–10 хвилин просить трьох-чотирьох випадкових людей виконати просту задачу на сайті. Подібний підхід під назвою «саморобне юзабіліті-тестування» детально описав <b>Стів Круг</b>, автор уже знайомої вам за темою 1 книги «Don’t Make Me Think», у своїй наступній книзі «Rocket Surgery Made Easy» (2010). Метод менш точний за лабораторне дослідження, зате майже безкоштовний і швидкий.</p>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Методи UX-досліджень<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Який метод слід обрати, щоб підтвердити на великій вибірці респондентів гіпотезу, вже сформульовану за результатами кількох інтерв’ю?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button">напівструктуроване інтерв’ю</button>
+        <button class="test-opt" type="button">опитування (survey)</button>
+        <button class="test-opt" type="button">партизанське дослідження (guerrilla research)</button>
+        <button class="test-opt" type="button">картка сортування (card sorting)</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. ПЕРСОНИ ТА CJM ================= -->
+  <section class="topic" id="personas">
+    <div class="topic-head">
+      <span class="topic-num">02</span>
+      <h2>Побудова персон (User Personas) та карти шляху користувача (Customer Journey Map)</h2>
+    </div>
+
+    <p><b>Персона (User Persona)</b> — узагальнений образ типового користувача продукту, побудований на реальних даних, а не вигаданий довільно. Термін запровадив американський дизайнер <b>Алан Купер</b> ще 1983 року у власній практиці, а широкого визнання підхід набув після виходу 1998 року його книги «The Inmates Are Running the Asylum». Персона поєднує в одному образі десятки реальних спостережень: замість переліку «68 % відвідувачів — жінки 25–34 років» команда отримує «Оксана, 29 років, обирає подарунки ввечері з телефону, не любить реєструватися заради однієї покупки». Так статистика перетворюється на рішення, зрозуміле кожному учаснику команди.</p>
+
+    <p><b>Персона — не сегмент аудиторії.</b> Сегмент описує групу через статистичні ознаки (вік, дохід, географія) і відповідає на запитання «хто вони». Персона — наратив: вона має ім’я, мету, роздратування й манеру поведінки, і відповідає на запитання «чому вони так роблять». Персону будують на трьох типах даних: первинних якісних (саме тих інтерв’ю та опитуваннях з розділу 1), вторинних (відгуки, коментарі, огляди сайтів-конкурентів) і поведінкових (дані аналітики, які показують «що», але не «чому»). Персона, побудована лише на уяві розробника, — небезпечна пастка, яку Купер описав як ефект <b>«еластичного користувача»</b>: коли образу немає, кожен учасник команди подумки уявляє зручного саме для його рішення користувача.</p>
+
+    <p>Мету персони зручно уточнювати за форматом <b>Jobs to Be Done (JTBD)</b>, який у 2010-х популяризував професор Гарвардської школи бізнесу <b>Клейтон Крістенсен</b>: <b>«Коли [ситуація], я хочу [дія], щоб [очікуваний результат]»</b>. Наприклад: «Коли ввечері я згадую про день народження друга, я хочу за п’ять хвилин замовити квіти з телефону, щоб встигнути з доставкою до свята». Такий запис одразу підказує вимоги до інтерфейсу.</p>
+
+    <p>Побачити персону «зсередини» допомагає <b>карта емпатії (Empathy Map)</b> — інструмент, який 2010 року в книзі «Gamestorming» описав <b>Дейв Ґрей</b>. У поширеному спрощеному вигляді карта має чотири поля: що персона <b>каже</b>, <b>думає</b>, <b>робить</b> і <b>відчуває</b>, доповнені полями <b>«болі»</b> та <b>«вигоди»</b>.</p>
+
+    <p><b>Карта подорожі клієнта (Customer Journey Map, CJM)</b> — схема, яка показує шлях персони від виникнення потреби до досягнення мети через усі точки взаємодії з продуктом; метод набув поширення у сфері дизайну послуг, помітну роль у його популяризації відіграв практичний посібник агенції Adaptive Path «Guide to Experience Mapping» (2013). Для вебсайту CJM зручно будувати по конкретних сторінках, які користувач реально побачить: до сайту → головна сторінка → каталог/послуги → картка товару → кошик/форма замовлення → підтвердження. Для кожного етапу фіксують дії користувача, точку дотику, думки, <b>емоційну оцінку</b> (наприклад, від 1 до 5) і больову точку — а побудований за цими оцінками графік, <b>емоційна крива</b>, наочно показує, на якому кроці шлях «провалюється» найглибше.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 320" role="img" aria-label="Графік емоційної кривої CJM з шести етапів: до сайту, головна, каталог, картка товару, кошик, підтвердження. Крива опускається найнижче на етапі «кошик», що позначено як критична сторінка">
+        <defs>
+          <marker id="arrowhead3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <text x="20" y="88" text-anchor="start" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">задоволення</text>
+        <text x="20" y="262" text-anchor="start" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">розчарування</text>
+        <line x1="70" y1="260" x2="830" y2="260" stroke="var(--line)" stroke-width="1.4"/>
+        <line x1="70" y1="70" x2="70" y2="260" stroke="var(--line)" stroke-width="1.4"/>
+
+        <polyline points="70,125 222,102.5 374,147.5 526,125 678,215 830,102.5" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+
+        <g font-family="Manrope, sans-serif">
+          <circle cx="70" cy="125" r="6" fill="var(--accent)"/>
+          <circle cx="222" cy="102.5" r="6" fill="var(--accent)"/>
+          <circle cx="374" cy="147.5" r="6" fill="var(--accent)"/>
+          <circle cx="526" cy="125" r="6" fill="var(--accent)"/>
+          <circle cx="830" cy="102.5" r="6" fill="var(--accent)"/>
+
+          <line x1="678" y1="215" x2="678" y2="260" stroke="var(--test)" stroke-width="1.6" stroke-dasharray="3 4"/>
+          <circle cx="678" cy="215" r="9" fill="var(--test)"/>
+          <text x="678" y="198" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--test-ink)">критична сторінка</text>
+          <text x="678" y="300" text-anchor="middle" font-size="10.5" class="svg-muted">→ саме її ви знайдете в ПР2 і спроєктуєте в ПР3</text>
+
+          <text x="70" y="280" text-anchor="middle" font-size="10.5" class="svg-muted">до сайту</text>
+          <text x="222" y="280" text-anchor="middle" font-size="10.5" class="svg-muted">головна</text>
+          <text x="374" y="280" text-anchor="middle" font-size="10.5" class="svg-muted">каталог</text>
+          <text x="526" y="280" text-anchor="middle" font-size="10.5" class="svg-muted">картка товару</text>
+          <text x="678" y="280" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--test-ink)">кошик</text>
+          <text x="830" y="280" text-anchor="middle" font-size="10.5" class="svg-muted">підтвердження</text>
+        </g>
+      </svg>
+      <figcaption>Емоційна крива CJM: числа за кожним етапом наочно показують, де саме шлях персони «провалюється» найглибше, — саме там варто шукати рішення насамперед.</figcaption>
+    </figure>
+
+    <p>Найглибша точка емоційної кривої — не привід засмучуватися, а <b>найцінніша знахідка</b> усього дослідження: саме там вкладення часу принесе найбільший ефект. У практичній роботі №2 ви побудуєте власну персону, карту емпатії та CJM для свого наскрізного вебпроєкту й за емоційною кривою знайдете власну критичну сторінку, а в практичній роботі №3 спроєктуєте для неї детальний user flow — саме про цей інструмент ідеться в розділі 4 цієї лекції.</p>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Інтерв’ю з голосовою транскрипцією та AI-чернеткою JTBD<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Відкрийте <b>Google Диск (drive.google.com)</b>, у папці <b>Вебдизайн_Прізвище → Лекції</b>, яку ви створили в лекції 1, натисніть <span class="kbd">«+ Створити» → «Google Документи»</span> і перейменуйте новий файл на <b>Лекція2_Прізвище</b> (замість «Прізвище» — власне прізвище кирилицею).</li>
+        <li>Увімкніть у документі голосовий ввід: <span class="kbd">«Інструменти» → «Голосове введення»</span> (або комбінація клавіш <span class="kbd">Ctrl+Shift+S</span>) і дозвольте браузеру доступ до мікрофона.</li>
+        <li>Знайдіть одногрупника (в аудиторії або в чаті групи) і проведіть коротке <b>напівструктуроване інтерв’ю</b> за трьома запитаннями з розділу 1: 1) «Розкажіть, як ви востаннє щось купували в інтернеті»; 2) «Що вас найбільше дратувало під час цієї покупки?»; 3) уточнювальне «чому?» до кожної відповіді, де це доречно. Поки одногрупник відповідає, тримайте мікрофон увімкненим — Google Документи транскрибують відповіді наживо, і вам не потрібно друкувати самостійно. Після завершення вимкніть мікрофон і виправте 2–3 слова, які сервіс міг розпізнати неточно.</li>
+        <li>Скопіюйте отриманий транскрипт у будь-який AI-чат-інструмент — <b>Gemini</b> (<b>gemini.google.com</b>), <b>ChatGPT</b> (<b>chatgpt.com</b>) або <b>Microsoft Copilot</b> (<b>copilot.microsoft.com</b>) — і попросіть скласти <b>чернетку</b> JTBD-формулювання за зразком із розділу 2: «Коли [ситуація], я хочу [дія], щоб [очікуваний результат]».</li>
+        <li><b>Обов’язково перевірте та відредагуйте</b> запропоновану AI чернетку: звірте кожне слово з тим, що справді сказав ваш співрозмовник, і приберіть усе, чого він не казав, — AI схильний «прикрашати» формулювання деталями, яких не було в транскрипті. У документі поруч із фінальним реченням одним словом зазначте, яким сервісом ви скористалися.</li>
+        <li>Перевірка: у документі є транскрипт відповідей щонайменше на три запитання і одне <b>відредаговане вами</b> речення JTBD, побудоване рівно за цією формулою. Відкрийте доступ до документа <span class="kbd">«Спільний доступ» → «Будь-хто з посиланням» → роль «Читач»</span> і скопіюйте посилання кнопкою <span class="kbd">«Копіювати посилання»</span>.</li>
+      </ol>
+      <div class="box-close">Відправте скопійоване посилання на документ у Classroom у полі для здачі цієї лекції.</div>
+    </div>
+  </section>
+
+  <!-- ================= 3. ІНФОРМАЦІЙНА АРХІТЕКТУРА ================= -->
+  <section class="topic" id="ia">
+    <div class="topic-head">
+      <span class="topic-num">03</span>
+      <h2>Інформаційна архітектура сайту: sitemap, картка сортування (card sorting)</h2>
+    </div>
+
+    <p><b>Sitemap (карта сайту)</b> у вебдизайні — ієрархічна схема всіх сторінок майбутнього сайту, побудована у вигляді дерева: від головного вузла — вниз, через розділи — до окремих сторінок. Sitemap відповідає на запитання <b>«з яких сторінок складається сайт і як вони підпорядковані одна одній»</b>, і будується <b>до</b> початку роботи над макетом.</p>
+
+    <p><b>Важливо не сплутати два значення терміна.</b> У пошуковій оптимізації (SEO) словом sitemap також називають технічний файл <b>sitemap.xml</b> — службовий перелік адрес для пошукових роботів. Тут ідеться про <b>UX-sitemap</b> — інструмент проєктування, який читає людина, а не пошуковий бот.</p>
+
+    <p>Sitemap отримують не з фантазії дизайнера, а з <b>картки сортування (card sorting)</b> — методу, коли реальні майбутні користувачі розкладають картки з назвами сторінок у групи, що здаються їм логічними, а дизайнер потім оформлює результат у дерево. Метод докладно описала дослідниця <b>Донна Спенсер</b> у книзі «Card Sorting: Designing Usable Categories» (2009). Розрізняють <b>закрите сортування</b> (учасникам одразу дають готові назви розділів) і <b>відкрите</b> (учасники самі придумують і підписують групи).</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 820 320" role="img" aria-label="Дерево sitemap: головна сторінка розгалужується на каталог, про нас, контакти й вхід до кабінету. Каталог розгалужується на категорію товару і картку товару. Вхід до кабінету та особистий кабінет обведені пунктирною рамкою як закрита частина сайту, доступна лише після авторизації, решта сторінок — публічна частина без рамки">
+        <!-- boundary for authorized area -->
+        <rect x="638" y="92" width="150" height="176" rx="10" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.6" stroke-dasharray="4 5" opacity=".85"/>
+        <text x="650" y="108" font-size="10.5" font-weight="700" fill="var(--test-ink)" font-family="JetBrains Mono, monospace">ПІСЛЯ ВХОДУ</text>
+
+        <!-- root -->
+        <rect x="345" y="20" width="130" height="38" rx="8" fill="var(--accent)" stroke="var(--accent)"/>
+        <text x="410" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="Manrope, sans-serif">Головна</text>
+
+        <!-- level 2 -->
+        <g font-family="Manrope, sans-serif" font-size="12">
+          <line x1="410" y1="58" x2="110" y2="111" stroke="var(--line)" stroke-width="1.6"/>
+          <line x1="410" y1="58" x2="320" y2="111" stroke="var(--line)" stroke-width="1.6"/>
+          <line x1="410" y1="58" x2="520" y2="111" stroke="var(--line)" stroke-width="1.6"/>
+          <line x1="410" y1="58" x2="713" y2="111" stroke="var(--line)" stroke-width="1.6"/>
+
+          <rect x="45" y="111" width="130" height="38" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+          <text x="110" y="135" text-anchor="middle" class="svg-ink" font-weight="600">Каталог</text>
+
+          <rect x="255" y="111" width="130" height="38" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+          <text x="320" y="135" text-anchor="middle" class="svg-ink" font-weight="600">Про нас</text>
+
+          <rect x="455" y="111" width="130" height="38" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+          <text x="520" y="135" text-anchor="middle" class="svg-ink" font-weight="600">Контакти</text>
+
+          <rect x="648" y="111" width="130" height="38" rx="8" fill="var(--surface)" stroke="var(--test)" stroke-width="1.6"/>
+          <text x="713" y="135" text-anchor="middle" fill="var(--test-ink)" font-weight="600">Вхід / Кабінет</text>
+        </g>
+
+        <!-- level 3 -->
+        <g font-family="Manrope, sans-serif" font-size="11.5">
+          <line x1="110" y1="149" x2="60" y2="211" stroke="var(--line)" stroke-width="1.6"/>
+          <line x1="110" y1="149" x2="220" y2="211" stroke="var(--line)" stroke-width="1.6"/>
+          <line x1="713" y1="149" x2="713" y2="211" stroke="var(--test)" stroke-width="1.6"/>
+
+          <rect x="0" y="211" width="120" height="38" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="60" y="235" text-anchor="middle" class="svg-ink">Категорія товару</text>
+
+          <rect x="160" y="211" width="120" height="38" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="220" y="235" text-anchor="middle" class="svg-ink">Картка товару</text>
+
+          <rect x="653" y="211" width="120" height="38" rx="8" fill="var(--surface)" stroke="var(--test)" stroke-width="1.6"/>
+          <text x="713" y="235" text-anchor="middle" fill="var(--test-ink)">Особистий кабінет</text>
+        </g>
+
+        <text x="180" y="290" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">публічна частина — зв’язки без стрілок, лише підпорядкованість</text>
+      </svg>
+      <figcaption>Sitemap показує ієрархію сторінок простими лініями без стрілок; межу між публічною й закритою за авторизацією частиною сайту варто позначати візуально, щоб розробник одразу бачив, де потрібна перевірка прав доступу.</figcaption>
+    </figure>
+
+    <p>Для глибини дерева в UX часто згадують неформальне <b>правило трьох клацань (3-click rule)</b>: користувач нібито має дістатися будь-якої сторінки не більш ніж за три переходи від головної. Емпірично це правило не підтверджене: дослідження показують, що користувачі залишають сайт не через четвертий клік, а тоді, коли перестають розуміти, куди рухаються. Розглядайте правило радше як орієнтир для самоперевірки: якщо до сторінки доводиться робити чотири-п’ять кроків, це привід переглянути структуру, а не жорстка межа.</p>
+
+    <p>Ще одне практичне розмежування — межа між <b>публічною частиною</b> сайту (доступна будь-кому) і <b>закритою частиною за авторизацією</b> (доступна лише після входу). На sitemap цю межу корисно позначати візуально: такий прийом одразу показує команді розробників, які сторінки потребують перевірки прав доступу на сервері, а не лише приховування пункту меню в інтерфейсі.</p>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Інформаційна архітектура<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Чим відкрите card sorting принципово відрізняється від закритого?</div>
+      <div class="quiz" data-correct="0">
+        <button class="test-opt" type="button">учасники самі придумують і підписують назви груп, а не обирають із готового переліку</button>
+        <button class="test-opt" type="button">учасників для відкритого сортування потрібно менше, ніж для закритого</button>
+        <button class="test-opt" type="button">відкрите сортування виконують лише на комп’ютері, а закрите — лише на паперових картках</button>
+        <button class="test-opt" type="button">відкрите сортування проводять після побудови sitemap, а закрите — до нього</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 4. USER FLOW ================= -->
+  <section class="topic" id="userflow">
+    <div class="topic-head">
+      <span class="topic-num">04</span>
+      <h2>User flow та сценарії взаємодії користувача із сайтом</h2>
+    </div>
+
+    <p><b>User flow (користувацький сценарій)</b> — на відміну від sitemap, це не структура сайту, а покроковий шлях <b>одного конкретного сценарію</b>: що саме робить користувач, екран за екраном, щоб виконати одну задачу — увійти в систему, оформити замовлення, відновити пароль. Якщо sitemap — це карта міста, то user flow — маршрут одного конкретного проїзду: з відомої точки А в точку Б, з усіма перехрестями-рішеннями по дорозі.</p>
+
+    <p><b>Чим user flow відрізняється від CJM.</b> CJM, яку ви розглянули в розділі 2, описує <b>емоційний і мисленнєвий</b> досвід персони на широких етапах шляху і майже завжди лінійна, без розгалужень. User flow — інший рівень деталізації: він показує <b>точну логіку конкретного екрана</b> — які саме кнопки, поля й переходи там є, включно з розгалуженнями «якщо — то». CJM пояснює <b>чому</b> користувач почувається так чи інакше; user flow фіксує <b>що саме</b> повинен реалізувати розробник.</p>
+
+    <p>User flow малюють у стандартній нотації блок-схем, спільній для дизайнерів і розробників:</p>
+    <ul>
+      <li><b>овал (термінатор)</b> — початок або кінець сценарію;</li>
+      <li><b>прямокутник</b> — екран, який бачить користувач;</li>
+      <li><b>прямокутник із заокругленими кутами</b> — дія чи процес без окремого екрана;</li>
+      <li><b>ромб</b> — рішення з щонайменше двома виходами, підписаними «так» і «ні»;</li>
+      <li><b>стрілка</b> — напрям переходу; на sitemap, для порівняння, зв’язки малюють простими лініями без стрілок, бо там важлива підпорядкованість, а не послідовність дій у часі.</li>
+    </ul>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 640 560" role="img" aria-label="User flow сценарію перегляду товару: старт, екран списку товарів, ромб рішення «товар в наявності?». Гілка «так» веде до картки товару, дії додати в кошик і кінцевого стану. Гілка «ні» веде до порожнього стану «товару немає в наявності», зображеного пунктиром, звідки стрілка повертає користувача назад до списку товарів">
+        <defs>
+          <marker id="arrowhead4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g class="svg-ink" font-family="Manrope, sans-serif" font-size="12.5">
+
+          <!-- start oval -->
+          <ellipse cx="340" cy="40" rx="150" ry="30" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.6"/>
+          <text x="340" y="36" text-anchor="middle">Старт: користувач на сторінці</text>
+          <text x="340" y="52" text-anchor="middle">каталогу</text>
+
+          <line x1="340" y1="70" x2="340" y2="93" stroke="var(--ink-muted)" stroke-width="1.8" marker-end="url(#arrowhead4)"/>
+
+          <!-- rect: список товарів -->
+          <rect x="240" y="95" width="200" height="50" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1.6"/>
+          <text x="340" y="125" text-anchor="middle" font-weight="600">Екран: список товарів</text>
+
+          <line x1="340" y1="145" x2="340" y2="158" stroke="var(--ink-muted)" stroke-width="1.8" marker-end="url(#arrowhead4)"/>
+
+          <!-- diamond -->
+          <polygon points="340,160 435,225 340,290 245,225" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="2"/>
+          <text x="340" y="221" text-anchor="middle" font-weight="700">Товар в</text>
+          <text x="340" y="237" text-anchor="middle" font-weight="700">наявності?</text>
+
+          <!-- так branch -->
+          <line x1="340" y1="290" x2="340" y2="328" stroke="var(--task)" stroke-width="1.8" marker-end="url(#arrowhead4)"/>
+          <text x="358" y="312" fill="var(--task-ink)" font-weight="700" font-size="11.5">так</text>
+
+          <rect x="240" y="330" width="200" height="50" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1.6"/>
+          <text x="340" y="360" text-anchor="middle" font-weight="600">Екран: картка товару</text>
+
+          <line x1="340" y1="380" x2="340" y2="418" stroke="var(--ink-muted)" stroke-width="1.8" marker-end="url(#arrowhead4)"/>
+
+          <rect x="225" y="420" width="230" height="50" rx="22" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.8"/>
+          <text x="340" y="450" text-anchor="middle" fill="var(--task-ink)" font-weight="700">Дія: додати в кошик</text>
+
+          <line x1="340" y1="470" x2="340" y2="488" stroke="var(--ink-muted)" stroke-width="1.8" marker-end="url(#arrowhead4)"/>
+
+          <ellipse cx="340" cy="520" rx="150" ry="30" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.8"/>
+          <text x="340" y="525" text-anchor="middle" fill="var(--task-ink)" font-weight="700">Кінець: товар у кошику</text>
+
+          <!-- ні branch -->
+          <line x1="245" y1="225" x2="216" y2="227" stroke="var(--test)" stroke-width="1.8" marker-end="url(#arrowhead4)"/>
+          <text x="228" y="212" fill="var(--test-ink)" font-weight="700" font-size="11.5">ні</text>
+
+          <rect x="10" y="199" width="205" height="56" rx="14" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.8" stroke-dasharray="5 4"/>
+          <text x="112" y="222" text-anchor="middle" fill="var(--test-ink)" font-weight="700" font-size="11.5">Порожній стан:</text>
+          <text x="112" y="238" text-anchor="middle" fill="var(--test-ink)" font-size="11">«товару немає в наявності»</text>
+
+          <path d="M75,199 C 75,150 150,120 238,120" fill="none" stroke="var(--ink-muted)" stroke-width="1.6" stroke-dasharray="3 4" marker-end="url(#arrowhead4)"/>
+          <text x="95" y="155" fill="var(--ink-muted)" font-size="10.5">← повернутися до списку</text>
+        </g>
+      </svg>
+      <figcaption>User flow — на відміну від дерева sitemap — це послідовність зі стрілками: ромб-рішення розгалужує сценарій, а службовий порожній стан замикається стрілкою назад до списку товарів, а не обривається в нікуди.</figcaption>
+    </figure>
+
+    <p>Початківець зазвичай малює лише «щасливий шлях» (happy path): усе працює, користувач жодного разу не помиляється. У реальній розробці такий сценарій — у кращому разі половина роботи. Досвідчений дизайнер обов’язково додає <b>службові стани</b>: <b>стан помилки (error state)</b> — що бачить користувач, якщо щось пішло не так; <b>порожній стан (empty state)</b> — що показує сторінка, коли на ній ще немає даних (порожній екран без пояснення сприймається як «сайт зламався»); <b>стан завантаження (loading state)</b> і <b>стан успіху (success state)</b>.</p>
+
+    <p>Розробник перетворює user flow на код буквально по вузлах: кожен прямокутник — майбутній екран, кожен ромб — рядок коду з умовою <b>if / else</b>, а кожен пропущений службовий стан — відсутній у програмі обробник виключення, який на практиці й спричиняє більшість «дивних багів». Тестувальники також будують тест-кейси саме за user flow: скільки гілок на схемі — стільки мінімум сценаріїв треба перевірити. У практичній роботі №3 ви побудуєте sitemap і детальний user flow для критичної сторінки власного наскрізного вебпроєкту засобами спеціалізованого редактора блок-схем <b>draw.io</b> — без табличного процесора, оскільки і sitemap, і user flow за своєю природою є графами, а не таблицями значень.</p>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> User flow за технологією «текст → діаграма»<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Оберіть будь-який знайомий вам сайт (наприклад, інтернет-магазин, яким ви самі користувалися) і один конкретний сценарій на ньому — наприклад, «знайти й переглянути картку товару».</li>
+        <li>У будь-якому AI-чат-інструменті (<b>Gemini</b>, <b>ChatGPT</b> або <b>Microsoft Copilot</b>) опишіть цей сценарій звичайними словами: перелічіть екрани, дії користувача і принаймні одну розвилку-рішення. Попросіть скласти за цим описом схему у форматі <b>Mermaid flowchart</b> — це текстова мова розмітки, якою можна описати блок-схему рядками на кшталт <span class="mono">A[Екран] --&gt; B{Умова?}</span>.</li>
+        <li>Скопіюйте згенерований код у поле зліва на сайті <b>https://mermaid.live</b> — безкоштовному сервісі без реєстрації — і подивіться готову візуальну схему, яка одразу з’явиться праворуч.</li>
+        <li><b>Обов’язково перевірте</b> результат за нотацією з розділу 4, а не приймайте його на віру: чи справді прямокутники позначають екрани, а ромби — рішення; чи є на схемі щонайменше <b>один ромб-рішення</b> і <b>один службовий стан</b> (стан помилки або порожній стан) — AI часто про службові стани забуває, якщо про них не попросити прямо. Якщо чогось бракує, допишіть репліку AI-інструменту з уточненням або відредагуйте Mermaid-код самостійно прямо на mermaid.live.</li>
+        <li>Натисніть на mermaid.live кнопку <span class="kbd">«Actions» → «Export as PNG»</span> і збережіть зображення. Якщо AI-інструмент недоступний — намалюйте той самий сценарій від руки на папері й сфотографуйте телефоном: результат має задовольняти ті самі вимоги до нотації.</li>
+        <li>Вставте зображення в документ <b>Лекція2_Прізвище</b> (створений у завданні 1) під новим заголовком <b>«User flow»</b>, а під ним одним реченням зазначте, яким AI-інструментом ви скористалися і що саме довелося виправити в його чернетці.</li>
+        <li>Перевірка перед відправкою: на ескізі є щонайменше 1 овал, 3 прямокутники, 1 ромб і 1 службовий стан, підписаний так, щоб інша людина зрозуміла його без ваших усних пояснень. Оновіть посилання на доступ до документа, якщо ще цього не зробили.</li>
+      </ol>
+      <div class="box-close">Відправте оновлене посилання на документ Лекція2_Прізвище у Classroom.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Лекція 2 · Тема 2 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 10.09.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture2-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState(); // { "task-1": [true,false,...], "test-1": 0 (chosen index) }
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx, silent){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId], true);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
+
 
 </body>
 </html>
