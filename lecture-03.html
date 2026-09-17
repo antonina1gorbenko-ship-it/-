@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wireframing та прототипування у Figma — Вебдизайн</title>
-<meta name="description" content="Лекція 3. Wireframing та прототипування у Figma. Конспект готується.">
+<title>Wireframing та прототипування у Figma</title>
+<meta name="description" content="Лекція 3 курсу «Вебдизайн»: принципи lo-fi/hi-fi прототипування, анатомія інтерфейсу Figma, логіка побудови wireframe та інтерактивне прототипування зі Smart Animate">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +26,53 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,26 +85,40 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{
+    max-width:1000px;
+    margin:28px auto 0;
+    padding:0 24px;
+  }
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
+    display:flex;
+    align-items:center;
+    gap:14px;
     padding:12px 16px;
     background:var(--surface-2);
     border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
@@ -89,91 +131,928 @@
     border:1px solid var(--line);
     border-radius:8px;
     padding:6px 12px;
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
+  .hero{
+    padding:56px 40px 48px;
   }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
   .eyebrow{
     font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-size:12.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent-ink);
+    background:var(--accent-tint);
+    display:inline-block;
+    padding:5px 11px;
+    border-radius:99px;
+    margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{
+    font-size:clamp(30px,4.4vw,46px);
+    line-height:1.14;
+    font-weight:800;
+  }
+  .hero .theme{
+    margin-top:14px;
+    font-size:clamp(16px,2vw,19px);
+    color:var(--ink-soft);
+    font-weight:500;
+    max-width:34em;
+  }
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:26px;
+  }
+  .meta-chip{
+    font-size:13px;
+    color:var(--ink-muted);
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:99px;
+    padding:6px 13px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
+
+  /* ---------- sticky toc ---------- */
+  .toc-bar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .toc-inner{
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 24px;
+    display:flex;
+    gap:4px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--ink-muted);
+    text-decoration:none;
+    padding:13px 12px;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
+
+  .lit{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 26px;
+    margin:36px 0 0;
+    box-shadow:var(--shadow);
+  }
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
+
+  section.topic{
+    margin-top:64px;
+    padding-top:8px;
+  }
+  .topic-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:22px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line);
+  }
+  .topic-num{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:14px;
+    color:var(--accent);
+    background:var(--accent-tint);
+    border-radius:8px;
+    padding:4px 10px;
+    flex:none;
+  }
+  .topic h2{
+    font-size:clamp(21px,2.6vw,27px);
+    font-weight:700;
+  }
+  .topic p{
+    color:var(--ink-soft);
+    font-size:16px;
+    margin:0 0 16px;
+  }
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{
+    margin:0 0 18px;
+    padding-left:22px;
+    color:var(--ink-soft);
+    font-size:15.5px;
+  }
+  .topic ul li{margin-bottom:9px;}
+  .callout{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:4px solid var(--accent);
+    border-radius:10px;
+    padding:14px 18px;
+    margin:0 0 18px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 20px 16px;
+    margin:26px 0 30px;
+    box-shadow:var(--shadow);
+  }
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{
+    margin-top:14px;
+    font-size:13px;
+    color:var(--ink-muted);
+    text-align:center;
+  }
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+
+  /* ---------- task / test boxes ---------- */
+  .box{
+    border-radius:var(--radius);
+    padding:24px 26px 20px;
+    margin:24px 0 30px;
+    box-shadow:var(--shadow);
+    border:1px solid;
+  }
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{
+    font-family:'Unbounded',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.05em;
+    padding:3px 9px;
+    border-radius:6px;
+    color:#fff;
+  }
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:1px 6px;
+  }
+  .box-close{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    font-style:italic;
+    font-size:14px;
+    color:var(--ink-muted);
+  }
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+  .test-opt{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    padding:6px 0;
+  }
+  .test-opt::before{
+    content:"";
+    width:15px;height:15px;
+    border:1.5px solid var(--test);
+    border-radius:4px;
+    flex:none;
+    margin-top:2px;
   }
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-weight:600;
+    font-size:11.5px;
+    letter-spacing:.02em;
+    padding:3px 9px;
+    border-radius:99px;
+    background:var(--surface);
+    color:var(--ink-muted);
+    border:1px solid var(--line);
+    white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
   }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  .step .num{
+    flex:none;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1.5px solid var(--line);
+    color:var(--ink-muted);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:1px;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num,
+  .step:has(.chk:checked) .num,
+  .step.checked .num{
+    background:var(--task);
+    border-color:var(--task);
+    color:#fff;
+  }
+  .step:has(.chk:checked) .step-text,
+  .step.checked .step-text{
+    color:var(--ink-muted);
+    text-decoration:line-through;
+    text-decoration-color:var(--line);
+    text-decoration-thickness:1.5px;
+  }
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;
+    width:100%;
+    gap:10px;
+    align-items:flex-start;
+    font-size:14.5px;
+    color:var(--ink-soft);
+    padding:9px 12px;
+    margin:0 0 6px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    background:var(--surface);
+    font-family:inherit;
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{
+    content:"";
+    width:15px;height:15px;
+    border:1.5px solid var(--test);
+    border-radius:50%;
+    flex:none;
+    margin-top:2px;
+  }
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:#C0392B;background:color-mix(in srgb, #C0392B 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:#C0392B;border-color:#C0392B;}
+  .test-feedback{
+    margin-top:10px;
+    font-size:13.5px;
+    font-weight:600;
+    display:none;
+  }
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:#C0392B;}
+
+  /* ---------- overall progress bar in toc ---------- */
+  .progress-track{
+    max-width:1000px;
+    margin:0 auto;
+    padding:0 24px;
+    height:3px;
+  }
+  .progress-track .fill{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg, var(--task), var(--accent));
+    transition:width .3s ease;
+  }
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{
+    flex:none;
+    margin-left:auto;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;
+    color:var(--ink-muted);
+    padding:13px 0 13px 14px;
+    white-space:nowrap;
+  }
+  .toc-progress b{color:var(--accent);}
+
+  .reset-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--ink-muted);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:6px 12px;
+    cursor:pointer;
+  }
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* ---------- fidelity matrix ---------- */
+  .fid-card{
+    fill:var(--surface);
+    stroke:var(--line);
+    stroke-width:1.6;
+  }
+  .fid-card.hi{
+    fill:var(--accent-tint);
+    stroke:var(--accent);
+    stroke-width:2.4;
+  }
+
+  /* ---------- anatomy diagram zones ---------- */
+  .zone-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.02em;
+  }
 
   footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
+    max-width:1000px;
+    margin:0 auto;
+    padding:40px 24px 60px;
+    border-top:1px solid var(--line);
+    color:var(--ink-muted);
+    font-size:13.5px;
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
   }
-
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
 </style>
 </head>
 <body>
 
-
 <div class="chrome">
   <div class="browser">
     <div class="browser-bar">
       <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-03</div>
+      <div class="addr">вебдизайн-курс.ua/лекція-3/wireframing-ta-prototypuvannya-u-figma</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль II · Лекція 3</div>
-      <span class="eyebrow">Дисципліна · Лекція 3</span>
+      <span class="eyebrow">Лекція 3 · Тема 3</span>
       <h1>Wireframing та прототипування у Figma</h1>
-      <p class="sub">Модуль II «Прототипування, UI-дизайн та візуальна мова інтерфейсів»</p>
-
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
+      <p class="theme">Як сірий каркас сторінки з практичної роботи №4 перетворюється на клікабельний макет, що поводиться як готовий сайт: виміри деталізації прототипу, анатомія робочого простору Figma, логіка розташування блоків і механіка Smart Animate.</p>
+      <div class="meta-row">
+        <span class="meta-chip">📚 <b>4</b> розділи</span>
+        <span class="meta-chip">🧩 <b>2</b> практичні завдання</span>
+        <span class="meta-chip">✅ <b>2</b> тести на розуміння</span>
+        <span class="meta-chip">🎓 Курс «Вебдизайн», коледж</span>
       </div>
     </div>
   </div>
 </div>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a href="#fidelity" data-toc="fidelity">1. Lo-fi та hi-fi</a>
+    <a href="#interface" data-toc="interface">2. Інтерфейс Figma</a>
+    <a href="#hierarchy" data-toc="hierarchy">3. Логіка wireframe</a>
+    <a href="#prototyping" data-toc="prototyping">4. Прототипування</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
+
+<main>
+
+  <div class="lit" id="literature">
+    <h2>Література до теми</h2>
+    <ol>
+      <li>Buxton B. Sketching User Interfaces: Getting the Right Design and the Design Right. Burlington: Morgan Kaufmann, 2007.</li>
+      <li>Pernice K. UX Prototypes: Low Fidelity vs. High Fidelity. Nielsen Norman Group, 2016. URL: <a href="https://www.nngroup.com/articles/ux-prototype-hi-lo-fidelity/" target="_blank" rel="noopener">nngroup.com/articles/ux-prototype-hi-lo-fidelity</a> (дата звернення: 11.09.2026).</li>
+      <li>Warfel T. Z. Prototyping: A Practitioner's Guide. Brooklyn: Rosenfeld Media, 2009.</li>
+      <li>Saffer D. Microinteractions: Designing with Details. Sebastopol: O'Reilly Media, 2013.</li>
+      <li>Figma Help Center. Smart animate layers between frames. URL: <a href="https://help.figma.com/hc/en-us/articles/360039818874-Smart-animate-layers-between-frames" target="_blank" rel="noopener">help.figma.com/.../Smart-animate-layers-between-frames</a> (дата звернення: 11.09.2026).</li>
+      <li>Figma Help Center. Prototype animations. URL: <a href="https://help.figma.com/hc/en-us/articles/360040522373-Prototype-animations" target="_blank" rel="noopener">help.figma.com/.../Prototype-animations</a> (дата звернення: 11.09.2026).</li>
+    </ol>
+  </div>
+
+  <!-- ================= 1. LO-FI ТА HI-FI ================= -->
+  <section class="topic" id="fidelity">
+    <div class="topic-head">
+      <span class="topic-num">01</span>
+      <h2>Lo-fi та hi-fi прототипування: виміри деталізації</h2>
+    </div>
+
+    <p>У практичній роботі №4 ви побудували <b>wireframe</b> — статичну схему екрана: розташування блоків зафіксоване, але схема «не реагує» на жоден клік. <b>Прототип (prototype)</b> — наступний крок: та сама схема, доповнена <b>поведінкою</b> — переходами між екранами, натисканнями кнопок, станами елементів. Якщо wireframe відповідає на запитання «що розташовано на екрані», то прототип відповідає на запитання «що станеться, якщо користувач це натисне». Саме тому прототипування логічно йде другим кроком тієї самої теми: спершу фіксують структуру, а тоді оживляють її.</p>
+
+    <p>Термін <b>«деталізація» (fidelity)</b> помилково сприймають як одну шкалу «від грубого до точного», хоча дослідниця Nielsen Norman Group <b>Кара Пернайс</b> у статті «UX Prototypes: Low Fidelity vs. High Fidelity» (2016) показує: деталізацію коректніше описувати як три <b>незалежні виміри</b>, кожен з яких може бути низьким чи високим окремо від інших:</p>
+    <ul>
+      <li><b>інтерактивність</b> — чи реагують елементи самі (клікабельні посилання, робочі переходи), чи людина-модератор вручну імітує реакцію системи;</li>
+      <li><b>візуальна точність</b> — наскільки макет схожий на фінальний дизайн: кольори, шрифти, реальні зображення чи сірі заглушки;</li>
+      <li><b>повнота контенту й команд</b> — чи заповнені всі поля, підписи, пункти меню реальним текстом, чи це лише кілька екранів-заглушок для демонстрації одного сценарію.</li>
+    </ul>
+
+    <p>Ці три виміри незалежні, тому крайні комбінації однаково законні. <b>Паперовий прототип</b>, який учасник дослідження клацає олівцем, а дослідник вручну підкладає потрібний аркуш паперу (класична техніка <b>«Wizard of Oz»</b>, «людина за лаштунками»), — це нульова візуальна точність, але цілком робоча імітація навігації. І навпаки: ідеально відмальований hi-fi макет у Figma, на якому жодна кнопка не клікається, має максимальну візуальну точність за нульової інтерактивності. Автор практичного посібника «Prototyping: A Practitioner's Guide» (2009) <b>Тодд Закі Варфел</b> формулює з цього практичний висновок: рівень деталізації прототипу варто обирати не з міркувань «що зручніше зробити», а виходячи з того, <b>яке саме запитання перевіряє тест</b> — якщо перевіряють логіку навігації, підвищувати варто інтерактивність, а не колір кнопок.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 780 430" role="img" aria-label="Матриця двох вимірів деталізації: візуальна точність по горизонталі, інтерактивна точність по вертикалі. У чотирьох кутах розміщено приклади: паперовий ескіз (низька візуальна, низька інтерактивна), клікабельний lo-fi wireframe у Figma (низька візуальна, висока інтерактивна) — виділений як тема цієї лекції, статичний hi-fi макет (висока візуальна, низька інтерактивна), і повноцінний робочий прототип чи код (висока візуальна, висока інтерактивна)">
+        <defs>
+          <marker id="arrowhead-fid" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g class="svg-muted" font-family="Manrope, sans-serif">
+          <line x1="90" y1="380" x2="740" y2="380" stroke="var(--ink-muted)" stroke-width="1.6" marker-end="url(#arrowhead-fid)"/>
+          <line x1="90" y1="380" x2="90" y2="35" stroke="var(--ink-muted)" stroke-width="1.6" marker-end="url(#arrowhead-fid)"/>
+          <text x="415" y="410" text-anchor="middle" font-size="12">візуальна точність →</text>
+          <text x="30" y="205" text-anchor="middle" font-size="12" transform="rotate(-90 30 205)">інтерактивна точність →</text>
+        </g>
+
+        <!-- bottom-left: paper -->
+        <rect class="fid-card" x="120" y="290" width="230" height="72" rx="10"/>
+        <text x="235" y="320" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Паперовий ескіз</text>
+        <text x="235" y="340" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">клацає «Wizard of Oz» —</text>
+        <text x="235" y="353" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">людина за лаштунками</text>
+
+        <!-- top-left: lo-fi clickable wireframe, HIGHLIGHTED -->
+        <rect class="fid-card hi" x="120" y="70" width="230" height="90" rx="10"/>
+        <text x="235" y="98" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)" font-family="Manrope, sans-serif">Клікабельний</text>
+        <text x="235" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)" font-family="Manrope, sans-serif">lo-fi wireframe у Figma</text>
+        <text x="235" y="136" text-anchor="middle" font-size="11" fill="var(--accent-ink)" font-family="Manrope, sans-serif">сірі блоки, але переходи</text>
+        <text x="235" y="149" text-anchor="middle" font-size="11" fill="var(--accent-ink)" font-family="Manrope, sans-serif">між екранами вже працюють</text>
+
+        <!-- bottom-right: static hi-fi -->
+        <rect class="fid-card" x="430" y="290" width="230" height="72" rx="10"/>
+        <text x="545" y="320" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Статичний hi-fi макет</text>
+        <text x="545" y="340" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">кольори й шрифти готові,</text>
+        <text x="545" y="353" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">жодна кнопка не клікається</text>
+
+        <!-- top-right: full working -->
+        <rect class="fid-card" x="430" y="70" width="230" height="90" rx="10"/>
+        <text x="545" y="100" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Робочий продукт</text>
+        <text x="545" y="120" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">повний код або hi-fi</text>
+        <text x="545" y="133" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">прототип із реальними даними</text>
+        <text x="545" y="150" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">і повною навігацією</text>
+
+        <text x="235" y="45" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--accent-ink)" font-family="Manrope, sans-serif">↓ саме сюди веде наступна практична робота</text>
+      </svg>
+      <figcaption>Візуальна й інтерактивна точність — незалежні виміри (Pernice, NN/G, 2016): лекція 3 і наступна практична робота піднімають лише інтерактивність, свідомо лишаючи макет сірим.</figcaption>
+    </figure>
+
+    <p>Курс рухається саме цим маршрутом: ПР4 дала нульову інтерактивність і мінімальну візуальну точність. У наступній практичній роботі ви залишите візуальну точність незмінно низькою (макет і далі сірий, без кольору й фотографій), але підняте одну вісь — інтерактивність: ті самі сірі фрейми ви з'єднаєте переходами так, щоб макет клацався, як справжній сайт. Повне підвищення візуальної точності — аж до готової дизайн-системи з кольором, типографікою й компонентами — заплановане на тему 4 цього курсу, уже після того, як логіка навігації буде перевірена на дешевому сірому макеті, а не на дорогому кольоровому.</p>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Виміри деталізації<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Тестувальник клацає паперовими картками з намальованими екранами, а одногрупник вручну підкладає потрібну картку у відповідь на кожен клік («Wizard of Oz»). Як це коректно описати мовою трьох вимірів деталізації Кари Пернайс?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button">низька інтерактивність і низька візуальна точність, бо клацає не сама система</button>
+        <button class="test-opt" type="button">високий рівень деталізації в усіх трьох вимірах одразу, бо тест повністю імітує реальний сайт</button>
+        <button class="test-opt" type="button">низька візуальна точність, але цілком робоча (фактично висока) інтерактивність — реакція є, просто її виконує людина, а не код</button>
+        <button class="test-opt" type="button">цей приклад узагалі не є прототипом, а лише різновидом wireframe</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. ІНТЕРФЕЙС FIGMA ================= -->
+  <section class="topic" id="interface">
+    <div class="topic-head">
+      <span class="topic-num">02</span>
+      <h2>Інтерфейс Figma: фрейми, шари, панелі інструментів</h2>
+    </div>
+
+    <p>У практичній роботі №4 ви вже коротко орієнтувалися в чотирьох зонах Figma «на ходу». Тут ті самі зони розглянуто системно — як стабільну анатомію, однакову в будь-якому файлі: <b>файл (file)</b> складається зі <b>сторінок (pages)</b> — вкладок ліворуч над панеллю шарів, які зручно використовувати для розділення «Чернетки» / «Головна» / «Мобільна версія» в межах одного проєкту; кожна сторінка містить довільну кількість <b>фреймів (frames)</b> — і саме фрейм, а не сторінка, відповідає одному екрану макета.</p>
+
+    <div class="callout"><b>Фрейм — не те саме, що група.</b> <b>Фрейм (Frame, клавіша F)</b> має чіткі межі заданого розміру, може «обрізати» вміст, що виходить за ці межі (властивість «Clip content»), і саме фрейми можна з'єднувати переходами в режимі прототипування — це і є майбутні «екрани». <b>Група (Group, Ctrl+G)</b>, яку ви активно використовували в ПР4 для об'єднання «Шапка» чи «Кнопка», не має власних меж і нічого не обрізає: це лише ярлик «ці кілька шарів надалі рухати й перейменовувати разом». Фрейми можна вкладати один в інший (наприклад, компонент шапки — окремий вкладений фрейм усередині фрейма сторінки); групу так само можна вкласти у фрейм, але не навпаки.</p></div>
+
+    <p>Ліва панель об'єднує <b>«Шари» (Layers)</b> — дерево всіх об'єктів поточної сторінки. Порядок у списку шарів має значення: <b>шар, розташований вище в списку, малюється поверх нижчих</b> — це той самий принцип z-порядку (z-index), який ви зустрінете в CSS на заняттях із вебпрограмування. Іконка ліворуч від назви підказує тип шару (прямокутна рамка — фрейм, ромб — компонент, «T» — текст), подвійний клац на назві перейменовує шар, а іконка ока праворуч тимчасово вимикає видимість без видалення — зручно, щоб приховати чернетковий шар, не видаляючи його остаточно.</p>
+
+    <p>Верхня панель інструментів, крім уже знайомих із ПР4 інструментів «Переміщення» (V), «Фрейм» (F), «Прямокутник» (R), «Еліпс» (O), «Лінія» (L) і «Текст» (T), містить ще кілька: <b>«Перо»</b> (Pen, клавіша P) — малює довільний векторний контур точка за точкою, знадобиться на темі про векторну графіку; <b>«Коментар»</b> (Comment, клавіша C) — залишає позначку для команди прямо на полотні, не змінюючи макет; іконка створення <b>компонента</b> (ромб) — перетворює обраний елемент на повторюваний блок, тема наступної лекції. Права панель <b>«Дизайн» (Design)</b>, крім уже знайомих розділів «Заливка», «Обводка» й числових полів X/Y/W/H, унизу має розділ <b>«Ефекти» (Effects)</b> для тіней і розмиття та розділ <b>«Експорт» (Export)</b>, яким розробник користується, щоб вивантажити готове зображення у форматі PNG чи SVG в потрібному масштабі (@1x, @2x).</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 820 460" role="img" aria-label="Анатомія робочого простору Figma: верхня панель інструментів на всю ширину, ліворуч колонка сторінок і шарів, у центрі полотно з відкритим фреймом, праворуч панель «Дизайн» з розділами X/Y, W/H, Заливка, Обводка, Ефекти, Експорт">
+        <rect x="10" y="10" width="800" height="440" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="1.6"/>
+
+        <!-- toolbar -->
+        <rect x="10" y="10" width="800" height="46" rx="14" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.6"/>
+        <rect x="10" y="40" width="800" height="16" fill="var(--surface-2)"/>
+        <text x="30" y="38" class="zone-label svg-ink">ПАНЕЛЬ ІНСТРУМЕНТІВ (TOOLBAR) — V F R O L T P C</text>
+
+        <!-- left column -->
+        <rect x="10" y="56" width="180" height="384" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.6"/>
+        <text x="24" y="80" class="zone-label svg-ink">СТОРІНКИ</text>
+        <rect x="24" y="90" width="150" height="20" rx="5" fill="var(--accent-tint)" stroke="var(--accent)"/>
+        <text x="32" y="104" font-size="10.5" fill="var(--accent-ink)" font-family="Manrope, sans-serif">Головна — desktop</text>
+        <rect x="24" y="115" width="150" height="20" rx="5" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="32" y="129" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">Чернетки</text>
+
+        <text x="24" y="160" class="zone-label svg-ink">ШАРИ (ZDEX ↑ = ПОВЕРХ)</text>
+        <text x="30" y="180" font-size="10.5" class="svg-muted" font-family="JetBrains Mono, monospace">▾ Кнопка</text>
+        <text x="42" y="196" font-size="10.5" class="svg-muted" font-family="JetBrains Mono, monospace">T Текст</text>
+        <text x="42" y="212" font-size="10.5" class="svg-muted" font-family="JetBrains Mono, monospace">▭ Прямокутник</text>
+        <text x="30" y="230" font-size="10.5" class="svg-muted" font-family="JetBrains Mono, monospace">▾ Шапка</text>
+        <text x="42" y="246" font-size="10.5" class="svg-muted" font-family="JetBrains Mono, monospace">◇ Лого</text>
+
+        <!-- canvas -->
+        <rect x="190" y="56" width="440" height="384" fill="var(--paper)"/>
+        <text x="210" y="80" class="zone-label svg-muted">ПОЛОТНО (CANVAS)</text>
+        <rect x="250" y="110" width="320" height="220" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="410" y="128" text-anchor="middle" font-size="10.5" fill="var(--accent-ink)" font-family="JetBrains Mono, monospace">ФРЕЙМ «ГОЛОВНА» — межі задані</text>
+        <rect x="270" y="140" width="280" height="24" rx="4" fill="var(--surface-2)" stroke="var(--line)"/>
+        <rect x="270" y="174" width="130" height="60" fill="none" stroke="var(--ink-muted)" stroke-width="1.4"/>
+        <line x1="270" y1="174" x2="400" y2="234" stroke="var(--ink-muted)" stroke-width="1.2"/>
+        <line x1="400" y1="174" x2="270" y2="234" stroke="var(--ink-muted)" stroke-width="1.2"/>
+        <rect x="410" y="174" width="140" height="10" rx="3" fill="var(--line)"/>
+        <rect x="410" y="192" width="140" height="8" rx="3" fill="var(--surface-2)" stroke="var(--line)"/>
+        <rect x="410" y="208" width="90" height="26" rx="13" fill="var(--task-tint)" stroke="var(--task)"/>
+
+        <!-- right column -->
+        <rect x="630" y="56" width="180" height="384" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.6"/>
+        <text x="644" y="80" class="zone-label svg-ink">ПАНЕЛЬ «ДИЗАЙН»</text>
+        <text x="644" y="102" font-size="10" class="svg-muted" font-family="JetBrains Mono, monospace">X 250   Y 110</text>
+        <text x="644" y="118" font-size="10" class="svg-muted" font-family="JetBrains Mono, monospace">W 320   H 220</text>
+        <rect x="644" y="132" width="150" height="1" fill="var(--line)"/>
+        <text x="644" y="150" font-size="10.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Заливка (Fill)</text>
+        <text x="644" y="170" font-size="10.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Обводка (Stroke)</text>
+        <text x="644" y="190" font-size="10.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Ефекти (Effects)</text>
+        <text x="644" y="210" font-size="10.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Сітка (Layout grid)</text>
+        <rect x="644" y="222" width="150" height="1" fill="var(--line)"/>
+        <text x="644" y="240" font-size="10.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Експорт (Export)</text>
+        <text x="644" y="256" font-size="9.5" class="svg-muted" font-family="Manrope, sans-serif">PNG · SVG · @1x/@2x</text>
+      </svg>
+      <figcaption>Чотири стабільні зони Figma: панель інструментів для створення об'єктів, ліва колонка «Сторінки + Шари» для навігації файлом, полотно з відкритими фреймами, права панель «Дизайн» для точних параметрів обраного об'єкта.</figcaption>
+    </figure>
+
+    <p>Ще дві деталі, корисні вже на цьому занятті. По-перше, Figma — багатокористувацький (multiplayer) інструмент: кілька людей бачать курсори одне одного й можуть редагувати файл одночасно, а короткий текстовий коментар до курсора (cursor chat) замінює усне «дивись сюди» під час спільної роботи над груповим проєктом. По-друге, масштаб полотна (не плутати з розміром фрейма!) змінюється колесом миші з утримуванням Ctrl (Windows) чи ⌘ (Mac) і ніяк не впливає на те, які значення W і H буде збережено у фреймі, — це суто зручність перегляду, а не властивість макета.</p>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Розвідка робочого простору Figma<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Відкрийте свій файл <b>ПР4_Прізвище</b> у Figma (той, де побудовано wireframe головної сторінки) і в лівій панелі клацніть <span class="kbd">«+»</span> поруч зі списком сторінок унизу — створіть нову сторінку (Page) і перейменуйте її подвійним клацом на <b>«Чернетки»</b>.</li>
+        <li>Перетягніть мишею будь-який один необов'язковий фрейм чи групу (наприклад, зайву чернетку, якщо лишилася) із поточної сторінки в панелі шарів на щойно створену сторінку «Чернетки» в списку сторінок — переконайтеся, що об'єкт зник зі старої сторінки й з'явився на новій.</li>
+        <li>Поверніться на сторінку з головним макетом. У панелі «Шари» клацніть іконку ока навпроти групи <b>«Підвал»</b>, щоб тимчасово сховати її з полотна, переконайтеся, що вона зникла, а тоді клацніть іконку ще раз, щоб повернути видимість.</li>
+        <li>Перевірте різницю «фрейм проти групи» на практиці: спробуйте подвійним клацом «увійти» всередину фрейма «Головна — desktop» (курсор і панель угорі покажуть, що ви тепер редагуєте саме вміст цього фрейма), а тоді — усередину групи «Шапка» (Figma одразу виділить її вміст без окремого «входу», бо в групи немає власних меж).</li>
+        <li>У документі <b>Лекція3_Прізвище</b> на Google Диску (створіть за тим самим зразком, що й Лекція2_Прізвище, у папці <b>Вебдизайн_Прізвище → Лекції</b>) одним-двома реченнями своїми словами поясніть різницю між фреймом і групою — так, як ви щойно її побачили практично, а не переписуючи визначення з лекції.</li>
+      </ol>
+      <div class="box-close">Відкрийте доступ до документа Лекція3_Прізвище («Будь-хто з посиланням» → «Читач») і додайте посилання в Classroom.</div>
+    </div>
+  </section>
+
+  <!-- ================= 3. ЛОГІКА WIREFRAME ================= -->
+  <section class="topic" id="hierarchy">
+    <div class="topic-head">
+      <span class="topic-num">03</span>
+      <h2>Логіка розташування блоків та ієрархія контенту</h2>
+    </div>
+
+    <p>У ПР4 сітка й кратні відступи, а також F- і Z-патерни сканування погляду вже задали <b>каркас</b> розташування блоків. Але сітка сама по собі не визначає, який блок користувач помітить першим, — цим керує <b>візуальна ієрархія (visual hierarchy)</b>: свідомий порядок, у якому елементи привертають увагу, побудований лише чотирма засобами, доступними ще на етапі сірого wireframe, без жодного кольору: <b>розмір</b> (більший блок читається як важливіший), <b>контраст ваги</b> (темніший чи товщий сірий проти світлого — навіть у відтінках сірого «вага» лінії передає важливість), <b>простір навколо елемента</b> (більше порожнього поля навколо блока виділяє його з-поміж інших) і <b>вирівнювання</b> (елемент, що випадає з єдиної сітки вирівнювання, автоматично притягує погляд).</p>
+
+    <p>Ці засоби працюють разом із принципами угруповання, які ще в 1920-х роках сформулювали психологи гештальт-школи (Вертгаймер, Кофка, Келер) і які прямо застосовні до макета інтерфейсу: <b>близькість (proximity)</b> — елементи, розташовані щільно один до одного, сприймаються як одна смислова група (тому підпис ціни варто ставити впритул до картки товару, а не посередині між двома картками); <b>подібність (similarity)</b> — однаково оформлені елементи читаються як елементи одного типу (усі кнопки головної дії варто малювати з однаковим радіусом кутів, щоб користувач упізнавав кнопку, ще не прочитавши підпис); <b>спільна область (common region)</b> — рамка чи заливка навколо групи елементів («картка») візуально відокремлює її вміст від сусіднього контенту сильніше, ніж будь-який відступ.</p>
+
+    <p>На рівні контенту сторінки ці засоби застосовують до трирівневої <b>ієрархії дій</b>: <b>первинна дія (primary action)</b> — одна головна кнопка на екран, яку користувач має виконати (саме її ви в ПР4 малювали найбільшим прямокутником із заокругленими кутами); <b>вторинні дії (secondary actions)</b> — альтернативні шляхи, оформлені свідомо скромніше (менший розмір, тонша обводка замість заливки), щоб не конкурувати з головною кнопкою за увагу; <b>третинні дії</b> — довідкові посилання («докладніше», «умови доставки»), яким досить виглядати як звичайний текст. Типова помилка початківця — намалювати п'ять однаково великих кнопок на одному екрані: технічно всі «головні», а фактично жодна, бо користувач не розуміє, з якої почати.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 820 340" role="img" aria-label="Порівняння двох варіантів верхньої частини сторінки: ліворуч — без ієрархії, усі елементи однакового розміру й ваги в один суцільний блок; праворуч — з ієрархією, де заголовок найбільший і найтемніший, підзаголовок менший і світліший, а кнопка головної дії відокремлена простором">
+        <text x="205" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="var(--test-ink)" font-family="Manrope, sans-serif">Без ієрархії</text>
+        <rect x="60" y="50" width="290" height="230" rx="8" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.6"/>
+        <rect x="85" y="75" width="240" height="22" rx="4" fill="var(--ink-muted)"/>
+        <rect x="85" y="105" width="240" height="22" rx="4" fill="var(--ink-muted)"/>
+        <rect x="85" y="135" width="240" height="22" rx="4" fill="var(--ink-muted)"/>
+        <rect x="85" y="165" width="240" height="22" rx="4" fill="var(--ink-muted)"/>
+        <rect x="85" y="195" width="240" height="22" rx="4" fill="var(--ink-muted)"/>
+        <text x="205" y="305" text-anchor="middle" font-size="10.5" fill="var(--test-ink)" font-family="Manrope, sans-serif">однаковий розмір і вага —</text>
+        <text x="205" y="320" text-anchor="middle" font-size="10.5" fill="var(--test-ink)" font-family="Manrope, sans-serif">погляду нема за що «зачепитися»</text>
+
+        <text x="615" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="var(--task-ink)" font-family="Manrope, sans-serif">З ієрархією</text>
+        <rect x="470" y="50" width="290" height="230" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.6"/>
+        <rect x="495" y="75" width="240" height="40" rx="5" fill="var(--ink-soft)"/>
+        <rect x="495" y="125" width="170" height="16" rx="4" fill="var(--ink-muted)" opacity=".55"/>
+        <rect x="495" y="148" width="200" height="10" rx="3" fill="var(--ink-muted)" opacity=".35"/>
+        <rect x="495" y="163" width="150" height="10" rx="3" fill="var(--ink-muted)" opacity=".35"/>
+        <rect x="495" y="200" width="130" height="34" rx="17" fill="var(--task)"/>
+        <text x="560" y="222" text-anchor="middle" font-size="10" font-weight="700" fill="#fff" font-family="Manrope, sans-serif">Кнопка дії</text>
+        <text x="615" y="305" text-anchor="middle" font-size="10.5" fill="var(--task-ink)" font-family="Manrope, sans-serif">розмір + вага + простір —</text>
+        <text x="615" y="320" text-anchor="middle" font-size="10.5" fill="var(--task-ink)" font-family="Manrope, sans-serif">погляд сам знаходить шлях зверху вниз</text>
+      </svg>
+      <figcaption>Той самий набір блоків, побудований на тій самій сітці: різницю створюють не нові елементи, а розмір, вага та простір навколо вже наявних.</figcaption>
+    </figure>
+
+    <p>Ще один практичний прийом — <b>поступове розкриття (progressive disclosure)</b>: замість того, щоб показати весь можливий контент одразу, другорядну інформацію ховають за вкладками, розгортанням «показати більше» чи модальним вікном, а на першому екрані лишають лише те, що потрібно для головної дії. У Figma на етапі lo-fi wireframe повноцінних вкладок чи розгортання ще немає (цей інструментарій — Auto Layout і компоненти — тема наступної лекції), тому ієрархію станом на зараз ви керуєте вручну: обираючи, наскільки товстим намалювати прямокутник-заголовок, наскільки світлим — HEX-код заливки другорядного блока і скільки пікселів порожнього простору залишити навколо кнопки головної дії.</p>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Візуальна ієрархія<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">На wireframe картку товару й підпис її ціни навмисно розташовують впритул одне до одного, з мінімальним відступом, тоді як сусідні картки товарів розділяють помітним проміжком. Який принцип гештальт-психології це ілюструє?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button">подібність (similarity) — однакові елементи мають однакову форму</button>
+        <button class="test-opt" type="button">близькість (proximity) — щільно розташовані елементи читаються як одна смислова група</button>
+        <button class="test-opt" type="button">правило трьох клацань — ціна має бути доступна не більш ніж за три кроки</button>
+        <button class="test-opt" type="button">Z-патерн сканування — погляд рухається по діагоналі від ціни до картки</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 4. ІНТЕРАКТИВНЕ ПРОТОТИПУВАННЯ ================= -->
+  <section class="topic" id="prototyping">
+    <div class="topic-head">
+      <span class="topic-num">04</span>
+      <h2>Інтерактивне прототипування: переходи, стани, Smart Animate</h2>
+    </div>
+
+    <p>Режим прототипування вмикають вкладкою <b>«Прототип» (Prototype)</b> угорі правої панелі — поруч із уже знайомою вкладкою «Дизайн». У цьому режимі на кожному фреймі з'являється кругла точка-«хотспот» (hotspot): затиснувши її мишею й перетягнувши до іншого фрейма, ви створюєте <b>з'єднання (connection)</b> — стрілку, яка й перетворює статичні екрани на клікабельний маршрут. Кожне з'єднання складається з трьох частин, які потрібно налаштувати в панелі, що з'явиться праворуч: <b>тригер</b> (коли спрацює), <b>дія</b> (що саме відбудеться) і <b>призначення</b> (куди саме).</p>
+
+    <p><b>Тригери (triggers)</b> визначають, яка дія користувача запускає перехід. Найпоширеніший — <b>«Клацання»</b> (On click / On tap): звичайний клік або дотик. <b>«Під час наведення»</b> (While hovering) і <b>«Під час натискання»</b> (While pressing) — тимчасові стани: перехід автоматично скасовується, щойно курсор іде вбік чи кнопку миші відпускають, — саме так у прототипі симулюють ефект наведення на кнопку. <b>«Курсор увійшов»</b> (Mouse enter), <b>«Курсор вийшов»</b> (Mouse leave), <b>«Кнопку натиснуто»</b> (Mouse down) і <b>«Кнопку відпущено»</b> (Mouse up) — на відміну від попередніх, ці чотири не скасовуються самі, а одразу назавжди переводять на призначений екран. <b>«Перетягування»</b> (On drag) реагує на свайп чи перетягування елемента, а <b>«Після затримки»</b> (After delay) запускає перехід автоматично через задану кількість мілісекунд без жодної дії користувача — типовий приклад: заставка (splash screen), яка сама переходить на головний екран.</p>
+
+    <p><b>Дії (actions)</b> визначають, що саме відбувається після спрацювання тригера: <b>«Перейти до»</b> (Navigate to) — головна дія, перехід на інший фрейм, з опцією «повернутися на попередній фрейм після цього переходу» для кнопки «Назад»; <b>«Відкрити накладку»</b> (Open overlay) — показує інший фрейм поверх поточного, не покидаючи його, — саме так у Figma імітують спливне вікно, підказку чи випадне меню; <b>«Прокрутити до»</b> (Scroll to) — прокручує довгий фрейм до потрібного місця, корисно для якірного меню на посадковій сторінці; <b>«Назад»</b> (Back) — повертає на попередній екран за історією переходів, як кнопка браузера.</p>
+
+    <p>Кожен перехід можна додатково оформити <b>анімацією (animation)</b>, яка визначає, як саме один фрейм змінюється на інший: <b>«Миттєво»</b> (Instant) — без анімації; <b>«Розчинення»</b> (Dissolve) — плавне перехресне згасання; <b>«В'їзд / виїзд»</b> (Move In / Move Out) і <b>«Ковзання»</b> (Slide In / Slide Out) — новий екран насувається чи виїжджає з заданого боку; <b>«Виштовхування»</b> (Push) — новий екран виштовхує попередній, типово для імітації свайпу каруселі. І окремо — найцікавіша й найпотужніша з-поміж усіх: <b>«Розумна анімація»</b> (Smart Animate).</p>
+
+    <div class="callout"><b>Як саме працює Smart Animate.</b> Це не готовий ефект «застосувати й забути», а механізм зіставлення шарів: Figma порівнює два фрейми — початковий і кінцевий — і автоматично знаходить пари шарів з <b>однаковою назвою на однаковому рівні вкладеності</b>. Для кожної знайденої пари Figma сама розраховує проміжні кадри й плавно інтерполює те, що між цими двома шарами змінилося: положення (X, Y), розмір, кут повороту, прозорість і колір заливки. Тому дизайнер жодного разу не малює саму анімацію вручну — досить намалювати «початок» і «кінець», а однакові імена шарів у них зроблять решту роботи. Звідси й головне практичне правило: <b>перш ніж вмикати Smart Animate, дублюйте (Ctrl+D) вже готовий фрейм</b>, а не малюйте другий стан заново, — дублікат автоматично зберігає всі назви шарів, і зіставлення спрацює без жодних додаткових налаштувань. Є й обмеження: Smart Animate не вміє «перетворювати» одну форму на геометрично іншу (наприклад, коло на прямокутник), не працює з тінями (Figma тихо замінить їх на розчинення) і не підтримує дію «Відкрити накладку» — для неї завжди застосовується миттєвий перехід.</div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Механіка Smart Animate на прикладі перемикача: фрейм «Вимкнено» з колом-повзунком ліворуч на світлій доріжці та фрейм «Увімкнено» з тим самим за назвою колом-повзунком праворуч на кольоровій доріжці. Дугоподібна пунктирна стрілка між двома колами позначена підписом «Smart Animate інтерполює X і колір заливки, бо шар «Повзунок» має однакову назву в обох фреймах»">
+        <defs>
+          <marker id="arrowhead-sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+          </marker>
+        </defs>
+
+        <!-- frame A -->
+        <rect x="40" y="60" width="280" height="170" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.6"/>
+        <text x="180" y="42" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">ФРЕЙМ «ВИМКНЕНО»</text>
+        <rect x="80" y="130" width="200" height="50" rx="25" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.6"/>
+        <circle cx="105" cy="155" r="20" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="1.8"/>
+        <text x="180" y="205" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="JetBrains Mono, monospace">шар «Повзунок», X=85</text>
+
+        <!-- frame B -->
+        <rect x="440" y="60" width="280" height="170" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.6"/>
+        <text x="580" y="42" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink" font-family="JetBrains Mono, monospace">ФРЕЙМ «УВІМКНЕНО»</text>
+        <rect x="480" y="130" width="200" height="50" rx="25" fill="var(--task)" opacity=".9"/>
+        <circle cx="655" cy="155" r="20" fill="#fff" stroke="var(--task)" stroke-width="1.8"/>
+        <text x="580" y="205" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="JetBrains Mono, monospace">той самий шар «Повзунок», X=635</text>
+
+        <!-- connecting arrow -->
+        <path d="M 125,155 C 300,60 460,60 635,155" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#arrowhead-sa)"/>
+        <text x="380" y="70" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--accent-ink)" font-family="Manrope, sans-serif">Smart Animate: однакова назва шару →</text>
+        <text x="380" y="86" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--accent-ink)" font-family="Manrope, sans-serif">Figma сама інтерполює X і колір доріжки</text>
+      </svg>
+      <figcaption>Дизайнер малює лише два фрейми-стани; проміжний рух повзунка й перефарбування доріжки Figma розраховує сама, зіставивши шари з однаковою назвою «Повзунок».</figcaption>
+    </figure>
+
+    <p>Слово <b>«стан» (state)</b> у контексті прототипування — це просто ще один фрейм, який показує той самий елемент чи екран в іншій ситуації: перемикач увімкнено/вимкнено, поле форми порожнє/заповнене/з помилкою (той самий принцип, що й три стани критичної сторінки з ПР4, лише тепер вони не просто намальовані поруч, а з'єднані реальними переходами). На цьому етапі курсу кожен стан — окремий фрейм-дублікат; тема 4 покаже, як за допомогою компонентів і властивості «варіанти» (variants) кілька станів одного елемента можна зберігати в межах одного-єдиного компонента, а не плодити фрейми-копії.</p>
+
+    <p>Готовий прототип перевіряють кнопкою <b>▶ «Презентація»</b> (Present) угорі праворуч: вона відкриває чисте повноекранне вікно, де вже не видно ні шарів, ні панелей, — лише те, що побачить користувач, і всі налаштовані переходи працюють по-справжньому. Посилання на цей режим презентації можна так само скопіювати кнопкою <b>«Поділитися»</b> (Share), як ви вже робили в ПР4, і надіслати клієнту чи виконати на ньому коротке юзабіліті-тестування за методом Тодда Варфела — перевірити не колір кнопки, а саме логіку переходів, поки вона ще дешево виправляється.</p>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> Перший клікабельний перехід: міні-перемикач<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>У файлі <b>ПР4_Прізвище</b>, на сторінці «Чернетки», створеній у завданні 1, натисніть <span class="kbd">F</span> і намалюйте новий фрейм розміром приблизно 300 × 200 пікселів; перейменуйте його (подвійний клац у панелі «Шари») на <b>«Вимкнено»</b>.</li>
+        <li>Усередині намалюйте перемикач із двох фігур: прямокутник із дуже великим радіусом кутів (доріжка) і коло поруч із його лівим краєм (повзунок). У панелі «Шари» перейменуйте саме коло на <b>«Повзунок»</b> — це ім'я має значення, тому напишіть його без помилок і без зайвого пробілу.</li>
+        <li>Натисніть <span class="kbd">Ctrl+D</span> (Windows) чи <span class="kbd">⌘D</span> (Mac), щоб продублювати весь фрейм, перетягніть копію праворуч і перейменуйте її на <b>«Увімкнено»</b>. У копії перетягніть коло «Повзунок» до правого краю доріжки та зробіть заливку доріжки кольоровою (наприклад, зеленою) — назва шару-кола при цьому лишається тією самою.</li>
+        <li>Перемкніться на вкладку <b>«Прототип»</b> (Prototype) у правій панелі. Клацніть на фреймі «Вимкнено», затисніть мишею хотспот на його краю й перетягніть з'єднання до фрейма «Увімкнено». У панелі, що з'явиться праворуч, встановіть тригер <b>«Клацання»</b> (On click) і анімацію <b>«Розумна анімація»</b> (Smart Animate).</li>
+        <li>Натисніть кнопку <b>▶ «Презентація»</b> (Present) угорі й клацніть на перемикачі просто у вікні презентації — перевірте, що повзунок плавно, а не миттєво, переїжджає праворуч і доріжка змінює колір. Якщо переїзд миттєвий без анімації — найімовірніша причина: назви шару-кола в обох фреймах різняться хоч би одним символом чи пробілом; виправте назву й повторіть спробу.</li>
+        <li>У документі <b>Лекція3_Прізвище</b> під заголовком <b>«Smart Animate»</b> вставте посилання на режим презентації (кнопка «Поділитися» → «Будь-хто з посиланням» → «Може переглядати» → «Копіювати посилання») й одним реченням опишіть, що саме довелося виправити, щоб анімація запрацювала (навіть якщо запрацювала одразу — напишіть, яку назву шару ви звірили).</li>
+      </ol>
+      <div class="box-close">Відправте оновлене посилання на документ Лекція3_Прізвище в Classroom.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Лекція 3 · Тема 3 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 11.09.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture3-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState(); // { "task-1": [true,false,...], "test-1": 0 (chosen index) }
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx, silent){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId], true);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
 
 </body>
 </html>
