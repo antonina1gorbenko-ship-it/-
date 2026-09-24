@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Дизайн-системи, компоненти та адаптивні сітки — Вебдизайн</title>
-<meta name="description" content="Лекція 4. Дизайн-системи, компоненти та адаптивні сітки. Конспект готується.">
+<title>Дизайн-системи, компоненти та сітки</title>
+<meta name="description" content="Лекція 4 курсу «Вебдизайн»: компоненти й Auto Layout у Figma, методологія Atomic Design, дизайн-токени та 12-колонкова сітка з breakpoints">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +21,59 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --fail:#C0392B;
+    --fail-tint:#FBE3E0;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --fail:#E8746A;
+      --fail-tint:#3A1512;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --fail:#E8746A;
+    --fail-tint:#3A1512;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,123 +86,751 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{max-width:1000px;margin:28px auto 0;padding:0 24px;}
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
-    padding:12px 16px;
-    background:var(--surface-2);
-    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:12px 16px;
+    background:var(--surface-2);border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
   .addr{
-    flex:1;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;
-    color:var(--ink-muted);
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:6px 12px;
+    flex:1;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
-  }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
+  .hero{padding:56px 40px 48px;}
   .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent-tint);display:inline-block;padding:5px 11px;
+    border-radius:99px;margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.14;font-weight:800;}
+  .hero .theme{margin-top:14px;font-size:clamp(16px,2vw,19px);color:var(--ink-soft);font-weight:500;max-width:34em;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .meta-chip{
+    font-size:13px;color:var(--ink-muted);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:99px;padding:6px 13px;display:flex;align-items:center;gap:6px;
   }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- sticky toc ---------- */
+  .toc-bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    text-decoration:none;padding:13px 12px;border-bottom:2px solid transparent;white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{flex:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);padding:13px 0 13px 14px;white-space:nowrap;}
+  .toc-progress b{color:var(--accent);}
+  .progress-track{max-width:1000px;margin:0 auto;padding:0 24px;height:3px;}
+  .progress-track .fill{height:100%;width:0%;background:linear-gradient(90deg, var(--task), var(--accent));transition:width .3s ease;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
 
-  footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
-  }
+  .lit{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin:36px 0 0;box-shadow:var(--shadow);}
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
 
+  section.topic{margin-top:64px;padding-top:8px;}
+  .topic-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .topic-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);background:var(--accent-tint);border-radius:8px;padding:4px 10px;flex:none;}
+  .topic h2{font-size:clamp(21px,2.6vw,27px);font-weight:700;}
+  .topic p{color:var(--ink-soft);font-size:16px;margin:0 0 16px;}
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{margin:0 0 18px;padding-left:22px;color:var(--ink-soft);font-size:15.5px;}
+  .topic ul li{margin-bottom:9px;}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);}
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px 16px;margin:26px 0 30px;box-shadow:var(--shadow);}
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{margin-top:14px;font-size:13px;color:var(--ink-muted);text-align:center;}
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+  .zone-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.02em;}
+
+  /* ---------- task / test boxes ---------- */
+  .box{border-radius:var(--radius);padding:24px 26px 20px;margin:24px 0 30px;box-shadow:var(--shadow);border:1px solid;}
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:6px;color:#fff;}
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  .box-close{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-style:italic;font-size:14px;color:var(--ink-muted);}
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.02em;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--ink-muted);border:1px solid var(--line);white-space:nowrap;}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
+
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{display:flex;gap:12px;align-items:flex-start;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .step .num{
+    flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);
+    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num, .step:has(.chk:checked) .num, .step.checked .num{background:var(--task);border-color:var(--task);color:#fff;}
+  .step:has(.chk:checked) .step-text, .step.checked .step-text{color:var(--ink-muted);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1.5px;}
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;width:100%;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink-soft);
+    padding:9px 12px;margin:0 0 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);
+    font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{content:"";width:15px;height:15px;border:1.5px solid var(--test);border-radius:50%;flex:none;margin-top:2px;}
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:var(--fail);background:color-mix(in srgb, var(--fail) 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:var(--fail);border-color:var(--fail);}
+  .test-feedback{margin-top:10px;font-size:13.5px;font-weight:600;display:none;}
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:var(--fail);}
+
+  .reset-btn{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{max-width:1000px;margin:0 auto;padding:40px 24px 60px;border-top:1px solid var(--line);color:var(--ink-muted);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
 </style>
-</head>
-<body>
-
 
 <div class="chrome">
   <div class="browser">
     <div class="browser-bar">
       <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-04</div>
+      <div class="addr">вебдизайн-курс.ua/лекція-4/dyzajn-systemy-komponenty-sitky</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль II · Лекція 4</div>
-      <span class="eyebrow">Дисципліна · Лекція 4</span>
+      <span class="eyebrow">Лекція 4 · Тема 4</span>
       <h1>Дизайн-системи, компоненти та адаптивні сітки</h1>
-      <p class="sub">Модуль II «Прототипування, UI-дизайн та візуальна мова інтерфейсів»</p>
-
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
-      </div>
+      <p class="theme">Від окремої фігури на полотні до системи, яка масштабується сама: головний компонент і Auto Layout у Figma, ієрархія Atomic Design від атома до організму, дизайн-токени як єдине джерело істини для кольору й відступу та 12-колонкова сітка, що однаково працює на телефоні, планшеті й десктопі.</p>
+  
     </div>
   </div>
 </div>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a href="#components" data-toc="components">1. Компоненти й Auto Layout</a>
+    <a href="#atomic" data-toc="atomic">2. Atomic Design</a>
+    <a href="#tokens" data-toc="tokens">3. Дизайн-токени</a>
+    <a href="#grid" data-toc="grid">4. Сітка й breakpoints</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
 
-</body>
-</html>
+<main>
+
+  <div class="lit" id="literature">
+    <h2>Література до теми</h2>
+    <ol>
+      <li>Figma Learn. Guide to auto layout. URL: <a href="https://help.figma.com/hc/en-us/articles/360040451373-Explore-auto-layout-properties" target="_blank" rel="noopener">help.figma.com</a> (дата звернення: 24.09.2026).</li>
+      <li>Figma Learn. Guide to components in Figma. URL: <a href="https://help.figma.com/hc/en-us/articles/360038662654-Guide-to-components-in-Figma" target="_blank" rel="noopener">help.figma.com</a> (дата звернення: 24.09.2026).</li>
+      <li>Frost B. Atomic Design. Chapter 2: Atomic Design Methodology. URL: <a href="https://atomicdesign.bradfrost.com/chapter-2/" target="_blank" rel="noopener">atomicdesign.bradfrost.com</a> (дата звернення: 24.09.2026).</li>
+      <li>Figma Learn. Guide to variables in Figma. URL: <a href="https://help.figma.com/hc/en-us/articles/15339657135383-Guide-to-variables-in-Figma" target="_blank" rel="noopener">help.figma.com</a> (дата звернення: 24.09.2026).</li>
+      <li>Design Tokens Community Group (W3C). URL: <a href="https://www.designtokens.org/" target="_blank" rel="noopener">designtokens.org</a> (дата звернення: 24.09.2026).</li>
+      <li>Bootstrap 5.3 Documentation. Breakpoints. URL: <a href="https://getbootstrap.com/docs/5.3/layout/breakpoints/" target="_blank" rel="noopener">getbootstrap.com</a> (дата звернення: 24.09.2026).</li>
+      <li>Коротенко О. В. Технології електронних видань. Частина 1. Вебдизайн: комп'ютерний практикум. Київ: КПІ ім. Ігоря Сікорського, 2023. 114 с.</li>
+    </ol>
+  </div>
+
+  <!-- ================= 1. КОМПОНЕНТИ Й AUTO LAYOUT ================= -->
+  <section class="topic" id="components">
+    <div class="topic-head">
+      <span class="topic-num">01</span>
+      <h2>Компонентний підхід та Auto Layout у Figma</h2>
+    </div>
+
+    <p>У темі 3 ви вже будували wireframe і перший клікабельний перехід, малюючи кожен елемент — кнопку, поле вводу, картку товару — окремою фігурою на полотні. Такий підхід працює для одного екрана, але руйнується, щойно макет виростає до десятка сторінок: якщо кнопку «Купити» потрібно зробити на пів пікселя вищою, доводиться вручну виправляти кожен її дублікат на кожному екрані. <b>Компонентний підхід</b> вирішує саме цю проблему: елемент інтерфейсу малюють один раз як <b>головний компонент (main component)</b>, а всюди, де він потрібен на макеті, розміщують не копію, а <b>екземпляр (instance)</b> — живе посилання на оригінал. Змінити напис, колір чи форму головного компонента — і зміна миттєво поширюється на всі його екземпляри в файлі, скільки б їх не було.</p>
+
+    <p>Екземпляр не є «заблокованою» копією: для нього можна перевизначити окремі властивості — текст напису, вміст іконки, — не втрачаючи зв'язку з головним компонентом; таке локальне перевизначення називають <b>override</b>. Коли в одного елемента існує кілька станів чи різновидів — кнопка може бути Primary або Secondary, Small або Large, Default або Disabled, — їх об'єднують у <b>набір варіантів (component set)</b> із властивостями-перемикачами (Variant, Boolean, Instance Swap), і тоді в панелі дизайну достатньо перемкнути один список, а не шукати схожий компонент серед десятків інших.</p>
+
+    <p>Набір варіантів можна отримати й «знизу вгору» — з уже готових окремих компонентів: команда <b>«Об'єднати як варіанти» (Combine as variants)</b> одразу збирає виділені компоненти в один набір. Щоб Figma сама розпізнала властивості й значення, компоненти заздалегідь називають за єдиною системою — косою рискою між рівнями ієрархії, наприклад <b>Button/Primary/Large/Default</b>: текст до першої риски стає назвою набору («Button»), а кожен наступний фрагмент — окремою властивістю варіанта («Primary», «Large», «Default»). Компонент, який більше не потрібен, можна видалити в будь-який момент — це не видаляє вже розміщені екземпляри; а якщо екземпляр залишився після видалення, з нього можна <b>відновити</b> головний компонент. Натомість <b>«Від'єднати зразок» (Detach Instance)</b> розриває зв'язок конкретного екземпляра з головним компонентом, перетворюючи його на звичайний фрейм, — корисно, коли потрібна зміна, яку override не підтримує.</p>
+
+    <p><b>Auto Layout.</b> Сам по собі компонент лишається «мертвою» фігурою фіксованого розміру, поки до нього не застосують <b>Auto Layout</b> — механізм, що перетворює фрейм на живий контейнер, який сам розраховує розташування вмісту за правилами, подібними до flexbox у CSS. Auto Layout налаштовують чотирма групами властивостей:</p>
+
+    <ul>
+      <li><b>напрямок (direction)</b> — вміст шикується у рядок (horizontal), у стовпець (vertical) або переноситься на новий рядок, коли не вміщується (wrap);</li>
+      <li><b>відступ між елементами (gap)</b> — фіксована відстань між дочірніми елементами, яка не «розповзається», коли текст усередині змінює довжину; замість числа можна вибрати режим <b>Авто (Auto)</b> — тоді Figma сама розподіляє максимально можливу відстань між об'єктами, а не тримається заданого значення;</li>
+      <li><b>внутрішні відступи (padding)</b> — поле між краєм контейнера та його вмістом, задають окремо для кожної з чотирьох сторін; швидкий спосіб — утримуючи <b>Command/Control</b>, ввести чотири числа через кому в одне поле (наприклад, «1, 2, 3, 4» встановить верхній, правий, нижній і лівий відступи саме в такому порядку, за аналогією зі скороченим записом padding у CSS);</li>
+      <li><b>режим розміру (resizing) для кожного виміру</b> — <b>Fixed</b> — розмір заданий вручну й не змінюється; <b>Hug contents</b> («обійняти вміст») — контейнер стискається чи розтягується точно під розмір свого вмісту, наприклад кнопка сама підбирає ширину під довжину напису; <b>Fill container</b> — елемент розтягується на всю доступну ширину чи висоту батьківського контейнера, наскільки той дозволяє. Додатково для будь-якого з цих режимів можна задати <b>мінімальну й максимальну ширину чи висоту</b> — зручно, коли кнопка має право стискатися під короткий напис, але не менше ніж, наприклад, 120 пікселів.</li>
+    </ul>
+
+    <p>Вирівнювання дочірніх елементів (Alignment) задають не для кожного об'єкта окремо, як у звичайному фреймі, а одразу для всього контейнера Auto Layout — через поле з дев'ятьма позиціями (за рядками й стовпцями), яке показує можливі варіанти для обраного напрямку. Окремий дочірній елемент можна виключити з цієї логіки, увімкнувши для нього <b>абсолютне позиціонування (absolute position)</b> — тоді Auto Layout ігнорує цей об'єкт і не враховує його в розрахунку gap чи padding, а сам об'єкт розміщують точно за координатами, як у звичайному фреймі; це працює так само, як властивість <b>position: absolute</b> у CSS.</p>
+
+    <div class="callout">Найпотужніша властивість Auto Layout — вкладеність: контейнер з Auto Layout може містити інші контейнери з власним Auto Layout (наприклад, ряд кнопок усередині картки, яка сама є вертикальним Auto Layout з іконкою, заголовком і описом). Саме ця вкладена структура вперше дає макету поведінку, близьку до реального сайту: коли ви подовжуєте напис на кнопці з режимом <b>Hug contents</b>, кнопка сама стає ширшою, а картка з режимом <b>Fill container</b> сама підлаштовується під нову ширину кнопки — замість того щоб вручну совати фігури на полотні, як у темі 3.</div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 480" role="img" aria-label="Ліворуч — головний компонент із трьома стрілками до трьох екземплярів, один з яких позначено як override. Праворуч — анатомія контейнера Auto Layout: рамка padding, дві кнопки з відстанню gap між ними, та три режими розміру: Fixed, Hug contents, Fill container">
+        <defs>
+          <marker id="arrow4a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <text x="215" y="26" text-anchor="middle" font-size="12" font-weight="700" class="svg-muted" font-family="JetBrains Mono, monospace" letter-spacing="0.04em">КОМПОНЕНТ І ЕКЗЕМПЛЯРИ</text>
+
+        <rect x="145" y="42" width="140" height="52" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.8"/>
+        <path d="M155,68 L163,60 L171,68 L163,76 Z" fill="var(--accent)"/>
+        <text x="222" y="63" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-ink)" font-family="Manrope, sans-serif">Головний</text>
+        <text x="222" y="79" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-ink)" font-family="Manrope, sans-serif">компонент</text>
+
+        <line x1="180" y1="94" x2="95" y2="140" stroke="var(--accent)" stroke-width="1.4" class="svg-ink" marker-end="url(#arrow4a)"/>
+        <line x1="215" y1="94" x2="215" y2="140" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arrow4a)"/>
+        <line x1="250" y1="94" x2="335" y2="140" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arrow4a)"/>
+
+        <rect x="50" y="142" width="90" height="38" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.3"/>
+        <text x="95" y="165" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="Manrope, sans-serif">екземпляр</text>
+
+        <rect x="170" y="142" width="90" height="38" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.3"/>
+        <text x="215" y="165" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="Manrope, sans-serif">екземпляр</text>
+
+        <rect x="290" y="142" width="100" height="38" rx="6" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.6"/>
+        <text x="340" y="165" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--test-ink)" font-family="Manrope, sans-serif">override</text>
+
+        <text x="150" y="205" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">зміна компонента</text>
+        <text x="150" y="219" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">поширюється на екземпляри…</text>
+        <text x="340" y="205" text-anchor="middle" font-size="10.5" fill="var(--test-ink)" font-family="Manrope, sans-serif">…крім локально</text>
+        <text x="340" y="219" text-anchor="middle" font-size="10.5" fill="var(--test-ink)" font-family="Manrope, sans-serif">перевизначеного (override)</text>
+
+        <rect x="40" y="248" width="350" height="118" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/>
+        <text x="55" y="270" font-size="11.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Набір варіантів (component set)</text>
+        <text x="55" y="286" font-size="10" class="svg-muted" font-family="JetBrains Mono, monospace">Button/Primary/Large · Button/Secondary/Large</text>
+        <rect x="55" y="298" width="90" height="30" rx="6" fill="var(--accent)"/>
+        <text x="100" y="317" text-anchor="middle" font-size="10" fill="#fff" font-family="Manrope, sans-serif">Primary / L</text>
+        <rect x="153" y="298" width="100" height="30" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.4"/>
+        <text x="203" y="317" text-anchor="middle" font-size="10" fill="var(--accent-ink)" font-family="Manrope, sans-serif">Secondary / L</text>
+        <text x="55" y="348" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">Variant, Boolean, Instance Swap — один перемикач</text>
+
+        <line x1="450" y1="46" x2="450" y2="460" class="svg-line" stroke="currentColor" stroke-width="1.4"/>
+
+        <text x="675" y="26" text-anchor="middle" font-size="12" font-weight="700" class="svg-muted" font-family="JetBrains Mono, monospace" letter-spacing="0.04em">АНАТОМІЯ AUTO LAYOUT</text>
+
+        <rect x="480" y="42" width="370" height="150" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.5"/>
+        <rect x="505" y="67" width="320" height="100" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="465" y="58" text-anchor="end" font-size="9.5" fill="var(--accent-ink)" font-family="Manrope, sans-serif">padding</text>
+
+        <rect x="525" y="97" width="110" height="40" rx="6" fill="var(--accent)"/>
+        <text x="580" y="121" text-anchor="middle" font-size="11" fill="#fff" font-family="Manrope, sans-serif">Кнопка</text>
+        <rect x="668" y="97" width="110" height="40" rx="6" fill="var(--accent)"/>
+        <text x="723" y="121" text-anchor="middle" font-size="11" fill="#fff" font-family="Manrope, sans-serif">Кнопка</text>
+        <line x1="638" y1="117" x2="665" y2="117" stroke="var(--test)" stroke-width="1.4" marker-end="url(#arrow4a)"/>
+        <line x1="665" y1="117" x2="638" y2="117" stroke="var(--test)" stroke-width="1.4" marker-end="url(#arrow4a)"/>
+        <text x="651" y="150" text-anchor="middle" font-size="9.5" fill="var(--test-ink)" font-family="Manrope, sans-serif">gap</text>
+
+        <text x="500" y="212" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">напрямок: горизонтально · вертикально · wrap</text>
+
+        <text x="500" y="247" font-size="12" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Режими розміру (resizing)</text>
+
+        <rect x="500" y="262" width="106" height="34" rx="6" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="1.3"/>
+        <text x="553" y="283" text-anchor="middle" font-size="10.5" class="svg-ink" font-family="Manrope, sans-serif">Fixed</text>
+
+        <rect x="618" y="262" width="106" height="34" rx="6" fill="var(--surface)" stroke="var(--task)" stroke-width="1.3" stroke-dasharray="4,2"/>
+        <text x="671" y="283" text-anchor="middle" font-size="10.5" fill="var(--task-ink)" font-family="Manrope, sans-serif">Hug contents</text>
+
+        <rect x="736" y="262" width="114" height="34" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/>
+        <text x="793" y="283" text-anchor="middle" font-size="10.5" fill="var(--task-ink)" font-family="Manrope, sans-serif">Fill container</text>
+
+        <rect x="480" y="320" width="370" height="66" rx="8" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1"/>
+        <text x="495" y="340" font-size="10.5" fill="var(--test-ink)" font-family="Manrope, sans-serif">Вкладеність: контейнер з Auto Layout може містити</text>
+        <text x="495" y="356" font-size="10.5" fill="var(--test-ink)" font-family="Manrope, sans-serif">інші контейнери з власним Auto Layout — картка сама</text>
+        <text x="495" y="372" font-size="10.5" fill="var(--test-ink)" font-family="Manrope, sans-serif">підлаштовується під довший напис на кнопці всередині.</text>
+      </svg>
+      <figcaption>Рис. 1. Головний компонент і екземпляри з override, набір варіантів та анатомія Auto Layout: напрямок, gap, padding і режими розміру.</figcaption>
+    </figure>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Режими розміру Auto Layout<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Кнопку з Auto Layout потрібно розтягнути на всю ширину картки-контейнера, у якій вона лежить, незалежно від довжини напису на кнопці. Який режим розміру (resizing) слід застосувати до ширини цієї кнопки?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button">Fixed — заданий вручну розмір, який ніколи не змінюється</button>
+        <button class="test-opt" type="button">Hug contents — контейнер стискається точно під розмір свого вмісту</button>
+        <button class="test-opt" type="button">Fill container — елемент розтягується на всю доступну ширину батьківського контейнера</button>
+        <button class="test-opt" type="button">жодного з трьох: ширину кнопки при Auto Layout завжди визначає довжина напису</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. ATOMIC DESIGN ================= -->
+  <section class="topic" id="atomic">
+    <div class="topic-head">
+      <span class="topic-num">02</span>
+      <h2>Принципи атомарного дизайну (Atomic Design): атоми, молекули, організми</h2>
+    </div>
+
+    <p>Компоненти й Auto Layout із розділу 1 дають технічний інструмент, але не відповідають на питання, <b>які саме</b> компоненти варто виділяти і як їх організувати в один узгоджений файл, коли макет виростає до десятків екранів. Відповідь дає методологія <b>Atomic Design</b>, яку 2013 року сформулював дизайнер <b>Бред Фрост</b> у своїй книзі <b>«Atomic Design»</b>: вона переносить у дизайн інтерфейсів метафору з хімії — складні речовини утворюються з дедалі простіших частинок, які неможливо розкласти далі без втрати їхньої суті.</p>
+
+    <p><b>Атоми (atoms).</b> Найдрібніші, далі неподільні елементи інтерфейсу: окрема кнопка, поле вводу, підпис, іконка, колірний стиль, текстовий стиль. Атом узятий сам по собі найчастіше не має самостійної користі для відвідувача сайту — підпис поля «Email» без самого поля мало що означає, — але саме з атомів у Figma збирають головні компоненти з розділу 1.</p>
+    <p><b>Молекули (molecules).</b> Невелика, стійка група атомів, що функціонує як єдине ціле й виконує одну просту, зрозумілу задачу. Класичний приклад із книги Фроста — форма пошуку: підпис (атом) + поле вводу (атом) + кнопка (атом) разом утворюють молекулу «пошук», яку відвідувач сприймає й використовує як один функціональний блок, а не як три окремі елементи.</p>
+    <p><b>Організми (organisms).</b> Відносно складні, самодостатні секції інтерфейсу, зібрані з кількох молекул і/або атомів; організм формує впізнаваний, закінчений блок сторінки — шапка сайту (логотип-атом + навігаційне меню-молекула + форма пошуку-молекула), сітка карток товару, підвал сайту. На відміну від атома чи молекули, організм часто вже достатньо конкретний, щоб належати до одного розділу сайту, а не переноситися однаковим блоком на будь-яку сторінку без змін.</p>
+
+    <p>Сам Фрост продовжує ієрархію ще двома рівнями, які корисно знати для повноти картини, хоч ця лекція зосереджена на перших трьох: <b>шаблони (templates)</b> — скелет сторінки з організмів без реального контенту, показує структуру макета; <b>сторінки (pages)</b> — той самий шаблон, заповнений реальним контентом конкретного екземпляра (наприклад, картка саме цього товару з реальною ціною й фотографією), на якому нарешті перевіряють, чи працює система на живих, а не умовних даних.</p>
+
+    <p><b>Проєкція на структуру файлу Figma.</b> На практиці ієрархію Atomic Design переносять у структуру бібліотеки компонентів: сторінку «Атоми» файлу відводять під головні компоненти найнижчого рівня (кольори, типографічні стилі, кнопки, поля, іконки); сторінку «Молекули» й «Організми» — під компоненти, зібрані з екземплярів попереднього рівня через Auto Layout. Головна практична перевага такої структури — <b>масштабованість</b>: коли дизайн-система впорядкована знизу вгору, новий екран здебільшого збирають із наявних організмів і молекул, а не малюють з нуля, і будь-яка зміна на рівні атома (наприклад, новий відтінок Primary-кольору з теми 5) автоматично піднімається через усі рівні, аж до готових сторінок.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 940 400" role="img" aria-label="Зліва направо: атоми — кнопка, поле вводу, іконка; стрілка веде до молекули — форма пошуку з підписом, полем і кнопкою; стрілка веде до організму — шапка сайту з логотипом, меню і формою пошуку. Знизу фігурна дужка з підписом: бібліотека таких елементів утворює UI kit проєкту">
+        <text x="130" y="30" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Атоми</text>
+        <rect x="60" y="50" width="70" height="30" rx="15" fill="var(--accent)"/>
+        <text x="95" y="70" text-anchor="middle" font-size="10.5" fill="#fff" font-family="Manrope, sans-serif">Кнопка</text>
+        <rect x="60" y="94" width="140" height="28" rx="5" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="1.2"/>
+        <text x="70" y="112" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">Email</text>
+        <circle cx="80" cy="150" r="15" fill="var(--surface-2)" stroke="var(--ink-muted)" stroke-width="1.1"/>
+        <text x="80" y="154" text-anchor="middle" font-size="12" class="svg-muted">✎</text>
+        <text x="112" y="154" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">іконка</text>
+
+        <line x1="215" y1="135" x2="268" y2="135" stroke="var(--ink-muted)" stroke-width="1.3" marker-end="url(#arrow4b)"/>
+        <defs><marker id="arrow4b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" class="svg-muted"/></marker></defs>
+
+        <text x="410" y="30" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Молекула</text>
+        <rect x="288" y="100" width="240" height="70" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="303" y="122" font-size="10.5" fill="var(--accent-ink)" font-family="Manrope, sans-serif">Пошук</text>
+        <rect x="303" y="132" width="140" height="26" rx="4" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="1"/>
+        <text x="311" y="149" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">Що шукаємо…</text>
+        <rect x="451" y="132" width="62" height="26" rx="4" fill="var(--accent)"/>
+        <text x="482" y="149" text-anchor="middle" font-size="10" fill="#fff" font-family="Manrope, sans-serif">Знайти</text>
+        <text x="408" y="188" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">підпис + поле + кнопка = одна функція</text>
+
+        <line x1="533" y1="135" x2="586" y2="135" stroke="var(--ink-muted)" stroke-width="1.3" marker-end="url(#arrow4b)"/>
+
+        <text x="750" y="30" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Організм</text>
+        <rect x="608" y="70" width="290" height="140" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.3"/>
+        <rect x="623" y="85" width="70" height="24" rx="4" fill="var(--task)"/>
+        <text x="658" y="101" text-anchor="middle" font-size="9.5" fill="#fff" font-family="Manrope, sans-serif">Логотип</text>
+        <text x="708" y="101" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">Каталог  Про нас  Контакти</text>
+        <rect x="623" y="120" width="255" height="30" rx="4" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1"/>
+        <text x="633" y="139" font-size="9.5" fill="var(--accent-ink)" font-family="Manrope, sans-serif">Що шукаємо…</text>
+        <rect x="841" y="125" width="30" height="20" rx="4" fill="var(--accent)"/>
+        <text x="623" y="172" font-size="10.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Шапка сайту (header)</text>
+        <text x="623" y="190" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">логотип-атом + меню-молекула + форма пошуку-молекула</text>
+
+        <path d="M 45 250 L 45 270 L 895 270 L 895 250" fill="none" stroke="var(--accent)" stroke-width="1.4"/>
+        <text x="470" y="296" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Бібліотека атомів, молекул і організмів = UI kit проєкту</text>
+        <text x="470" y="316" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">для масштабного продукту UI kit розширюють до повної дизайн-системи</text>
+        <text x="470" y="334" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">(додаються дизайн-токени, документація, правила використання)</text>
+      </svg>
+      <figcaption>Рис. 2. Ієрархія Atomic Design: атоми, зібрані в молекулу, зібрані в організм; бібліотека таких елементів утворює UI kit проєкту.</figcaption>
+    </figure>
+
+    <p><b>UI kit і дизайн-система: у чому різниця.</b> Практичний результат роботи з атомами, молекулами й організмами в межах одного проєкту називають <b>UI kit</b> — набір усіх елементів, на яких будується інтерфейс, зазвичай оформлений як окрема сторінка чи файл Figma з типографікою, колірною палітрою, варіантами кнопок та інших компонентів. UI kit пришвидшує роботу (не доводиться малювати елементи з нуля), уніфікує стиль між сторінками одного сайту й лишається спільним документом, з яким звіряються дизайнери, верстальники та розробники. Для невеликого навчального чи одноосібного проєкту UI kit зазвичай достатньо; для масштабних продуктів на кількох командах його розширюють до повної дизайн-системи — тієї самої, чиї технічні складники (токени з розділу 3, задокументовані правила використання) розглядає ця лекція.</p>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Бібліотека атомів і молекул власного проєкту<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>У файлі <b>ПР4_Прізвище</b> у Figma створіть нову сторінку «Компоненти» (практична робота цієї теми) і винесіть на неї як головні компоненти (<span class="kbd">Create component</span>) три атоми з вашого проєкту: кнопку, текстове поле вводу і одну іконку.</li>
+        <li>Застосуйте Auto Layout до кнопки з режимом розміру Hug contents по горизонталі, щоб її ширина сама підлаштовувалася під довжину напису.</li>
+        <li>Зберіть із кнопки та поля вводу (двох атомів) одну молекулу — рядок форми підписки чи пошуку — контейнером з Auto Layout, вирівнявши елементи по вертикальному центру.</li>
+        <li>Розмістіть на тій самій сторінці три екземпляри (instance) щойно створеної кнопки й перевизначте (override) напис у кожному, щоб переконатися: зміна кольору головного компонента миттєво поширюється на всі три.</li>
+      </ol>
+      <div class="box-close">Скріншот сторінки «Компоненти» додайте в документ Лекція4_Прізвище на Google Диску й відкрийте доступ («Будь-хто з посиланням» → «Читач»).</div>
+    </div>
+  </section>
+
+  <!-- ================= 3. ДИЗАЙН-ТОКЕНИ ================= -->
+  <section class="topic" id="tokens">
+    <div class="topic-head">
+      <span class="topic-num">03</span>
+      <h2>Дизайн-токени як основа масштабованої дизайн-системи</h2>
+    </div>
+
+    <p>Атоми з розділу 2 самі спираються на ще дрібніший рівень рішень — конкретні значення кольору, відступу, розміру шрифту, — які теж потрібно якось називати й повторно використовувати. <b>Дизайн-токен (design token)</b> — за визначенням <b>Design Tokens Community Group</b> при W3C — це <b>назване, технологічно-нейтральне дизайн-рішення</b>, збережене як дані (число, колір, рядок), а не як фігура на полотні: наприклад, токен <b>color-primary-500</b> зі значенням <b>#1F6FEB</b> або токен <b>spacing-md</b> зі значенням <b>16px</b>. Токен можна експортувати з дизайн-інструменту й підставити прямо в код фронтенду — це і є місток між роботою дизайнера у Figma та роботою розробника, до якого курс детальніше повернеться в наступних темах.</p>
+
+    <p>Токени прийнято організовувати у два рівні, а не тримати всі в одному плоскому списку:</p>
+    <ul>
+      <li><b>первинні, або глобальні токени (primitive / global tokens)</b> — сирі значення без прив'язки до призначення: повна шкала відтінків одного кольору (blue-100…blue-900), повна шкала відступів (4, 8, 12, 16, 24, 32, 48 пікселів — так званий «8-піксельний ритм», кратний восьми, який ви вже неявно застосовували в темі 1 до розмірів модульної шкали);</li>
+      <li><b>семантичні, або псевдонімні токени (semantic / alias tokens)</b> — токени, названі за <b>призначенням</b>, а не за значенням: <b>color-danger</b> посилається на <b>red-600</b>, <b>color-background-page</b> — на <b>gray-50</b>. Саме із семантичними токенами працює дизайнер щодня в макеті — обираючи «колір фону сторінки», а не «сірий 50» напряму, — тому що зміна одного глобального токена (наприклад, весь blue-600 стає трохи темнішим) автоматично оновлює всі семантичні токени й усі компоненти, які на них посилаються, без ручного пошуку кожного вживання кольору по файлу.</li>
+    </ul>
+
+    <p><b>Реалізація в Figma: Variables.</b> Технічний інструмент, яким Figma реалізує дизайн-токени, називається <b>змінні (Variables)</b> — чотири типи значень (Color, Number, String, Boolean), об'єднані у <b>колекції (collections)</b> із кількома <b>режимами (modes)</b> усередині однієї колекції: наприклад, колекція «Color» може мати режими «Light» і «Dark», і той самий семантичний токен <b>color-background-page</b> автоматично приймає різне значення залежно від увімкненого режиму — це і є технічна основа перемикання світлої/темної теми без дублювання макета. Токени, створені як Figma Variables, синхронізують із кодом через спеціалізовані плагіни (наприклад, <b>Tokens Studio for Figma</b>) або офіційний Dev Mode, який експортує їх у формати, готові для CSS (як власні CSS-змінні) чи JSON.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 440" role="img" aria-label="Зліва шкала первинних токенів кольору від blue-100 до blue-900 з виділеним blue-600. Стрілка веде до семантичного токена color-button-primary, який посилається на blue-600. Дві стрілки праворуч ведуть до колекції Figma Variables з режимами Light і Dark та до блока коду CSS зі змінною color-button-primary">
+        <text x="130" y="26" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Первинні токени</text>
+        <text x="130" y="42" text-anchor="middle" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">(шкала blue)</text>
+        <g font-family="Manrope, sans-serif" font-size="9.5" class="svg-muted">
+          <rect x="80" y="56" width="100" height="22" fill="hsl(225,85%,92%)"/><text x="185" y="71">blue-100</text>
+          <rect x="80" y="78" width="100" height="22" fill="hsl(225,85%,82%)"/><text x="185" y="93">blue-200</text>
+          <rect x="80" y="100" width="100" height="22" fill="hsl(225,85%,72%)"/><text x="185" y="115">blue-300</text>
+          <rect x="80" y="122" width="100" height="22" fill="hsl(225,85%,62%)"/><text x="185" y="137">blue-400</text>
+          <rect x="80" y="144" width="100" height="22" fill="hsl(225,85%,52%)"/><text x="185" y="159">blue-500</text>
+        </g>
+        <rect x="80" y="166" width="100" height="28" fill="hsl(225,85%,45%)" stroke="var(--ink)" stroke-width="2"/>
+        <text x="185" y="185" font-size="10.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">blue-600 ←</text>
+        <g font-family="Manrope, sans-serif" font-size="9.5" class="svg-muted">
+          <rect x="80" y="194" width="100" height="22" fill="hsl(225,85%,35%)"/><text x="185" y="209">blue-700</text>
+          <rect x="80" y="216" width="100" height="22" fill="hsl(225,85%,25%)"/><text x="185" y="231">blue-800</text>
+          <rect x="80" y="238" width="100" height="22" fill="hsl(225,85%,15%)"/><text x="185" y="253">blue-900</text>
+        </g>
+
+        <line x1="245" y1="180" x2="308" y2="180" stroke="var(--ink)" stroke-width="1.4" marker-end="url(#arrow4c)"/>
+        <defs><marker id="arrow4c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor" class="svg-ink"/></marker></defs>
+
+        <text x="425" y="26" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Семантичний токен</text>
+        <rect x="318" y="150" width="212" height="60" rx="8" fill="var(--accent)" stroke="var(--accent-ink)" stroke-width="1.5"/>
+        <text x="424" y="175" text-anchor="middle" font-size="11.5" font-weight="700" fill="#fff" font-family="Manrope, sans-serif">color-button-primary</text>
+        <text x="424" y="193" text-anchor="middle" font-size="10" fill="#EAF0FB" font-family="Manrope, sans-serif">→ посилається на blue-600</text>
+
+        <line x1="530" y1="158" x2="588" y2="110" stroke="var(--ink)" stroke-width="1.3" marker-end="url(#arrow4c)"/>
+        <line x1="530" y1="202" x2="588" y2="250" stroke="var(--ink)" stroke-width="1.3" marker-end="url(#arrow4c)"/>
+
+        <text x="710" y="26" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Figma Variables</text>
+        <rect x="610" y="40" width="230" height="86" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/>
+        <text x="625" y="60" font-size="10.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">колекція «Color»</text>
+        <rect x="625" y="70" width="95" height="44" rx="5" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="1"/>
+        <text x="672" y="88" text-anchor="middle" font-size="9.5" class="svg-muted" font-family="Manrope, sans-serif">Light</text>
+        <rect x="632" y="94" width="18" height="14" fill="hsl(225,85%,45%)"/>
+        <rect x="728" y="70" width="95" height="44" rx="5" fill="var(--ink)" stroke="var(--ink-muted)" stroke-width="1"/>
+        <text x="775" y="88" text-anchor="middle" font-size="9.5" fill="var(--paper)" font-family="Manrope, sans-serif">Dark</text>
+        <rect x="735" y="94" width="18" height="14" fill="hsl(225,85%,62%)"/>
+
+        <text x="710" y="160" text-anchor="middle" font-size="12.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Код (CSS)</text>
+        <rect x="610" y="174" width="230" height="120" rx="8" fill="var(--code-bg)"/>
+        <text x="625" y="198" font-size="10.5" fill="var(--task)" font-family="JetBrains Mono, monospace">:root {</text>
+        <text x="638" y="216" font-size="10" fill="var(--code-ink)" font-family="JetBrains Mono, monospace">--color-button-</text>
+        <text x="638" y="231" font-size="10" fill="var(--code-ink)" font-family="JetBrains Mono, monospace">  primary:</text>
+        <text x="638" y="246" font-size="10" fill="var(--accent-ink)" font-family="JetBrains Mono, monospace">  #1a5fd1;</text>
+        <text x="625" y="264" font-size="10.5" fill="var(--task)" font-family="JetBrains Mono, monospace">}</text>
+        <text x="625" y="284" font-size="9.5" class="svg-muted" font-family="JetBrains Mono, monospace">/* Dev Mode → CSS */</text>
+
+        <rect x="60" y="374" width="780" height="54" rx="8" fill="var(--accent-tint)"/>
+        <text x="80" y="395" font-size="10.5" fill="var(--accent-ink)" font-family="Manrope, sans-serif">Зміна значення первинного токена (наприклад, весь blue-600 темнішає)</text>
+        <text x="80" y="413" font-size="10.5" fill="var(--accent-ink)" font-family="Manrope, sans-serif">автоматично оновлює семантичний токен і код усіх кнопок, які на нього посилаються.</text>
+      </svg>
+      <figcaption>Рис. 3. Шлях токена від первинної шкали кольору через семантичну назву до режимів Figma Variables і готового CSS-коду.</figcaption>
+    </figure>
+
+    <p>Практична перевага токенізованої дизайн-системи розкривається саме на масштабі, а не на одному екрані: перехід від макета одного екрана до системи в десятки чи сотні екранів (як у зрілих продуктах Google, Apple чи Airbnb, які прийнято наводити як приклади дизайн-систем) можливий лише тоді, коли кожне рішення про колір, відступ чи розмір існує в одному місці — токені — а не повторюється вручну на кожному новому екрані.</p>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Первинні й семантичні токени<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Команда вирішила трохи затемнити весь фірмовий синій колір продукту. Дизайн-система побудована на токенах: є глобальний токен blue-600 і семантичний токен color-button-primary, який посилається на blue-600. Що потрібно змінити, щоб оновлення застосувалося одразу до всіх кнопок Primary в усій системі?</div>
+      <div class="quiz" data-correct="0">
+        <button class="test-opt" type="button">лише значення глобального токена blue-600 — семантичний токен підхопить зміну автоматично</button>
+        <button class="test-opt" type="button">лише значення семантичного токена color-button-primary — глобальний токен лишається незмінним</button>
+        <button class="test-opt" type="button">обидва токени окремо, бо вони не пов'язані одне з одним</button>
+        <button class="test-opt" type="button">жоден токен — колір кожної кнопки потрібно перефарбувати вручну</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 4. СІТКА Й BREAKPOINTS ================= -->
+  <section class="topic" id="grid">
+    <div class="topic-head">
+      <span class="topic-num">04</span>
+      <h2>Побудова сітки (12-колонкова сітка) та контрольні точки (breakpoints)</h2>
+    </div>
+
+    <p>Компоненти, атомарна структура й токени з попередніх розділів визначають, <b>з чого</b> зібрано інтерфейс; сітка визначає, <b>де саме</b> на екрані розташований кожен елемент. <b>Сітка макета (layout grid)</b> складається з трьох частин: <b>колонки (columns)</b> — вертикальні смуги, у які вирівнюють вміст; <b>розрідження (gutter)</b> — фіксований проміжок між сусідніми колонками; <b>поле (margin)</b> — відступ від колонок до краю екрана. У Figma сітку вмикають на фреймі через панель <b>Layout Grid</b> типом <b>Columns</b>, де кількість колонок, ширину gutter і margin задають числом у пікселях або відсотках.</p>
+
+    <p><b>Чому саме 12 колонок.</b> Число 12 обрали не довільно: воно ділиться без остачі на 2, 3, 4 й 6, тому той самий каркас сітки однаково зручно ділити навпіл (по 6 колонок — дві рівні секції), натроє (по 4 колонки — картка в ряду з трьох), на чотири частини (по 3 колонки) чи на шість (по 2 колонки), не змінюючи сам каркас сітки під кожен новий тип блока. Сітка з 10 чи 8 колонок дає значно менше цілих комбінацій розбиття, тому 12-колонкова сітка лишається де-факто стандартом десктопних макетів — на ній побудовані найпоширеніші CSS-фреймворки (наприклад, Bootstrap).</p>
+
+    <p><b>Контрольні точки (breakpoints).</b> Той самий макет на екрані телефона й на екрані монітора не може використовувати однакову сітку — 12 вузьких колонок на екрані завширшки 360 пікселів перетворять кожну колонку на смужку в кілька пікселів, непридатну для жодного вмісту. <b>Breakpoint</b> — ширина екрана, на якій макет свідомо «перемикає» кількість колонок, розмір відступів чи розташування блоків на інший, зручніший для цього діапазону розмірів набір значень. Практичний, широко вживаний набір (саме такий застосовує CSS-фреймворк Bootstrap у своїй документації) виглядає так:</p>
+
+    <ul>
+      <li><b>мобільні пристрої (до ~576–768 пікселів)</b> — 4-колонкова сітка, поля 16 пікселів, блоки здебільшого розташовані в один стовпець одне під одним;</li>
+      <li><b>планшети (від ~768 пікселів)</b> — 8-колонкова сітка, поля 24 пікселі, частина блоків уже стає в ряд по двоє;</li>
+      <li><b>десктоп (від ~992–1200 пікселів)</b> — повна 12-колонкова сітка, поля 32–64 пікселі залежно від ширини екрана, максимальна кількість блоків у ряд.</li>
+    </ul>
+
+    <p><b>Мобільний підхід за умовчанням (mobile-first).</b> Сучасна практика — спроєктувати й описати стилі спочатку для найвужчого, мобільного екрана, а тоді додавати правила, які «розширюють» макет на більші breakpoint, а не навпаки. Причина проста: на вузькому екрані майже завжди доводиться прибирати чи спрощувати щось із багатшого десктопного макета, і значно легше спершу спроєктувати мінімально необхідний набір, а тоді додавати простір для більшого екрана, ніж post factum вирішувати, що саме викинути з уже перевантаженого мобільного варіанта.</p>
+
+    <div class="callout">Адаптивність макета технічно спирається на той самий інструмент, що й у розділі 1: контейнер з <b>Auto Layout</b> у режимі <b>Fill container</b> сам перерозподіляє вміст, коли ширина батьківського фрейму змінюється між версіями для мобільного, планшетного й десктопного breakpoint, тому один і той самий організм (наприклад, шапка сайту), зібраний правильно ще в розділі 2, не доводиться перебудовувати з нуля під кожен новий розмір екрана — досить підготувати три фрейми-заготовки під три ширини й перевірити, що Auto Layout коректно «стискає» вміст на кожній.</div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 920 460" role="img" aria-label="Три фрейми поруч: мобільний з чотирма колонками і блоками в один стовпець, планшетний з вісьмома колонками і блоками по двоє в ряд, десктопний з дванадцятьма колонками і блоками по троє в ряд">
+        <text x="130" y="26" text-anchor="middle" font-size="12" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Мобільний, до 576 пк</text>
+        <text x="130" y="42" text-anchor="middle" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">4 колонки · margin 16 пк</text>
+        <rect x="60" y="56" width="140" height="280" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/>
+        <g fill="var(--accent-tint)">
+          <rect x="72" y="68" width="20" height="256"/><rect x="97" y="68" width="20" height="256"/>
+          <rect x="122" y="68" width="20" height="256"/><rect x="147" y="68" width="20" height="256"/>
+        </g>
+        <rect x="72" y="80" width="95" height="32" fill="var(--accent)"/>
+        <rect x="72" y="122" width="95" height="32" fill="var(--accent)"/>
+        <rect x="72" y="164" width="95" height="32" fill="var(--accent)"/>
+        <text x="130" y="356" text-anchor="middle" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">блоки в один стовпець</text>
+
+        <text x="460" y="26" text-anchor="middle" font-size="12" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Планшет, від 768 пк</text>
+        <text x="460" y="42" text-anchor="middle" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">8 колонок · margin 24 пк</text>
+        <rect x="330" y="56" width="260" height="280" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/>
+        <g fill="var(--accent-tint)">
+          <rect x="354" y="68" width="22" height="256"/><rect x="380" y="68" width="22" height="256"/>
+          <rect x="406" y="68" width="22" height="256"/><rect x="432" y="68" width="22" height="256"/>
+          <rect x="458" y="68" width="22" height="256"/><rect x="484" y="68" width="22" height="256"/>
+          <rect x="510" y="68" width="22" height="256"/><rect x="536" y="68" width="22" height="256"/>
+        </g>
+        <rect x="354" y="80" width="100" height="32" fill="var(--accent)"/>
+        <rect x="458" y="80" width="100" height="32" fill="var(--accent)"/>
+        <rect x="354" y="122" width="100" height="32" fill="var(--accent)"/>
+        <rect x="458" y="122" width="100" height="32" fill="var(--accent)"/>
+        <text x="460" y="356" text-anchor="middle" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">блоки в ряд по двоє</text>
+
+        <text x="770" y="26" text-anchor="middle" font-size="12" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Десктоп, від 1200 пк</text>
+        <text x="770" y="42" text-anchor="middle" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">12 колонок · margin 32–64 пк</text>
+        <rect x="630" y="56" width="280" height="280" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/>
+        <g fill="var(--accent-tint)">
+          <rect x="644" y="68" width="16" height="256"/><rect x="664" y="68" width="16" height="256"/>
+          <rect x="684" y="68" width="16" height="256"/><rect x="704" y="68" width="16" height="256"/>
+          <rect x="724" y="68" width="16" height="256"/><rect x="744" y="68" width="16" height="256"/>
+          <rect x="764" y="68" width="16" height="256"/><rect x="784" y="68" width="16" height="256"/>
+          <rect x="804" y="68" width="16" height="256"/><rect x="824" y="68" width="16" height="256"/>
+          <rect x="844" y="68" width="16" height="256"/><rect x="864" y="68" width="16" height="256"/>
+        </g>
+        <rect x="644" y="80" width="76" height="32" fill="var(--accent)"/>
+        <rect x="724" y="80" width="76" height="32" fill="var(--accent)"/>
+        <rect x="804" y="80" width="76" height="32" fill="var(--accent)"/>
+        <rect x="644" y="122" width="76" height="32" fill="var(--accent)"/>
+        <rect x="724" y="122" width="76" height="32" fill="var(--accent)"/>
+        <rect x="804" y="122" width="76" height="32" fill="var(--accent)"/>
+        <text x="770" y="356" text-anchor="middle" font-size="10" class="svg-muted" font-family="Manrope, sans-serif">блоки в ряд по трьох</text>
+
+        <rect x="60" y="392" width="800" height="34" rx="6" fill="var(--accent-tint)"/>
+        <text x="460" y="413" text-anchor="middle" font-size="10.5" fill="var(--accent-ink)" font-family="Manrope, sans-serif">12 ділиться без остачі на 2, 3, 4 й 6 — той самий каркас підходить для будь-якої кількості блоків у ряд</text>
+      </svg>
+      <figcaption>Рис. 4. 12-колонкова сітка на трьох контрольних точках: 4 колонки на мобільному, 8 на планшетному й 12 на десктопному екрані.</figcaption>
+    </figure>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> Три фрейми під три контрольні точки<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>У файлі <b>ПР4_Прізвище</b> у Figma створіть три нові фрейми (практична робота цієї теми): 375×812 (мобільний), 768×1024 (планшет) і 1440×900 (десктоп).</li>
+        <li>Увімкніть на кожному фреймі сітку Layout Grid типу Columns: 4 колонки на мобільному, 8 — на планшетному, 12 — на десктопному фреймі; підберіть gutter і margin із розділу 4.</li>
+        <li>Перенесіть на всі три фрейми один і той самий організм із теми, зібраний у завданні 1 (наприклад, шапку сайту чи картку товару), і перевірте, чи компонент з Auto Layout коректно заповнює ширину контейнера (Fill container) на кожній із трьох ширин.</li>
+        <li>У документі Лекція4_Прізвище одним-двома реченнями опишіть, що саме довелося змінити в розташуванні блоків між мобільною і десктопною версією (наприклад, перехід з одного стовпця на ряд із трьох карток).</li>
+      </ol>
+      <div class="box-close">Відправте посилання на документ Лекція4_Прізвище в Classroom.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Лекція 4 · Тема 4 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 24.09.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture4-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState();
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId]);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
