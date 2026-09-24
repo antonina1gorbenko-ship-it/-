@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Типографіка, колір та доступність (accessibility) — Вебдизайн</title>
-<meta name="description" content="Лекція 5. Типографіка, колір та доступність (accessibility). Конспект готується.">
+<title>Типографіка, колір та доступність</title>
+<meta name="description" content="Лекція 5 курсу «Вебдизайн»: типографічна ієрархія та підбір шрифтових пар, теорія кольору і правило 60/30/10, контрастність за WCAG 2.2 та основи інклюзивного дизайну">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +21,59 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --fail:#C0392B;
+    --fail-tint:#FBE3E0;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --fail:#E8746A;
+      --fail-tint:#3A1512;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --fail:#E8746A;
+    --fail-tint:#3A1512;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,123 +86,814 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{max-width:1000px;margin:28px auto 0;padding:0 24px;}
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
-    padding:12px 16px;
-    background:var(--surface-2);
-    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:12px 16px;
+    background:var(--surface-2);border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
   .addr{
-    flex:1;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;
-    color:var(--ink-muted);
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:6px 12px;
+    flex:1;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
-  }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
+  .hero{padding:56px 40px 48px;}
   .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent-tint);display:inline-block;padding:5px 11px;
+    border-radius:99px;margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.14;font-weight:800;}
+  .hero .theme{margin-top:14px;font-size:clamp(16px,2vw,19px);color:var(--ink-soft);font-weight:500;max-width:34em;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .meta-chip{
+    font-size:13px;color:var(--ink-muted);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:99px;padding:6px 13px;display:flex;align-items:center;gap:6px;
   }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- sticky toc ---------- */
+  .toc-bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    text-decoration:none;padding:13px 12px;border-bottom:2px solid transparent;white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{flex:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);padding:13px 0 13px 14px;white-space:nowrap;}
+  .toc-progress b{color:var(--accent);}
+  .progress-track{max-width:1000px;margin:0 auto;padding:0 24px;height:3px;}
+  .progress-track .fill{height:100%;width:0%;background:linear-gradient(90deg, var(--task), var(--accent));transition:width .3s ease;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
 
-  footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
-  }
+  .lit{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin:36px 0 0;box-shadow:var(--shadow);}
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
 
+  section.topic{margin-top:64px;padding-top:8px;}
+  .topic-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .topic-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);background:var(--accent-tint);border-radius:8px;padding:4px 10px;flex:none;}
+  .topic h2{font-size:clamp(21px,2.6vw,27px);font-weight:700;}
+  .topic p{color:var(--ink-soft);font-size:16px;margin:0 0 16px;}
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{margin:0 0 18px;padding-left:22px;color:var(--ink-soft);font-size:15.5px;}
+  .topic ul li{margin-bottom:9px;}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);}
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px 16px;margin:26px 0 30px;box-shadow:var(--shadow);}
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{margin-top:14px;font-size:13px;color:var(--ink-muted);text-align:center;}
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+  .zone-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.02em;}
+
+  /* ---------- task / test boxes ---------- */
+  .box{border-radius:var(--radius);padding:24px 26px 20px;margin:24px 0 30px;box-shadow:var(--shadow);border:1px solid;}
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:6px;color:#fff;}
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  .box-close{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-style:italic;font-size:14px;color:var(--ink-muted);}
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.02em;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--ink-muted);border:1px solid var(--line);white-space:nowrap;}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
+
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{display:flex;gap:12px;align-items:flex-start;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .step .num{
+    flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);
+    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num, .step:has(.chk:checked) .num, .step.checked .num{background:var(--task);border-color:var(--task);color:#fff;}
+  .step:has(.chk:checked) .step-text, .step.checked .step-text{color:var(--ink-muted);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1.5px;}
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;width:100%;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink-soft);
+    padding:9px 12px;margin:0 0 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);
+    font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{content:"";width:15px;height:15px;border:1.5px solid var(--test);border-radius:50%;flex:none;margin-top:2px;}
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:var(--fail);background:color-mix(in srgb, var(--fail) 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:var(--fail);border-color:var(--fail);}
+  .test-feedback{margin-top:10px;font-size:13.5px;font-weight:600;display:none;}
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:var(--fail);}
+
+  .reset-btn{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{max-width:1000px;margin:0 auto;padding:40px 24px 60px;border-top:1px solid var(--line);color:var(--ink-muted);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
 </style>
-</head>
-<body>
-
 
 <div class="chrome">
   <div class="browser">
     <div class="browser-bar">
       <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-05</div>
+      <div class="addr">вебдизайн-курс.ua/лекція-5/typografika-kolir-ta-dostupnist</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль II · Лекція 5</div>
-      <span class="eyebrow">Дисципліна · Лекція 5</span>
-      <h1>Типографіка, колір та доступність (accessibility)</h1>
-      <p class="sub">Модуль II «Прототипування, UI-дизайн та візуальна мова інтерфейсів»</p>
-
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
+      <span class="eyebrow">Лекція 5 · Тема 5</span>
+      <h1>Типографіка, колір та доступність</h1>
+      <p class="theme">Другий, беззвучний канал ієрархії поруч із розміром елементів: як шрифтова пара і модульна шкала організують текст, як правило 60/30/10 приборкує колірну палітру та чому «гарно виглядає» — недостатній критерій, поки макет не пройшов перевірку контрастності й доступності.</p>
+      <div class="meta-row">
+        <span class="meta-chip">📚 <b>4</b> розділи</span>
+        <span class="meta-chip">🧩 <b>2</b> практичні завдання</span>
+        <span class="meta-chip">✅ <b>2</b> тести на розуміння</span>
+        <span class="meta-chip">🎓 Курс «Вебдизайн», коледж</span>
       </div>
     </div>
   </div>
 </div>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a href="#typography" data-toc="typography">1. Типографіка</a>
+    <a href="#color" data-toc="color">2. Колір</a>
+    <a href="#contrast" data-toc="contrast">3. Контраст і WCAG</a>
+    <a href="#inclusive" data-toc="inclusive">4. Інклюзивність</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
 
-</body>
-</html>
+<main>
+
+  <div class="lit" id="literature">
+    <h2>Література до теми</h2>
+    <ol>
+      <li>Bringhurst R. The Elements of Typographic Style, онлайн-версія. URL: <a href="https://webtypography.net/" target="_blank" rel="noopener">webtypography.net</a> (дата звернення: 23.09.2026).</li>
+      <li>Modular Scale — онлайн-калькулятор типографічної шкали за заданим коефіцієнтом. URL: <a href="https://www.modularscale.com/" target="_blank" rel="noopener">modularscale.com</a> (дата звернення: 23.09.2026).</li>
+      <li>Wathan A., Schoger S. Refactoring UI — розділ про побудову колірної палітри та правило 60/30/10. URL: <a href="https://www.refactoringui.com/" target="_blank" rel="noopener">refactoringui.com</a> (дата звернення: 23.09.2026).</li>
+      <li>Interaction Design Foundation. What is Color in UX Design? URL: <a href="https://ixdf.org/literature/topics/color" target="_blank" rel="noopener">ixdf.org/literature/topics/color</a> (дата звернення: 23.09.2026).</li>
+      <li>Web Content Accessibility Guidelines (WCAG) 2.2. Офіційна специфікація W3C, критерії 1.4.3 і 1.4.11. URL: <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">w3.org/TR/WCAG22</a> (дата звернення: 23.09.2026).</li>
+      <li>WebAIM Contrast Checker. Онлайн-інструмент для перевірки коефіцієнта контрастності пари «текст на фоні». URL: <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener">webaim.org/resources/contrastchecker</a> (дата звернення: 23.09.2026).</li>
+      <li>W3C Web Accessibility Initiative (WAI). Diverse Abilities and Barriers. URL: <a href="https://www.w3.org/WAI/people-use-web/abilities-barriers/" target="_blank" rel="noopener">w3.org/WAI/people-use-web/abilities-barriers</a> (дата звернення: 23.09.2026).</li>
+      <li>Коротенко О. В. Технології електронних видань. Частина 1. Вебдизайн: комп'ютерний практикум. Київ: КПІ ім. Ігоря Сікорського, 2023. 114 с.</li>
+    </ol>
+  </div>
+
+  <!-- ================= 1. ТИПОГРАФІКА ================= -->
+  <section class="topic" id="typography">
+    <div class="topic-head">
+      <span class="topic-num">01</span>
+      <h2>Основи веб-типографіки: шрифтові пари, ієрархія, читабельність</h2>
+    </div>
+
+    <p>У попередніх темах ви будували структуру макета (wireframe) і компоненти інтерфейсу, не звертаючи уваги на те, яким саме шрифтом набрано текст. Ця тема закриває прогалину: типографіка — не «оздоблення» макета, а <b>другий, беззвучний канал ієрархії</b> поруч із розміром і вагою елементів, який ви вже застосовували на wireframe. Неправильно дібраний шрифт — не естетична, а функціональна проблема: текст, набраний занадто дрібним кеглем чи занадто вузьким міжрядковим інтервалом, читають повільніше й із більшою кількістю помилок, незалежно від того, наскільки вдалим є решта макета.</p>
+
+    <p><b>Типографічна шкала (type scale).</b> Розміри заголовків, основного тексту й підписів визначає <b>модульна шкала (modular scale)</b> — послідовність чисел, у якій кожен наступний рівень отримують множенням попереднього на сталий <b>коефіцієнт (ratio)</b>. Практичний, легкий для запам'ятовування набір, яким ви користуватиметеся в наступній практичній роботі: <b>Підпис (Caption) — 12 пт</b>, <b>Основний текст (Body) — 16 пт</b>, <b>Заголовок 2 (H2) — 24 пт</b>, <b>Заголовок 1 (H1) — 36 пт</b> — приблизно кожен рівень у 1,5 раза більший за сусідній. Головне тут не конкретне число, а <b>сталість коефіцієнта</b>: коли розміри підпорядковані одному правилу, а не підібрані «на око» під кожен новий екран, очей одразу зчитує ієрархію. Альтернативний, теж поширений спосіб — узяти за коефіцієнт <b>1,6</b> (число золотого перетину): розмір заголовка тоді дорівнює розміру основного тексту, помноженому на 1,6.</p>
+
+    <p><b>Гарнітура, шрифт, сімейство.</b> У професійній термінології ці три слова не синоніми: <b>гарнітура (typeface)</b> — сімейство накреслень зі спільними стильовими рисами (наприклад, «Helvetica»); <b>шрифт (font)</b> — конкретне накреслення й розмір усередині гарнітури (наприклад, «Helvetica Bold, 24 пт»); <b>сімейство (font family)</b> у CSS — технічна група файлів шрифту, серед якої браузер обирає потрібне накреслення для показу тексту. На практиці гарнітури поділяють на чотири категорії, і кожна несе власний «характер»:</p>
+
+    <ul>
+      <li><b>антиква, з засічками (serif)</b> — Garamond, Times, Bodoni, Didot: класичні «книжкові» шрифти, які читач сприймає як вишукані, професійні й консервативні, часто для заголовків чи довгих текстових полотен (наприклад, лонгрідів);</li>
+      <li><b>гротеск, без засічок (sans-serif)</b> — Helvetica, Verdana, Futura, Arial: нейтральні, читабельні на екрані навіть у дрібних розмірах, асоціюються з раціональністю й сучасністю, типовий вибір для інтерфейсів;</li>
+      <li><b>моноширинні (monospace)</b> — кожен символ однакової ширини, застосовують для коду, даних і таблиць з числами;</li>
+      <li><b>декоративні, акцидентні (display)</b> — Outlaw, Morris: виразні, з характером, але з низькою читабельністю в дрібному розмірі, лише для великих заголовків і коротких написів, ніколи для абзаців основного тексту;</li>
+      <li><b>рукописні (script)</b> — Kuenstler Script, Kauffmann, Brush Script: імітують рукописний текст; використовують економно — в логотипах, заголовках чи на вивісках, ніколи для основного тексту.</li>
+    </ul>
+
+    <p>Дизайнер <b>Роберт Брінгхерст</b> у книзі <b>«Елементи типографічного стилю» («The Elements of Typographic Style»)</b> формулює принцип поєднання шрифтів, який досі лишається робочим стандартом: <b>контраст або гармонія, ніколи щось середнє</b>. Або обидва шрифти належать до однієї родини символів і майже не відрізняються (гармонія), або вони свідомо контрастні — виразний дисплейний шрифт для заголовків і нейтральний текстовий шрифт для основного тексту. Найпоширеніша помилка початківця — поєднати два шрифти, які відрізняються «трохи»: обидва досить схожі, щоб різниця виглядала випадковою, а не навмисною.</p>
+
+    <p><b>Інструменти для підбору пари.</b> Пошук у <b>Google Fonts</b> одразу пропонує рекомендовані пари внизу сторінки обраної гарнітури; спеціалізовані сервіси <b>Font Joy</b>, <b>Designs AI</b> і <b>Fontpair</b> (є однойменний плагін для Figma) підбирають пари автоматично, а в <b>Canva</b> готові пари одразу видно в макеті. Для товщини шрифту тримаються двох полюсів: <b>400–500 (regular, medium)</b> для основного тексту й абзаців, <b>600–900 (bold, black)</b> — лише для того, що свідомо потрібно виділити: заголовка, підзаголовка, ключового слова.</p>
+
+    <div class="callout">Ще один параметр, який варто звіряти під час підбору пари, — <b>х-висота (x-height)</b>: висота рядкових літер без виносних елементів (як у літери «х»). Два шрифти з дуже різною x-height за однакового кегля виглядають неоднаково «важкими» в одному рядку, тому пробні пари завжди перевіряють поруч на реальному тексті проєкту, а не лише за назвою в каталозі шрифтів.</div>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 860 400" role="img" aria-label="Ліворуч — модульна шкала з чотирма сходинками розміру: підпис 12 пунктів, основний текст 16 пунктів, заголовок другого рівня 24 пункти, заголовок першого рівня 36 пунктів, із коефіцієнтами переходу 1,33 і двічі 1,5. Праворуч — два реальні шрифти браузера в однаковому кеглі демонструють різну x-висоту літери «х»">
+        <defs>
+          <marker id="arrow-scale" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <text x="20" y="26" font-size="12" font-weight="700" class="svg-muted" font-family="JetBrains Mono, monospace" letter-spacing="0.04em">МОДУЛЬНА ШКАЛА</text>
+        <line x1="30" y1="352" x2="500" y2="352" class="svg-muted" stroke="currentColor" stroke-width="1.4"/>
+
+        <rect x="55" y="325.6" width="66" height="26.4" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/>
+        <text x="88" y="308" text-anchor="middle" font-size="12" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">12 пт</text>
+        <text x="88" y="372" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">Caption</text>
+
+        <text x="150" y="320" text-anchor="middle" font-size="11" fill="var(--accent-ink)" font-family="JetBrains Mono, monospace">×1,33</text>
+        <line x1="128" y1="336" x2="172" y2="336" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arrow-scale)"/>
+
+        <rect x="180" y="316.8" width="66" height="35.2" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/>
+        <text x="213" y="299" text-anchor="middle" font-size="12" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">16 пт</text>
+        <text x="213" y="372" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">Body</text>
+
+        <text x="275" y="305" text-anchor="middle" font-size="11" fill="var(--accent-ink)" font-family="JetBrains Mono, monospace">×1,5</text>
+        <line x1="253" y1="322" x2="297" y2="322" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arrow-scale)"/>
+
+        <rect x="305" y="299.2" width="66" height="52.8" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.6"/>
+        <text x="338" y="282" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-ink)" font-family="Manrope, sans-serif">24 пт</text>
+        <text x="338" y="372" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">H2</text>
+
+        <text x="400" y="278" text-anchor="middle" font-size="11" fill="var(--accent-ink)" font-family="JetBrains Mono, monospace">×1,5</text>
+        <line x1="378" y1="296" x2="422" y2="296" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#arrow-scale)"/>
+
+        <rect x="430" y="272.8" width="66" height="79.2" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.8"/>
+        <text x="463" y="256" text-anchor="middle" font-size="13" font-weight="800" fill="var(--accent-ink)" font-family="Manrope, sans-serif">36 пт</text>
+        <text x="463" y="372" text-anchor="middle" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">H1</text>
+
+        <line x1="560" y1="36" x2="560" y2="352" class="svg-line" stroke="currentColor" stroke-width="1.4"/>
+
+        <text x="600" y="26" font-size="12" font-weight="700" class="svg-muted" font-family="JetBrains Mono, monospace" letter-spacing="0.04em">X-ВИСОТА: ЖИВИЙ ПРИКЛАД</text>
+        <text x="600" y="50" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">той самий кегль (90 пт), різні шрифти браузера</text>
+
+        <line x1="600" y1="150" x2="820" y2="150" class="svg-line" stroke="currentColor" stroke-width="1"/>
+        <line x1="600" y1="150" x2="820" y2="150" stroke="var(--test)" stroke-width="1" stroke-dasharray="3 3" transform="translate(0,-46)"/>
+        <text x="600" y="188" font-size="80" font-family="Georgia, 'Times New Roman', serif" class="svg-ink">x</text>
+        <text x="600" y="215" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">Georgia (серифний, менша x-висота)</text>
+
+        <line x1="600" y1="340" x2="820" y2="340" class="svg-line" stroke="currentColor" stroke-width="1"/>
+        <line x1="600" y1="340" x2="820" y2="340" stroke="var(--test)" stroke-width="1" stroke-dasharray="3 3" transform="translate(0,-58)"/>
+        <text x="600" y="378" font-size="80" font-family="Verdana, Tahoma, sans-serif" class="svg-ink">x</text>
+        <text x="600" y="394" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">Verdana (без засічок, більша x-висота)</text>
+      </svg>
+      <figcaption>Рис. 1. Модульна шкала типографічної ієрархії (коефіцієнти ×1,33 і ×1,5) і живе порівняння x-висоти: браузер малює обидва символи «x» реальними системними шрифтами того самого кегля.</figcaption>
+    </figure>
+
+    <p><b>Читабельність (readability).</b> Три практичні правила, які впливають на швидкість читання сильніше, ніж вибір самого шрифту: <b>довжина рядка</b> — оптимально 45–75 символів (близько 66), довший рядок змушує око «губити» початок наступного рядка; <b>міжрядковий інтервал (line-height)</b> — 1,4–1,6 від розміру шрифту для основного тексту (140–160%), затісний інтервал зливає рядки, занадто широкий розриває їх на окремі слова; <b>вирівнювання</b> — вирівнювання по ширині (justify) без автоматичного перенесення слів на вебі створює нерівні «прогалини» між словами, тому для інтерфейсів безпечніше вирівнювання по лівому краю. Практичне правило для інтерліньяжу, яким користуються верстальники: помножте висоту рядкових літер (x-height) приблизно на 1,6 — вийде комфортний міжрядковий інтервал, що балансує текст і «повітря» сторінки.</p>
+
+    <p>Окремо для веб-середовища: <b>змінні шрифти (variable fonts)</b> дозволяють плавно змінювати насиченість і ширину літер в межах одного файлу шрифту замість завантаження окремого файлу на кожне накреслення, а властивість <b>font-display: swap</b> показує текст резервним системним шрифтом, поки основний шрифт довантажується, — це запобігає «невидимому тексту» на повільному з'єднанні. Обидві деталі поки що не знадобляться в самій Figma, але стануть важливими вже в темі 6 цього курсу, коли типографіку потрібно буде перенести в реальний HTML/CSS-код.</p>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Типографічна ієрархія<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Два макети використовують той самий шрифт і той самий розмір заголовка (24 пт), але в одному з них рядки довжиною близько 65 символів, а в іншому — розтягнуті на всю ширину екрана, близько 140 символів. Який принцип читабельності це порушує?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button">x-висота — довгий рядок змінює висоту рядкових літер шрифту</button>
+        <button class="test-opt" type="button">довжина рядка — оптимальні 45–75 символів; довший рядок змушує око «губити» початок наступного рядка</button>
+        <button class="test-opt" type="button">модульна шкала — заголовок і рядок мають бути в однаковому коефіцієнті</button>
+        <button class="test-opt" type="button">контраст або гармонія — правило стосується лише поєднання двох різних шрифтів</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. КОЛІР ================= -->
+  <section class="topic" id="color">
+    <div class="topic-head">
+      <span class="topic-num">02</span>
+      <h2>Теорія кольору для інтерфейсів, психологія кольору</h2>
+    </div>
+
+    <p>У Figma колір найчастіше задають у форматі <b>HEX</b> (наприклад, #1F6FEB) — шестизначний код, зрозумілий будь-якому браузеру й розробнику; вісім символів (#RRGGBBAA) додають ще й прозорість через альфа-канал. Крім HEX, панель кольору Figma показує ще чотири моделі: <b>RGB</b> (Red-Green-Blue, значення 0–255), <b>HSB</b> і <b>HSL</b> (Hue — відтінок від 0° до 360° на колірному колі, Saturation — насиченість, Brightness чи Lightness — світлість) — обидві зручні, щоб побудувати кілька узгоджених відтінків одного кольору, лишивши Hue незмінним, — і <b>CSS</b> (rgba), готовий вставити прямо в код. Перемикання між моделями впливає лише на те, як Figma показує число, а не на сам колір.</p>
+
+    <p>Класичне колірне коло дає п'ять готових схем поєднання кольорів: <b>монохроматична (monochromatic)</b> — один колір у різних відтінках і тонах, найбезпечніший вибір, бо в ній практично неможливо «промахнутися»; <b>аналогова (analogous)</b> — три кольори, розташовані поруч на колі, спокійна, гармонійна палітра без різких переходів, зручна там, де високий контраст не потрібен (наприклад, фон сторінки чи банер); <b>комплементарна (complementary)</b> — два кольори з протилежних точок кола, максимальний контраст, підходить для акценту на одній дії; <b>тріадна (triadic)</b> — три кольори на однаковій відстані одне від одного, збалансований контраст, але важче стримати в межах «одного бренду», якщо застосувати всі три з однаковою вагою; <b>тетрадна, подвійно комплементарна (tetradic)</b> — чотири кольори, дві комплементарні пари одразу, найскладніша для балансування схема, тому її радять лише досвідченим дизайнерам.</p>
+
+    <p>Колірне коло також ділять на <b>теплі кольори</b> (від червоного до жовтого — асоціюються з затишком і енергією) і <b>холодні кольори</b> (від синього до зеленого й фіолетового — асоціюються зі спокоєм і відстороненістю); більшість вдалих палітр свідомо балансують теплі й холодні тони, а не будують сторінку лише на одному полюсі.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 920 610" role="img" aria-label="П'ять колірних кіл однакового складу з дванадцяти відтінків: монохроматична схема з одним виділеним відтінком і трьома тонами під колом, аналогова з трьома сусідніми точками, комплементарна з двома протилежними точками, тріадна з трьома точками на рівній відстані та тетрадна з чотирма точками у формі ромба">
+        <defs>
+          <g id="hue-dots">
+            <circle cx="0" cy="-70" r="7" fill="hsl(0,70%,55%)"/>
+            <circle cx="35" cy="-60.6" r="7" fill="hsl(30,70%,55%)"/>
+            <circle cx="60.6" cy="-35" r="7" fill="hsl(60,70%,55%)"/>
+            <circle cx="70" cy="0" r="7" fill="hsl(90,70%,55%)"/>
+            <circle cx="60.6" cy="35" r="7" fill="hsl(120,70%,55%)"/>
+            <circle cx="35" cy="60.6" r="7" fill="hsl(150,70%,55%)"/>
+            <circle cx="0" cy="70" r="7" fill="hsl(180,70%,55%)"/>
+            <circle cx="-35" cy="60.6" r="7" fill="hsl(210,70%,55%)"/>
+            <circle cx="-60.6" cy="35" r="7" fill="hsl(240,70%,55%)"/>
+            <circle cx="-70" cy="0" r="7" fill="hsl(270,70%,55%)"/>
+            <circle cx="-60.6" cy="-35" r="7" fill="hsl(300,70%,55%)"/>
+            <circle cx="-35" cy="-60.6" r="7" fill="hsl(330,70%,55%)"/>
+          </g>
+        </defs>
+
+        <!-- Монохроматична -->
+        <circle cx="160" cy="170" r="70" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+        <use href="#hue-dots" transform="translate(160,170)"/>
+        <circle cx="220.6" cy="135" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <text x="160" y="262" text-anchor="middle" font-size="13.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Монохроматична</text>
+        <text x="160" y="280" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">1 колір, різні тони</text>
+        <rect x="123" y="292" width="22" height="22" fill="hsl(60,60%,78%)"/>
+        <rect x="149" y="292" width="22" height="22" fill="hsl(60,65%,55%)"/>
+        <rect x="175" y="292" width="22" height="22" fill="hsl(60,70%,32%)"/>
+
+        <!-- Аналогова -->
+        <circle cx="500" cy="170" r="70" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+        <use href="#hue-dots" transform="translate(500,170)"/>
+        <polyline points="560.6,205 535,230.6 500,240" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="2 4"/>
+        <circle cx="560.6" cy="205" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="535" cy="230.6" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="500" cy="240" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <text x="500" y="262" text-anchor="middle" font-size="13.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Аналогова</text>
+        <text x="500" y="280" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">3 сусідні кольори</text>
+
+        <!-- Комплементарна -->
+        <circle cx="840" cy="170" r="70" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+        <use href="#hue-dots" transform="translate(840,170)"/>
+        <line x1="805" y1="230.6" x2="875" y2="109.4" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="2 4"/>
+        <circle cx="805" cy="230.6" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="875" cy="109.4" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <text x="840" y="262" text-anchor="middle" font-size="13.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Комплементарна</text>
+        <text x="840" y="280" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">максимум контрасту</text>
+
+        <!-- Тріадна -->
+        <circle cx="330" cy="460" r="70" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+        <use href="#hue-dots" transform="translate(330,460)"/>
+        <polygon points="330,390 390.6,495 269.4,495" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="2 4"/>
+        <circle cx="330" cy="390" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="390.6" cy="495" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="269.4" cy="495" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <text x="330" y="552" text-anchor="middle" font-size="13.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Тріадна</text>
+        <text x="330" y="570" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">3 кольори на рівній відстані</text>
+
+        <!-- Тетрадна -->
+        <circle cx="670" cy="460" r="70" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+        <use href="#hue-dots" transform="translate(670,460)"/>
+        <polygon points="670,390 740,460 670,530 600,460" fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-dasharray="2 4"/>
+        <circle cx="670" cy="390" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="740" cy="460" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="670" cy="530" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="600" cy="460" r="11" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <text x="670" y="552" text-anchor="middle" font-size="13.5" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Тетрадна</text>
+        <text x="670" y="570" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">2 пари навпроти, найскладніша</text>
+      </svg>
+      <figcaption>Рис. 2. П'ять схем поєднання кольорів на колірному колі: монохроматична, аналогова, комплементарна, тріадна і тетрадна.</figcaption>
+    </figure>
+
+    <p>Крім відтінку (Hue), для практичної роботи з палітрою важливі ще два поняття: <b>відтінок (shade)</b> — колір, змішаний із чорним, дає глибші й драматичніші варіанти; <b>світлий тон (tint)</b> — колір, змішаний із білим, дає м'якіші, менш насичені варіанти, корисні для балансування яскравих плям; <b>приглушений тон (tone)</b> — колір, змішаний із сірим, дає притлумлені, менш очевидні варіанти. Саме цими трьома перетвореннями будують шкалу відтінків одного кольору (Color Style із кількома кроками світлості в Figma), а не добирають кожен новий відтінок «на око».</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 860 430" role="img" aria-label="Три ряди прямокутників демонструють shade (додавання чорного, глибші відтінки), tint (додавання білого, світліші відтінки) і tone (додавання сірого, приглушені відтінки) того самого синього кольору. Нижче — три колонки смуг: Hue (зміна відтінку), Saturation (зміна насиченості), Brightness (зміна яскравості)">
+        <text x="60" y="52" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Shade (+ чорний)</text>
+        <rect x="220" y="30" width="60" height="40" fill="hsl(220,70%,60%)"/>
+        <rect x="284" y="30" width="60" height="40" fill="hsl(220,70%,48%)"/>
+        <rect x="348" y="30" width="60" height="40" fill="hsl(220,70%,36%)"/>
+        <rect x="412" y="30" width="60" height="40" fill="hsl(220,70%,24%)"/>
+        <rect x="476" y="30" width="60" height="40" fill="hsl(220,70%,12%)"/>
+        <text x="600" y="54" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">глибші, драматичніші</text>
+
+        <text x="60" y="112" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Tint (+ білий)</text>
+        <rect x="220" y="90" width="60" height="40" fill="hsl(220,70%,60%)"/>
+        <rect x="284" y="90" width="60" height="40" fill="hsl(220,55%,72%)"/>
+        <rect x="348" y="90" width="60" height="40" fill="hsl(220,45%,82%)"/>
+        <rect x="412" y="90" width="60" height="40" fill="hsl(220,35%,90%)"/>
+        <rect x="476" y="90" width="60" height="40" fill="hsl(220,25%,96%)"/>
+        <text x="600" y="114" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">світліші, м'якіші</text>
+
+        <text x="60" y="172" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Tone (+ сірий)</text>
+        <rect x="220" y="150" width="60" height="40" fill="hsl(220,70%,55%)"/>
+        <rect x="284" y="150" width="60" height="40" fill="hsl(220,50%,55%)"/>
+        <rect x="348" y="150" width="60" height="40" fill="hsl(220,32%,55%)"/>
+        <rect x="412" y="150" width="60" height="40" fill="hsl(220,16%,55%)"/>
+        <rect x="476" y="150" width="60" height="40" fill="hsl(220,4%,55%)"/>
+        <text x="600" y="174" font-size="11" class="svg-muted" font-family="Manrope, sans-serif">приглушені</text>
+
+        <line x1="60" y1="210" x2="800" y2="210" class="svg-line" stroke="currentColor" stroke-width="1"/>
+
+        <text x="180" y="240" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Hue</text>
+        <rect x="80" y="256" width="200" height="26" fill="hsl(0,80%,50%)"/>
+        <rect x="80" y="284" width="200" height="26" fill="hsl(60,80%,50%)"/>
+        <rect x="80" y="312" width="200" height="26" fill="hsl(120,70%,45%)"/>
+        <rect x="80" y="340" width="200" height="26" fill="hsl(200,80%,50%)"/>
+        <rect x="80" y="368" width="200" height="26" fill="hsl(280,70%,50%)"/>
+        <text x="180" y="400" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">позиція на колірному колі</text>
+
+        <text x="440" y="240" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Saturation</text>
+        <rect x="340" y="256" width="200" height="26" fill="hsl(0,90%,45%)"/>
+        <rect x="340" y="284" width="200" height="26" fill="hsl(0,70%,45%)"/>
+        <rect x="340" y="312" width="200" height="26" fill="hsl(0,50%,45%)"/>
+        <rect x="340" y="340" width="200" height="26" fill="hsl(0,30%,45%)"/>
+        <rect x="340" y="368" width="200" height="26" fill="hsl(0,10%,45%)"/>
+        <text x="440" y="400" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">чистота кольору</text>
+
+        <text x="700" y="240" text-anchor="middle" font-size="13" font-weight="700" class="svg-ink" font-family="Manrope, sans-serif">Brightness</text>
+        <rect x="600" y="256" width="200" height="26" fill="hsl(0,70%,80%)"/>
+        <rect x="600" y="284" width="200" height="26" fill="hsl(0,70%,65%)"/>
+        <rect x="600" y="312" width="200" height="26" fill="hsl(0,70%,50%)"/>
+        <rect x="600" y="340" width="200" height="26" fill="hsl(0,70%,35%)"/>
+        <rect x="600" y="368" width="200" height="26" fill="hsl(0,70%,20%)"/>
+        <text x="700" y="400" text-anchor="middle" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">кількість світла в кольорі</text>
+      </svg>
+      <figcaption>Рис. 3. Побудова відтінків одного кольору (shade/tint/tone) і три складові моделі HSB: відтінок (Hue), насиченість (Saturation), яскравість (Brightness).</figcaption>
+    </figure>
+
+    <p><b>Правило 60/30/10.</b> Практичну палітру інтерфейсу зручно будувати за правилом, запозиченим з інтер'єрного дизайну: <b>60%</b> площі екрана — <b>нейтральний колір (Neutral)</b> — фон, поля, роздільники (темно-сірий, чорний, сірий, бежевий і всі відтінки білого — понять «колір без кольору»); <b>30%</b> — <b>основний колір бренду (Primary)</b> — застосовують у «гарячих місцях»: заголовки, іконки переваг, головні кнопки; <b>10%</b> — <b>акцентний колір (Accent)</b>, вузька, дуже помітна пляма лише для найважливішої дії на екрані. Окремо, незалежно від кольору бренду, будують групу <b>семантичних кольорів</b> — <b>Success</b> (успіх, зазвичай зелений), <b>Warning</b> (попередження, жовтий чи помаранчевий), <b>Critical</b> (помилка, червоний) — вони завжди позначають той самий стан незалежно від того, який Primary-колір обрала конкретна команда. Підібрати чи перевірити готову палітру допомагають онлайн-інструменти <b>Adobe Color Wheel</b>, <b>Canva Color Wheel</b>, <b>Color Space</b> і <b>Palleton</b>.</p>
+
+    <div class="callout"><b>Психологія кольору — обережно з узагальненнями.</b> Дослідники UX-дизайну (зокрема, оглядова стаття Interaction Design Foundation про колір у UX) наголошують: асоціації кольору культурно зумовлені й не є універсальним «кодом». Червоний на Заході частіше читають як тривогу чи заборону, але в українській традиції той самий колір історично пов'язаний із красою та святковістю («червона калина», весільний рушник); у Китаї червоний символізує удачу. Тому колір ніколи не варто обирати лише «бо він означає X» — значення завжди перевіряють у контексті конкретної аудиторії продукту, а не копіюють зі списку в інтернеті.</div>
+
+    <p>Практичний наслідок для інтерфейсу — принцип, до якого лекція повернеться в розділі 4: колір ніколи не єдиний носій інформації. Близько <b>8% чоловіків</b> мають ту чи іншу форму дальтонізму (найчастіше — дейтеранопію, знижену чутливість до зеленого), тому статус «Помилка» чи «Успіх» завжди дублюють іконкою або підписом, а не лише зміною кольору тла поля.</p>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Типографіка й колір власного проєкту<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>У файлі <b>ПР4_Прізвище</b> у Figma на сторінці «Типографіка і колір» (створеній у практичній роботі цієї теми) намалюйте (<span class="kbd">T</span>) чотири текстові написи з реальним текстом свого проєкту розмірами шкали з розділу 1: 36 пт, 24 пт, 16 пт, 12 пт.</li>
+        <li>Визначте, якою парою шрифтів ви скористаєтеся — дисплейний для заголовків і текстовий для основного тексту, за принципом Брінгхерста «контраст або гармонія»; застосуйте обрану пару до чотирьох написів із кроку 1.</li>
+        <li>Намалюйте (<span class="kbd">R</span>) чотири кольорові прямокутники 60×60 і на око розподіліть їх площу за правилом 60/30/10: один явно більший за інші (Neutral), один середній (Primary), один найменший і найяскравіший (Accent).</li>
+        <li>У документі <b>Лекція5_Прізвище</b> на Google Диску (у папці <b>Вебдизайн_Прізвище → Лекції</b>) одним реченням поясніть, чому ви обрали саме комплементарну, аналогову чи тріадну схему для свого Primary й Accent кольорів.</li>
+      </ol>
+      <div class="box-close">Відкрийте доступ до документа Лекція5_Прізвище («Будь-хто з посиланням» → «Читач») і додайте посилання в Classroom.</div>
+    </div>
+  </section>
+
+  <!-- ================= 3. КОНТРАСТ І WCAG ================= -->
+  <section class="topic" id="contrast">
+    <div class="topic-head">
+      <span class="topic-num">03</span>
+      <h2>Контрастність та вимоги WCAG 2.2</h2>
+    </div>
+
+    <p>Барвиста, ретельно підібрана палітра з розділу 2 марна, якщо текст на ній неможливо прочитати. <b>Коефіцієнт контрастності (contrast ratio)</b> — число від <b>1:1</b> (колір на собі самому, читати неможливо) до <b>21:1</b> (чорний на білому, максимальний контраст); обчислюють його за формулою з <b>відносної яскравості (relative luminance)</b> обох кольорів, визначеною в специфікації <b>WCAG (Web Content Accessibility Guidelines) версії 2.2</b>, яку розробляє й підтримує консорціум W3C.</p>
+
+    <p><b>Критерій 1.4.3 (Contrast Minimum)</b> рівня <b>AA</b> — мінімальний обов'язковий рівень для більшості комерційних продуктів — вимагає <b>4,5:1</b> для звичайного тексту й <b>3:1</b> для великого тексту (від 18 пт, чи від 14 пт напівжирного). <b>Критерій 1.4.11 (Non-text Contrast)</b> поширює поріг <b>3:1</b> і на графічні елементи інтерфейсу — контури полів вводу, іконки, межі кнопок, — які раніше часто випадали з уваги, бо «це не текст». Рівень <b>AAA</b> — суворіший необов'язковий стандарт (7:1 для звичайного тексту), типовий для урядових і медичних сервісів, які працюють з особливо вразливими користувачами.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 320" role="img" aria-label="Шкала коефіцієнта контрастності від 1:1 до 21:1 з трьома зонами: провал нижче 3:1, прохід лише для великого тексту між 3:1 і 4,5:1, прохід для звичайного тексту AA від 4,5:1, і позначкою порогу AAA на рівні 7:1. Зверху два приклади пари «текст на фоні»: невдала пара близько 2,8:1 і вдала пара близько 5,2:1">
+        <defs>
+          <marker id="arrow-contrast" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <rect x="60" y="230" width="281.4" height="26" fill="var(--fail-tint)"/>
+        <rect x="341.4" y="230" width="104.1" height="26" fill="var(--test-tint)"/>
+        <rect x="445.5" y="230" width="394.5" height="26" fill="var(--task-tint)"/>
+
+        <line x1="60" y1="256" x2="850" y2="256" class="svg-muted" stroke="currentColor" stroke-width="1.4" marker-end="url(#arrow-contrast)"/>
+
+        <line x1="60" y1="222" x2="60" y2="264" stroke="var(--ink-muted)" stroke-width="1.4"/>
+        <text x="60" y="280" text-anchor="middle" font-size="12" class="svg-muted" font-family="JetBrains Mono, monospace">1:1</text>
+
+        <line x1="341.4" y1="222" x2="341.4" y2="264" stroke="var(--test)" stroke-width="2"/>
+        <text x="341.4" y="212" text-anchor="middle" font-size="12" font-weight="700" fill="var(--test-ink)" font-family="JetBrains Mono, monospace">3:1</text>
+        <text x="341.4" y="280" text-anchor="middle" font-size="12" class="svg-muted" font-family="JetBrains Mono, monospace">3:1</text>
+
+        <line x1="445.5" y1="222" x2="445.5" y2="264" stroke="var(--task)" stroke-width="2"/>
+        <text x="445.5" y="212" text-anchor="middle" font-size="12" font-weight="700" fill="var(--task-ink)" font-family="JetBrains Mono, monospace">4,5:1</text>
+        <text x="445.5" y="280" text-anchor="middle" font-size="12" class="svg-muted" font-family="JetBrains Mono, monospace">4,5:1</text>
+
+        <line x1="558.4" y1="222" x2="558.4" y2="264" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="3 3"/>
+        <text x="558.4" y="212" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent-ink)" font-family="JetBrains Mono, monospace">7:1 AAA</text>
+
+        <line x1="840" y1="222" x2="840" y2="264" stroke="var(--ink-muted)" stroke-width="1.4"/>
+        <text x="840" y="280" text-anchor="middle" font-size="12" class="svg-muted" font-family="JetBrains Mono, monospace">21:1</text>
+
+        <text x="150" y="300" text-anchor="middle" font-size="10.5" fill="var(--fail)" font-family="Manrope, sans-serif" font-weight="700">FAIL</text>
+        <text x="393" y="300" text-anchor="middle" font-size="10.5" fill="var(--test-ink)" font-family="Manrope, sans-serif" font-weight="700">лише великий текст</text>
+        <text x="640" y="300" text-anchor="middle" font-size="10.5" fill="var(--task-ink)" font-family="Manrope, sans-serif" font-weight="700">AA · звичайний текст</text>
+
+        <line x1="323.6" y1="70" x2="323.6" y2="222" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="2 4"/>
+        <rect x="330" y="42" width="118" height="46" rx="8" fill="var(--ink-muted)"/>
+        <text x="345" y="72" font-size="20" font-weight="700" fill="#B9BECC" font-family="Manrope, sans-serif">Aa</text>
+        <text x="452" y="60" font-size="12.5" font-weight="700" fill="var(--fail)" font-family="Manrope, sans-serif">2,8:1 — Fail ✗</text>
+        <text x="452" y="76" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">сірий текст на сірому тлі</text>
+
+        <line x1="482.5" y1="130" x2="482.5" y2="222" stroke="var(--task)" stroke-width="1.2" stroke-dasharray="2 4"/>
+        <rect x="490" y="102" width="118" height="46" rx="8" fill="var(--ink)"/>
+        <text x="505" y="132" font-size="20" font-weight="700" fill="var(--surface)" font-family="Manrope, sans-serif">Aa</text>
+        <text x="612" y="120" font-size="12.5" font-weight="700" fill="var(--task-ink)" font-family="Manrope, sans-serif">5,2:1 — Pass ✓</text>
+        <text x="612" y="136" font-size="10.5" class="svg-muted" font-family="Manrope, sans-serif">темний текст на світлому тлі</text>
+      </svg>
+      <figcaption>Рис. 4. Коефіцієнт контрастності на шкалі 1:1–21:1 із порогами WCAG 2.2 та прикладами пар, що не проходять і проходять перевірку.</figcaption>
+    </figure>
+
+    <p>Перевіряють пари «текст на фоні» інструментом <b>WebAIM Contrast Checker</b> — вводять HEX-код тексту й HEX-код фону, і сторінка одразу показує коефіцієнт і позначки «Pass» / «Fail» окремо для звичайного й великого тексту. Якщо пара не проходить перевірку, є лише два чесні рішення: <b>затемнити чи освітлити</b> один з двох кольорів (найчастіше — текст, а не фон, щоб не ламати всю палітру), або <b>не використовувати</b> цю пару разом узагалі — «зменшити прозорість тексту, щоб виглядало акуратніше» ніколи не є прийнятним виправленням, бо воно ще сильніше знижує контраст.</p>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Пороги WCAG 2.2<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Напис на кнопці головної дії набрано 16-пунктовим звичайним (не напівжирним) шрифтом. WebAIM Contrast Checker показує коефіцієнт контрастності 3,8:1. Чи пройде ця пара перевірку WCAG 2.2 рівня AA?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button">так, 3,8:1 більше за поріг 3:1 для великого тексту</button>
+        <button class="test-opt" type="button">ні: 16 пт без напівжирного накреслення — це звичайний текст, для нього поріг 4,5:1, а не 3:1</button>
+        <button class="test-opt" type="button">так, будь-який коефіцієнт вище 1:1 вважається прийнятним для кнопок</button>
+        <button class="test-opt" type="button">перевірка не потрібна: кнопки підпадають лише під критерій 1.4.11, а не 1.4.3</button>
+        <div class="test-feedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 4. ІНКЛЮЗИВНІСТЬ ================= -->
+  <section class="topic" id="inclusive">
+    <div class="topic-head">
+      <span class="topic-num">04</span>
+      <h2>Основи інклюзивного дизайну для користувачів з особливими потребами</h2>
+    </div>
+
+    <p>Контрастність із розділу 3 — лише одна з вимог ширшого стандарту WCAG, який спирається на чотири принципи, відомі за абревіатурою <b>POUR</b>: <b>Perceivable (сприйнятність)</b> — інформацію можна сприйняти хоча б одним органом чуття (текстова альтернатива для зображень, субтитри для відео); <b>Operable (керованість)</b> — усі функції доступні без миші, лише клавіатурою; <b>Understandable (зрозумілість)</b> — текст і поведінка інтерфейсу передбачувані й не потребують спеціальних знань; <b>Robust (надійність)</b> — розмітка коректно працює з допоміжними технологіями, зокрема програмами читання з екрана (screen readers).</p>
+
+    <p>POUR формулює абстрактні принципи, але за ними стоять конкретні групи користувачів, для яких «незручно» означає «неможливо»:</p>
+    <ul>
+      <li><b>порушення зору</b> — від зниженого зору (потрібен масштаб інтерфейсу до 200% без втрати функціональності) до повної сліпоти (весь інтерфейс проговорює screen reader, тому кожне зображення потребує текстової альтернативи — атрибута <b>alt</b>) і дальтонізму (розділ 2: статус ніколи не позначають лише кольором);</li>
+      <li><b>порушення слуху</b> — відео потребує субтитрів чи повної текстової розшифровки, а важливі сповіщення не можуть покладатися лише на звуковий сигнал;</li>
+      <li><b>порушення моторики</b> — керування лише клавіатурою (кнопка Tab повинна обходити всі інтерактивні елементи в логічному порядку, з видимим індикатором фокуса) і достатній розмір цілі дотику: мінімум <b>44×44 пікселі</b> для кнопки на сенсорному екрані, щоб людина з тремором рук чи обмеженою дрібною моторикою влучала в ціль з першого разу;</li>
+      <li><b>когнітивні особливості</b> — просте, послідовне формулювання без жаргону, стала структура навігації від екрана до екрана, відсутність жорстких лімітів часу на заповнення форми (або можливість цей ліміт продовжити) і повага до системної настройки <b>«Зменшена анімація» (prefers-reduced-motion)</b> для людей із вестибулярними розладами, яких різкий рух чи паралакс можуть довести до нудоти чи запаморочення.</li>
+    </ul>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 860 580" role="img" aria-label="Зверху — чотири картки принципів WCAG: Perceivable, Operable, Understandable, Robust, кожна зі спрощеною піктограмою. Знизу — порівняння двох цілей дотику: квадрат 24 на 24 пікселі, у який кружечок пальця не вміщується, і квадрат 44 на 44 пікселі, який відповідає мінімуму WCAG і вміщує кружечок пальця">
+        <g font-family="Manrope, sans-serif">
+          <rect x="40" y="30" width="368" height="150" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="90" cy="80" r="22" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+          <circle cx="90" cy="80" r="8" fill="var(--accent)"/>
+          <text x="128" y="76" font-size="14" font-weight="700" class="svg-ink">P · Perceivable</text>
+          <text x="128" y="96" font-size="11.5" class="svg-muted">Сприйнятність</text>
+          <text x="70" y="140" font-size="11.5" class="svg-muted">alt-текст для зображень,</text>
+          <text x="70" y="158" font-size="11.5" class="svg-muted">субтитри для відео</text>
+
+          <rect x="452" y="30" width="368" height="150" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6"/>
+          <rect x="480" y="66" width="60" height="34" rx="5" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+          <rect x="488" y="74" width="8" height="8" rx="1.5" fill="var(--accent)"/>
+          <rect x="500" y="74" width="8" height="8" rx="1.5" fill="var(--accent)"/>
+          <rect x="512" y="74" width="8" height="8" rx="1.5" fill="var(--accent)"/>
+          <rect x="488" y="86" width="32" height="6" rx="1.5" fill="var(--accent)"/>
+          <text x="540" y="76" font-size="14" font-weight="700" class="svg-ink">O · Operable</text>
+          <text x="540" y="96" font-size="11.5" class="svg-muted">Керованість</text>
+          <text x="482" y="140" font-size="11.5" class="svg-muted">повна навігація Tab,</text>
+          <text x="482" y="158" font-size="11.5" class="svg-muted">видимий фокус</text>
+
+          <rect x="40" y="210" width="368" height="150" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="90" cy="260" r="22" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+          <path d="M80,264 L88,272 L102,252" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="128" y="256" font-size="14" font-weight="700" class="svg-ink">U · Understandable</text>
+          <text x="128" y="276" font-size="11.5" class="svg-muted">Зрозумілість</text>
+          <text x="70" y="320" font-size="11.5" class="svg-muted">простий текст без жаргону,</text>
+          <text x="70" y="338" font-size="11.5" class="svg-muted">без жорстких лімітів часу</text>
+
+          <rect x="452" y="210" width="368" height="150" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="540" cy="260" r="23" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+          <circle cx="540" cy="260" r="8" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+          <line x1="540" y1="231" x2="540" y2="238" stroke="var(--accent)" stroke-width="2.4"/>
+          <line x1="540" y1="282" x2="540" y2="289" stroke="var(--accent)" stroke-width="2.4"/>
+          <line x1="511" y1="260" x2="518" y2="260" stroke="var(--accent)" stroke-width="2.4"/>
+          <line x1="562" y1="260" x2="569" y2="260" stroke="var(--accent)" stroke-width="2.4"/>
+          <text x="540" y="256" font-size="14" font-weight="700" class="svg-ink" text-anchor="start" dx="42">R · Robust</text>
+          <text x="540" y="276" font-size="11.5" class="svg-muted" text-anchor="start" dx="42">Надійність</text>
+          <text x="482" y="320" font-size="11.5" class="svg-muted">коректна розмітка для</text>
+          <text x="482" y="338" font-size="11.5" class="svg-muted">програм читання з екрана</text>
+        </g>
+
+        <text x="40" y="400" font-size="13" font-weight="700" class="svg-muted" font-family="JetBrains Mono, monospace" letter-spacing="0.04em">МІНІМАЛЬНА ЦІЛЬ ДОТИКУ</text>
+
+        <g font-family="Manrope, sans-serif">
+          <text x="260" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="var(--fail)">24 × 24 пікселі — замало</text>
+          <rect x="212" y="440" width="96" height="96" rx="8" fill="none" stroke="var(--fail)" stroke-width="2.4"/>
+          <circle cx="260" cy="488" r="80" fill="var(--fail)" opacity="0.14"/>
+          <text x="260" y="558" text-anchor="middle" font-size="10.5" class="svg-muted">кружечок пальця не вміщується</text>
+
+          <text x="568" y="425" text-anchor="middle" font-size="12" font-weight="700" fill="var(--task-ink)">44 × 44 пікселі — мінімум WCAG</text>
+          <rect x="480" y="440" width="176" height="176" rx="12" fill="var(--task-tint)" stroke="var(--task)" stroke-width="2.4"/>
+          <circle cx="568" cy="528" r="80" fill="var(--task)" opacity="0.18"/>
+          <text x="568" y="558" text-anchor="middle" font-size="10.5" class="svg-muted">палець впевнено влучає в ціль</text>
+        </g>
+      </svg>
+      <figcaption>Рис. 5. Чотири принципи WCAG (POUR) і мінімальний розмір цілі дотику 44×44 пікселі для людей з обмеженою моторикою.</figcaption>
+    </figure>
+
+    <p>Дизайнер, що працює в Figma, перевіряє частину цих вимог ще на етапі макета: плагіни <b>Stark</b> чи <b>A11y — Color Contrast Checker</b> рахують контраст прямо на полотні без перемикання у браузер; розмір інтерактивних елементів перевіряють тим самим інструментом X/Y/W/H, яким ви користувалися в темі 3; а логічний порядок фокуса для клавіатурної навігації планують уже на етапі user flow з теми 2, а не додають в останній момент перед здачею проєкту.</p>
+
+    <div class="callout"><b>Де це знадобиться.</b> Інклюзивний дизайн — не «доповнення для меншості», а юридична вимога у багатьох країнах (зокрема, в межах Директиви ЄС про доступність, до якої Україна поступово гармонізує законодавство) і стандартна вимога технічного завдання в переважній більшості сучасних продуктових команд: макет, який не проходить базовий аудит доступності, найчастіше повертають дизайнеру на доопрацювання ще до передачі розробнику.</div>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> Міні-аудит доступності готового екрана<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Відкрийте файл <b>ПР4_Прізвище</b> у Figma, перейдіть на сторінку з практичної роботи №6 (бібліотека UI-компонентів) і виберіть один екземпляр кнопки.</li>
+        <li>Виміряйте розмір кнопки (панель «Дизайн», поля W і H): якщо хоча б один розмір менший за 44 пікселі, збільште внутрішні відступи (padding) в Auto Layout, доки кнопка не досягне мінімум 44×44.</li>
+        <li>Перевірте HEX-код тексту кнопки й HEX-код її заливки в WebAIM Contrast Checker; якщо пара не проходить поріг 4,5:1, затемніть чи освітліть колір тексту й оновіть відповідний Color Style.</li>
+        <li>Знайдіть на тому самому екрані будь-яке місце, де стан (помилка, успіх, обрано) позначено лише кольором без іконки чи підпису, і опишіть письмово, яку іконку або текст ви додали б, щоб інформація не губилася для людини з дальтонізмом.</li>
+        <li>У документі Лекція5_Прізвище під заголовком «Міні-аудит» коротко (3–4 речення) опишіть усі знахідки з кроків 2–4: що саме було не так і що ви виправили.</li>
+      </ol>
+      <div class="box-close">Відправте посилання на документ Лекція5_Прізвище в Classroom.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Лекція 5 · Тема 5 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 23.09.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture5-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState();
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId]);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
