@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Основи HTML5 та семантична розмітка — Вебдизайн</title>
-<meta name="description" content="Лекція 6. Основи HTML5 та семантична розмітка. Конспект готується.">
+<title>Основи HTML5 та семантична розмітка</title>
+<meta name="description" content="Лекція 6 курсу «Вебдизайн»: структура HTML-документа та семантичні теги, розмітка списків, таблиць, зображень, відео й аудіо, форми та атрибути валідації, основи SEO-розмітки: метатеги, мікророзмітка, Open Graph">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +26,59 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --fail:#C0392B;
+    --fail-tint:#FBE3E0;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --fail:#E8746A;
+      --fail-tint:#3A1512;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --fail:#E8746A;
+    --fail-tint:#3A1512;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,123 +91,641 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{max-width:1000px;margin:28px auto 0;padding:0 24px;}
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
-    padding:12px 16px;
-    background:var(--surface-2);
-    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:12px 16px;
+    background:var(--surface-2);border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
   .addr{
-    flex:1;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;
-    color:var(--ink-muted);
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:6px 12px;
+    flex:1;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
-  }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
+  .hero{padding:56px 40px 48px;}
   .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent-tint);display:inline-block;padding:5px 11px;
+    border-radius:99px;margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.14;font-weight:800;}
+  .hero .theme{margin-top:14px;font-size:clamp(16px,2vw,19px);color:var(--ink-soft);font-weight:500;max-width:34em;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .meta-chip{
+    font-size:13px;color:var(--ink-muted);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:99px;padding:6px 13px;display:flex;align-items:center;gap:6px;
   }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- sticky toc ---------- */
+  .toc-bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    text-decoration:none;padding:13px 12px;border-bottom:2px solid transparent;white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{flex:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);padding:13px 0 13px 14px;white-space:nowrap;}
+  .toc-progress b{color:var(--accent);}
+  .progress-track{max-width:1000px;margin:0 auto;padding:0 24px;height:3px;}
+  .progress-track .fill{height:100%;width:0%;background:linear-gradient(90deg, var(--task), var(--accent));transition:width .3s ease;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
 
-  footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
-  }
+  .lit{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin:36px 0 0;box-shadow:var(--shadow);}
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
 
+  section.topic{margin-top:64px;padding-top:8px;}
+  .topic-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .topic-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);background:var(--accent-tint);border-radius:8px;padding:4px 10px;flex:none;}
+  .topic h2{font-size:clamp(21px,2.6vw,27px);font-weight:700;}
+  .topic p{color:var(--ink-soft);font-size:16px;margin:0 0 16px;}
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{margin:0 0 18px;padding-left:22px;color:var(--ink-soft);font-size:15.5px;}
+  .topic ul li{margin-bottom:9px;}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);}
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px 16px;margin:26px 0 30px;box-shadow:var(--shadow);}
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{margin-top:14px;font-size:13px;color:var(--ink-muted);text-align:center;}
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+  .zone-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.02em;}
+
+  /* ---------- task / test boxes ---------- */
+  .box{border-radius:var(--radius);padding:24px 26px 20px;margin:24px 0 30px;box-shadow:var(--shadow);border:1px solid;}
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:6px;color:#fff;}
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  .box-close{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-style:italic;font-size:14px;color:var(--ink-muted);}
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.02em;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--ink-muted);border:1px solid var(--line);white-space:nowrap;}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
+
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{display:flex;gap:12px;align-items:flex-start;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .step .num{
+    flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);
+    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num, .step:has(.chk:checked) .num, .step.checked .num{background:var(--task);border-color:var(--task);color:#fff;}
+  .step:has(.chk:checked) .step-text, .step.checked .step-text{color:var(--ink-muted);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1.5px;}
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;width:100%;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink-soft);
+    padding:9px 12px;margin:0 0 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);
+    font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{content:"";width:15px;height:15px;border:1.5px solid var(--test);border-radius:50%;flex:none;margin-top:2px;}
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:var(--fail);background:color-mix(in srgb, var(--fail) 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:var(--fail);border-color:var(--fail);}
+  .test-feedback{margin-top:10px;font-size:13.5px;font-weight:600;display:none;}
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:var(--fail);}
+
+  .reset-btn{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{max-width:1000px;margin:0 auto;padding:40px 24px 60px;border-top:1px solid var(--line);color:var(--ink-muted);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
+
+  /* ---------- доповнення для лекції 6: код, довгі посилання, пропуск до змісту ---------- */
+  .skip-link{position:absolute;left:-9999px;top:8px;background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;z-index:50;font-weight:700;text-decoration:none;}
+  .skip-link:focus{left:12px;}
+  .topic code, .box code, .lit code, .hero code{
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--ink);overflow-wrap:anywhere;
+  }
+  .topic b code{font-weight:700;}
+  .box.test .test-opt code{background:var(--surface-2);}
+  pre.codeblock{
+    background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:16px 20px;margin:0 0 20px;
+    overflow-x:auto;font-size:13px;line-height:1.65;box-shadow:var(--shadow);tab-size:2;
+  }
+  pre.codeblock code{background:none;border:0;padding:0;font-size:inherit;color:inherit;overflow-wrap:normal;}
+  .tk-tag{color:#8FA3FF;} .tk-str{color:#58D3B0;} .tk-attr{color:#F0B45A;} .tk-cm{color:#8A90A6;}
+  .test-opt > span{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .box-title{flex-wrap:wrap;}
+  .step-text{min-width:0;overflow-wrap:anywhere;}
+  .lit li{overflow-wrap:anywhere;}
+  .lit a{word-break:break-all;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ .progress-track .fill{transition:none;} html{scroll-behavior:auto;} }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Перейти до основного вмісту</a>
 
-
-<div class="chrome">
+<header class="chrome">
   <div class="browser">
     <div class="browser-bar">
-      <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-06</div>
+      <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="addr">вебдизайн-курс.ua/лекція-6/osnovy-html5-ta-semantychna-rozmitka</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль III · Лекція 6</div>
-      <span class="eyebrow">Дисципліна · Лекція 6</span>
+      <span class="eyebrow">Лекція 6 · Тема 6</span>
       <h1>Основи HTML5 та семантична розмітка</h1>
-      <p class="sub">Модуль III «Верстка та реалізація вебдизайну (HTML/CSS)»</p>
-
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
-      </div>
+      <p class="theme">Розмітка — це опис змісту, а не оформлення: як <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code> і <code>&lt;main&gt;</code> перетворюють сторінку на карту для браузера, пошуковика й екранного читача, чому <code>alt</code> і <code>&lt;label&gt;</code> важливіші за красу, як форма перевіряє дані ще до відправлення та що саме читають Google і соцмережі з вашого <code>&lt;head&gt;</code>.</p>
+    
     </div>
   </div>
-</div>
+</header>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar" aria-label="Зміст лекції">
+  <div class="toc-inner">
+    <a href="#structure" data-toc="structure">1. Структура</a>
+    <a href="#content" data-toc="content">2. Контент</a>
+    <a href="#forms" data-toc="forms">3. Форми</a>
+    <a href="#seo" data-toc="seo">4. SEO</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
 
+<main id="main">
+
+  <section class="lit" id="literature" aria-labelledby="lit-h">
+    <h2 id="lit-h">Література до теми</h2>
+    <ol>
+      <li>WHATWG. HTML Living Standard — нормативний опис елементів і атрибутів HTML. URL: <a href="https://html.spec.whatwg.org/multipage/" target="_blank" rel="noopener">html.spec.whatwg.org/multipage</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. Document and website structure. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Document_and_website_structure" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Document_and_website_structure</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. Basic HTML syntax (анатомія HTML-документа). URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Basic_HTML_syntax</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. HTML elements reference (header, nav, main, section, footer, picture, img). URL: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. Lists. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Lists" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Lists</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. HTML table basics. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_table_basics" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_table_basics</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. Table accessibility. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Table_accessibility" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Table_accessibility</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. HTML images. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_images" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_images</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. Responsive images. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. HTML video and audio. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_video_and_audio" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/HTML_video_and_audio</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. How to structure a web form. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/How_to_structure_a_web_form</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. Sending and retrieving form data. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Sending_and_retrieving_form_data" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Sending_and_retrieving_form_data</a> (дата звернення: 08.10.2026).</li>
+      <li>MDN Web Docs. Client-side form validation. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation</a> (дата звернення: 08.10.2026).</li>
+      <li>Web Content Accessibility Guidelines (WCAG) 2.2. Офіційна специфікація W3C, критерії 1.1.1, 1.2.2, 1.3.5, 1.4.2, 3.1.1, 3.3.1, 3.3.2, 4.1.3. URL: <a href="https://www.w3.org/TR/WCAG22/" target="_blank" rel="noopener">www.w3.org/TR/WCAG22</a> (дата звернення: 08.10.2026).</li>
+      <li>Google Search Central. Influencing your title links in Google Search. URL: <a href="https://developers.google.com/search/docs/appearance/title-link" target="_blank" rel="noopener">developers.google.com/search/docs/appearance/title-link</a> (дата звернення: 08.10.2026).</li>
+      <li>Google Search Central. Control your snippets in search results. URL: <a href="https://developers.google.com/search/docs/appearance/snippet" target="_blank" rel="noopener">developers.google.com/search/docs/appearance/snippet</a> (дата звернення: 08.10.2026).</li>
+      <li>Google Search Central. Meta tags that Google understands. URL: <a href="https://developers.google.com/search/docs/crawling-indexing/special-tags" target="_blank" rel="noopener">developers.google.com/search/docs/crawling-indexing/special-tags</a> (дата звернення: 08.10.2026).</li>
+      <li>Google Search Central. What is URL canonicalization (consolidate duplicate URLs). URL: <a href="https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls" target="_blank" rel="noopener">developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls</a> (дата звернення: 08.10.2026).</li>
+      <li>Google Search Central. Intro to how structured data markup works. URL: <a href="https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data" target="_blank" rel="noopener">developers.google.com/search/docs/appearance/structured-data/intro-structured-data</a> (дата звернення: 08.10.2026).</li>
+      <li>The Open Graph protocol. URL: <a href="https://ogp.me/" target="_blank" rel="noopener">ogp.me</a> (дата звернення: 08.10.2026).</li>
+      <li>Schema.org. Getting started with schema.org using Microdata. URL: <a href="https://schema.org/docs/gs.html" target="_blank" rel="noopener">schema.org/docs/gs.html</a> (дата звернення: 08.10.2026).</li>
+    </ol>
+  </section>
+
+  <!-- ================= 01. Структура HTML-документа. Семантичні теги (header, nav, main, footer тощо) ================= -->
+  <section class="topic" id="structure" aria-labelledby="structure-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">01</span>
+      <h2 id="structure-h">Структура HTML-документа. Семантичні теги (header, nav, main, footer тощо)</h2>
+    </div>
+
+    <p>У темі 5 ми з’ясували, що інтерфейс має бути читабельним і доступним для різних людей. Але сторінку «читає» не лише людина: браузер, пошуковий робот, екранний читач і режим читання на телефоні працюють не з кольорами й шрифтами, а з <b>розміткою</b>. Тому HTML — не «скелет для CSS», а <b>опис змісту та ролей його частин</b>. Розмітку, у якій елементи обрано за змістом (навігація, основний вміст, підвал), а не за зовнішнім виглядом, називають <b>семантичною (semantic markup)</b>.</p>
+
+    <p><b>Мінімальний HTML-документ</b> складається з кількох обов’язкових частин (рис. 1). <b><code>&lt;!doctype html&gt;</code></b> — найкоротший рядок, що вважається коректним doctype; за MDN, у сучасних документах це «історичний артефакт», який усе одно потрібно вказати на початку кожної сторінки. <b><code>&lt;html lang="uk"&gt;</code></b> — кореневий елемент (root element), що огортає весь вміст; атрибут <b>lang</b> задає мову сторінки за замовчуванням. Це вимога WCAG 3.1.1 (рівень A): мову сторінки має бути можливо визначити програмно, а екранний читач за нею завантажує правильні правила вимови.</p>
+
+    <p><b><code>&lt;head&gt;</code></b> — контейнер для відомостей, які не є видимим вмістом: кодування, заголовок, опис для пошуку, підключення стилів. <b><code>&lt;meta charset="utf-8"&gt;</code></b> задає кодування; UTF-8 охоплює більшість символів мов світу, і, за MDN, немає причин його не вказувати. <b><code>&lt;title&gt;</code></b> — заголовок сторінки у вкладці браузера та в закладках. <b><code>&lt;meta name="viewport" content="width=device-width"&gt;</code></b> — значення, яке рекомендує MDN, щоб сторінка на телефоні займала ширину екрана (часто додають і <code>initial-scale=1</code>). Забороняти масштабування (<code>user-scalable=no</code>) не можна: це заважає людям зі зниженим зором, а WCAG вимагає принаймні двократного збільшення. <b><code>&lt;body&gt;</code></b> містить увесь видимий вміст: текст, зображення, відео, звук.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 540" role="img" aria-label="Ліворуч — мінімальний HTML-документ: doctype, html з атрибутом lang, head із meta charset, viewport і title, та body. Праворуч — каркас сторінки з елементами header, nav, main (усередині article із двома section та aside) і footer, підписаними ARIA-орієнтирами: banner, navigation, main, complementary, contentinfo." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">СТРУКТУРА ДОКУМЕНТА</text><text x="484" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ОРІЄНТИРИ СТОРІНКИ (LANDMARKS)</text><rect x="20" y="46" width="430" height="396" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="40" y="80" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;!doctype</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--ink-soft)">html</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="40" y="106" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;html</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">lang</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"uk"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="40" y="132" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;head</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="40" y="158" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;meta</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">charset</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"utf-8"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="40" y="184" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;meta</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">name</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"viewport"</tspan></text><text x="40" y="210" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">        </tspan><tspan fill="var(--test-ink)">content</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"width=device-width"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="40" y="236" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;title</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">Назва</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--ink-soft)">сторінки</tspan><tspan fill="var(--accent)">&lt;/title</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="40" y="262" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;/head</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="40" y="288" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;body</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="40" y="314" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--ink-muted)">&lt;!-- увесь видимий вміст --&gt;</tspan></text><text x="40" y="340" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;/body</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="40" y="366" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="14" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;/html</tspan><tspan fill="var(--accent)">&gt;</tspan></text><line x1="436" y1="133" x2="436" y2="249" stroke="var(--task)" stroke-width="2.2"/><line x1="430" y1="133" x2="436" y2="133" stroke="var(--task)" stroke-width="2.2"/><line x1="430" y1="249" x2="436" y2="249" stroke="var(--task)" stroke-width="2.2"/><rect x="24.0" y="444" width="58.3" height="18" rx="5" fill="var(--task)"/><text x="53.2" y="457.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">doctype</text><text x="90.34765625" y="458" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">режим стандартів: рядок на початку кожної сторінки</text><rect x="24.0" y="464" width="38.5" height="18" rx="5" fill="var(--accent)"/><text x="43.2" y="477.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">lang</text><text x="70.484375" y="478" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">мова сторінки: правила вимови для екранного читача</text><rect x="24.0" y="484" width="38.5" height="18" rx="5" fill="var(--task)"/><text x="43.2" y="497.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">head</text><text x="70.484375" y="498" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">метадані: кодування, viewport, title — не видно на сторінці</text><rect x="24.0" y="504" width="38.5" height="18" rx="5" fill="var(--test)"/><text x="43.2" y="517.0" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">body</text><text x="70.484375" y="518" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">усе, що бачить користувач</text><rect x="476" y="46" width="416" height="480" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="484" y="60" width="400" height="52" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6"/><text x="494" y="81" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;header&gt;</text><rect x="826.1" y="66" width="49.9" height="17" rx="5" fill="var(--accent)"/><text x="851.0" y="78.3" font-size="10.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">banner</text><rect x="484" y="120" width="400" height="44" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6"/><text x="494" y="141" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;nav&gt;</text><rect x="800.8" y="126" width="75.2" height="17" rx="5" fill="var(--accent)"/><text x="838.4" y="138.3" font-size="10.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">navigation</text><rect x="484" y="172" width="400" height="270" rx="8" fill="var(--surface)" stroke="var(--test)" stroke-width="2" stroke-dasharray="6 4"/><text x="494" y="194" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;main&gt;</text><rect x="838.7" y="178" width="37.3" height="17" rx="5" fill="var(--test)"/><text x="857.4" y="190.3" font-size="10.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">main</text><rect x="496" y="206" width="262" height="224" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="506" y="226" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;article&gt;</text><rect x="506" y="240" width="242" height="82" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><text x="516" y="259" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;section&gt;</text><text x="516" y="280" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;h2&gt; Заголовок</text><rect x="516" y="290" width="202" height="6" rx="3" fill="var(--line)" stroke="none" stroke-width="1.4"/><rect x="516" y="302" width="162" height="6" rx="3" fill="var(--line)" stroke="none" stroke-width="1.4"/><rect x="506" y="332" width="242" height="82" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><text x="516" y="351" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;section&gt;</text><text x="516" y="372" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;h2&gt; Заголовок</text><rect x="516" y="382" width="202" height="6" rx="3" fill="var(--line)" stroke="none" stroke-width="1.4"/><rect x="516" y="394" width="162" height="6" rx="3" fill="var(--line)" stroke="none" stroke-width="1.4"/><rect x="768" y="206" width="104" height="224" rx="8" fill="var(--surface-2)" stroke="var(--ink-muted)" stroke-width="1.4"/><text x="776" y="226" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;aside&gt;</text><rect x="776.0" y="236" width="74.5" height="15" rx="5" fill="var(--ink-muted)"/><text x="813.3" y="246.6" font-size="8.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">complementary</text><rect x="776" y="268" width="88" height="6" rx="3" fill="var(--line)" stroke="none" stroke-width="1.4"/><rect x="776" y="280" width="64" height="6" rx="3" fill="var(--line)" stroke="none" stroke-width="1.4"/><rect x="776" y="292" width="80" height="6" rx="3" fill="var(--line)" stroke="none" stroke-width="1.4"/><rect x="484" y="450" width="400" height="46" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.6"/><text x="494" y="471" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;footer&gt;</text><rect x="794.5" y="456" width="81.5" height="17" rx="5" fill="var(--accent)"/><text x="835.2" y="468.3" font-size="10.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">contentinfo</text><text x="484" y="516" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">&lt;header&gt; і &lt;footer&gt; всередині article/section — не орієнтири</text></svg>
+      <figcaption>Рис. 1. Мінімальний HTML-документ і семантична структура сторінки з ARIA-орієнтирами.</figcaption>
+    </figure>
+
+    <p>Усередині <code>&lt;body&gt;</code> HTML5 пропонує елементи, що називають роль частини сторінки. Для технологій доступності вони стають <b>орієнтирами (landmarks)</b> — ролями banner, navigation, main, complementary, contentinfo, за якими екранний читач і режим читання розуміють, що де розташоване:</p>
+
+    <ul>
+      <li><b><code>&lt;header&gt;</code></b> — група вступного чи навігаційного вмісту: логотип, форма пошуку, ім’я автора. Як дочірній елемент <code>&lt;body&gt;</code> це глобальна шапка сторінки (орієнтир banner), а в <code>&lt;article&gt;</code> чи <code>&lt;section&gt;</code> — шапка саме цього фрагмента, і орієнтиром вона вже не є;</li>
+      <li><b><code>&lt;nav&gt;</code></b> — основний блок навігаційних посилань: меню, зміст, покажчик. Не кожна група посилань потребує <code>&lt;nav&gt;</code>: перелік посилань у підвалі зазвичай ним не обгортають. Якщо навігацій кілька (сайту й сторінки), кожну позначають заголовком і зв’язують через <code>aria-labelledby</code>;</li>
+      <li><b><code>&lt;main&gt;</code></b> — вміст, унікальний для цієї сторінки: на сторінці може бути лише один видимий <code>&lt;main&gt;</code>, бажано безпосередньо в <code>&lt;body&gt;</code>, без повторюваних блоків (меню, логотипу, підвалу). Його <code>id</code> може бути ціллю посилання «Перейти до основного вмісту» (skip link), а режими читання шукають саме <code>&lt;main&gt;</code>;</li>
+      <li><b><code>&lt;article&gt;</code></b> — самодостатній блок, що має сенс і без решти сторінки: допис блогу, новина, коментар;</li>
+      <li><b><code>&lt;section&gt;</code></b> — тематична група вмісту, для якої немає специфічнішого елемента; вона має починатися із заголовка. Якщо блок потрібен лише для стилізації, беруть <code>&lt;div&gt;</code>. Без доступної назви <code>&lt;section&gt;</code> для екранного читача — звичайний generic, з назвою — орієнтир region;</li>
+      <li><b><code>&lt;aside&gt;</code></b> — вміст, пов’язаний із головним лише опосередковано: глосарій, біографія автора, пов’язані посилання (орієнтир complementary);</li>
+      <li><b><code>&lt;footer&gt;</code></b> — завершальний вміст найближчого секціонуючого предка: авторство, copyright, посилання на пов’язані документи. У <code>&lt;body&gt;</code> це підвал сторінки (орієнтир contentinfo); у <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;main&gt;</code> — просто generic. Усередині <code>&lt;footer&gt;</code> не можна вкладати <code>&lt;header&gt;</code> чи інший <code>&lt;footer&gt;</code>;</li>
+      <li><b><code>&lt;div&gt;</code> і <code>&lt;span&gt;</code></b> — нейтральні контейнери без значення (блоковий і рядковий). Беріть їх лише тоді, коли кращого елемента немає: надлишок <code>&lt;div&gt;</code> перетворює код на «div-суп», який лише засмічує розмітку, а екранним читачам нічого не повідомляє.</li>
+    </ul>
+
+    <p><b>Заголовки</b> — окрема карта сторінки. Найкраща практика — один <code>&lt;h1&gt;</code> на сторінку (стандарт HTML допускає й кілька, але це не рекомендують). Рівні не пропускають: після <code>&lt;h2&gt;</code> іде <code>&lt;h3&gt;</code>, а не <code>&lt;h5&gt;</code>. Користувачі екранних читачів переходять від заголовка до заголовка, тож структура заголовків для них — зміст сторінки. І головне: заголовки не призначені для зміни розміру тексту — для цього є CSS-властивість <code>font-size</code>.</p>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Орієнтири сторінки<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Яке твердження про <code>&lt;header&gt;</code> і <code>&lt;footer&gt;</code> правильне?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span><code>&lt;header&gt;</code> завжди є орієнтиром banner — у будь-якому місці документа</span></button>
+        <button class="test-opt" type="button"><span><code>&lt;header&gt;</code> як дочірній елемент <code>&lt;body&gt;</code> — шапка сторінки (banner); у <code>&lt;article&gt;</code> чи <code>&lt;section&gt;</code> це шапка лише цього фрагмента, і орієнтиром banner вона не стає</span></button>
+        <button class="test-opt" type="button"><span><code>&lt;header&gt;</code> можна вкласти в <code>&lt;footer&gt;</code>, якщо шапка потрібна й у підвалі</span></button>
+        <button class="test-opt" type="button"><span><code>&lt;footer&gt;</code> може бути лише один у документі, на відміну від <code>&lt;header&gt;</code></span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+  <!-- ================= 02. Розмітка контенту: списки, таблиці, зображення та мультимедіа (picture, video, audio) ================= -->
+  <section class="topic" id="content" aria-labelledby="content-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">02</span>
+      <h2 id="content-h">Розмітка контенту: списки, таблиці, зображення та мультимедіа (picture, video, audio)</h2>
+    </div>
+
+    <p>Семантика не закінчується на рівні сторінки: кожен фрагмент вмісту теж має «свій» елемент. Правило просте: питайте не «як це виглядатиме?», а «що це таке?» — вигляд замовляється в CSS.</p>
+
+    <p><b>Списки.</b> <code>&lt;ul&gt;</code> (unordered list) — для елементів, порядок яких неважливий; <code>&lt;ol&gt;</code> (ordered list) — коли порядок має значення, наприклад кроки інструкції; обидва містять пункти <code>&lt;li&gt;</code>. Для нумерації є атрибути <code>start</code> і <code>reversed</code>. <b><code>&lt;dl&gt;</code> (description list)</b> пов’язує терміни <code>&lt;dt&gt;</code> з описами <code>&lt;dd&gt;</code>: глосарій, питання й відповіді; одному терміну може відповідати кілька описів. Списки можна вкладати: внутрішній список розміщують усередині <code>&lt;li&gt;</code>. Навіть меню навігації — це список посилань, тому всередині <code>&lt;nav&gt;</code> зазвичай лежить <code>&lt;ul&gt;</code> (хоча список не обов’язковий).</p>
+
+    <p><b>Таблиці.</b> <code>&lt;table&gt;</code> призначений лише для табличних даних, а не для верстання макета. MDN наводить три причини: <b>доступність</b> (результат для екранного читача заплутаний), <b>супровід</b> (код перетворюється на «суп із тегів») та <b>адаптивність</b> (таблиці самі не пристосовуються до різних екранів). Рядки — <code>&lt;tr&gt;</code>, комірки даних — <code>&lt;td&gt;</code>, комірки-заголовки — <code>&lt;th&gt;</code>. Елемент <b><code>&lt;caption&gt;</code></b>, розміщений одразу після відкривального <code>&lt;table&gt;</code>, описує зміст таблиці: користувач екранного читача може вирішити, чи варто читати її докладніше. Групи <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;tfoot&gt;</code> (саме в такому порядку) самі по собі доступності не додають, але зручні для стилізації; <code>&lt;tbody&gt;</code> браузер додає неявно. Атрибут <b><code>scope</code></b> (<code>col</code>, <code>row</code>, а для заголовків, що охоплюють кілька комірок, — <code>colgroup</code> і <code>rowgroup</code>) вказує, для яких комірок заголовок є заголовком, і екранний читач може озвучити цілий рядок чи стовпець. Об’єднують комірки атрибутами <code>colspan</code> і <code>rowspan</code>.</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">&lt;table</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;caption</span><span class="tk-tag">&gt;</span>Вартість послуг<span class="tk-tag">&lt;/caption</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;thead</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;tr</span><span class="tk-tag">&gt;</span><span class="tk-tag">&lt;th</span> <span class="tk-attr">scope</span>=<span class="tk-str">"col"</span><span class="tk-tag">&gt;</span>Послуга<span class="tk-tag">&lt;/th</span><span class="tk-tag">&gt;</span><span class="tk-tag">&lt;th</span> <span class="tk-attr">scope</span>=<span class="tk-str">"col"</span><span class="tk-tag">&gt;</span>Ціна, грн<span class="tk-tag">&lt;/th</span><span class="tk-tag">&gt;</span><span class="tk-tag">&lt;/tr</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;/thead</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;tbody</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;tr</span><span class="tk-tag">&gt;</span><span class="tk-tag">&lt;th</span> <span class="tk-attr">scope</span>=<span class="tk-str">"row"</span><span class="tk-tag">&gt;</span>Консультація<span class="tk-tag">&lt;/th</span><span class="tk-tag">&gt;</span><span class="tk-tag">&lt;td</span><span class="tk-tag">&gt;</span>500<span class="tk-tag">&lt;/td</span><span class="tk-tag">&gt;</span><span class="tk-tag">&lt;/tr</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;/tbody</span><span class="tk-tag">&gt;</span>
+<span class="tk-tag">&lt;/table</span><span class="tk-tag">&gt;</span></code></pre>
+
+    <p><b>Зображення.</b> Елемент <code>&lt;img&gt;</code> потребує двох атрибутів: <b><code>src</code></b> (адреса файла) і <b><code>alt</code></b> (текстова заміна). <code>alt</code> озвучує екранний читач, його показує браузер, якщо файл не завантажився, а пошукові системи зіставляють його із запитами. Що саме писати, залежить від ролі зображення. <b>Інформативне</b> — коротко й по суті, не «зображення» і не ім’я файла. <b>Зображення-посилання</b> — зрозумілий текст посилання. <b>Декоративне</b> — порожній <code>alt=""</code> (а краще взагалі CSS-фон): тоді допоміжні технології його пропустять. Текст на зображеннях краще не розміщувати, а якщо це неминуче — продублювати його в <code>alt</code>. Це вимога WCAG 1.1.1 (рівень A): будь-який нетекстовий вміст має текстову альтернативу, що виконує ту саму функцію. Атрибут <code>title</code> замінником <code>alt</code> не є.</p>
+
+    <p>Атрибути <b><code>width</code></b> і <b><code>height</code></b> (цілі числа без одиниць, у пікселях) задають власний розмір зображення: браузер заздалегідь резервує місце й не зсуває вміст, коли файл завантажиться. Для зміни розміру вони не призначені — для цього є CSS. Атрибут <b><code>loading="lazy"</code></b> відкладає завантаження зображення, доки воно не наблизиться до області перегляду; зображення першого екрана краще не відкладати (за замовчуванням завантаження негайне, <code>eager</code>). Для відкладених зображень <code>width</code> і <code>height</code> особливо важливі. Підпис до зображення оформлюють парою <b><code>&lt;figure&gt;</code></b> і <b><code>&lt;figcaption&gt;</code></b>, і підпис та <code>alt</code> не повинні дослівно повторювати один одного — вони обидва лишаються, коли зображення зникає.</p>
+
+    <p><b>Адаптивні зображення.</b> Атрибут <code>srcset</code> з дескрипторами <code>w</code> (власна ширина файла в пікселях) разом із <code>sizes</code> дозволяє браузеру самому обрати файл під ширину слота й щільність екрана; у <code>sizes</code> не можна використовувати відсотки, а умови перевіряються по порядку — спрацьовує перша, що збіглася. Елемент <b><code>&lt;picture&gt;</code></b> — обгортка з кількома <code>&lt;source&gt;</code>, за якими обов’язково йде <code>&lt;img&gt;</code> з <code>src</code> і <code>alt</code>. Його застосовують у двох сценаріях: <b>art direction</b> — різне кадрування за умовою <code>media</code> (на вузькому екрані портрет, на широкому панорама) та <b>резервні формати</b> — <code>type="image/avif"</code>, <code>type="image/webp"</code>: якщо браузер формат не підтримує, <code>&lt;source&gt;</code> пропускається, і зрештою береться <code>&lt;img&gt;</code>.</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">&lt;picture</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;source</span> <span class="tk-attr">srcset</span>=<span class="tk-str">"photo.avif"</span> <span class="tk-attr">type</span>=<span class="tk-str">"image/avif"</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;source</span> <span class="tk-attr">srcset</span>=<span class="tk-str">"photo.webp"</span> <span class="tk-attr">type</span>=<span class="tk-str">"image/webp"</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;img</span> <span class="tk-attr">src</span>=<span class="tk-str">"photo.jpg"</span> <span class="tk-attr">alt</span>=<span class="tk-str">"Команда біля дошки"</span>
+       <span class="tk-attr">width</span>=<span class="tk-str">"800"</span> <span class="tk-attr">height</span>=<span class="tk-str">"600"</span><span class="tk-tag">&gt;</span>
+<span class="tk-tag">&lt;/picture</span><span class="tk-tag">&gt;</span></code></pre>
+
+    <p><b>Відео й аудіо.</b> <code>&lt;video&gt;</code> і <code>&lt;audio&gt;</code> працюють однаково, лише <code>&lt;audio&gt;</code> не має <code>width</code>, <code>height</code> і <code>poster</code>. Користувач мусить мати змогу керувати відтворенням: або атрибут <b><code>controls</code></b> (власний інтерфейс браузера), або власні елементи керування через JavaScript API, які щонайменше запускають і зупиняють відтворення та змінюють гучність. Формати в браузерів різні, тому ресурс подають кількома <b><code>&lt;source&gt;</code></b> з атрибутом <code>type</code> (MP4 і WebM зазвичай достатньо): браузер бере перший, який вміє відтворювати, а <code>type</code> дозволяє пропускати непідтримувані формати без завантаження. Вміст між тегами — <b>запасний варіант (fallback)</b>, наприклад посилання на файл. Корисні атрибути: <code>poster</code> (картинка до початку відтворення), <code>preload</code> (<code>none</code>, <code>metadata</code>, <code>auto</code>), <code>muted</code>. Автозапуск (<code>autoplay</code>) і <code>loop</code> дратують користувачів, тож MDN радить їх уникати.</p>
+
+    <p>Субтитри додає елемент <b><code>&lt;track&gt;</code></b> (після всіх <code>&lt;source&gt;</code>) з атрибутами <code>kind</code> (<code>subtitles</code>, <code>captions</code>, <code>descriptions</code>), <code>srclang</code>, <code>label</code> і файлом у форматі <b>WebVTT</b>. З вимог WCAG тут важливі дві: 1.2.2 (рівень A) — для записаного відео зі звуком потрібні синхронні субтитри (captions), та 1.4.2 (рівень A) — якщо звук вмикається автоматично довше ніж на 3 секунди, має бути спосіб поставити його на паузу, зупинити або окремо змінити гучність.</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">&lt;video</span> controls <span class="tk-attr">width</span>=<span class="tk-str">"640"</span> <span class="tk-attr">poster</span>=<span class="tk-str">"cover.jpg"</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;source</span> <span class="tk-attr">src</span>=<span class="tk-str">"demo.mp4"</span> <span class="tk-attr">type</span>=<span class="tk-str">"video/mp4"</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;source</span> <span class="tk-attr">src</span>=<span class="tk-str">"demo.webm"</span> <span class="tk-attr">type</span>=<span class="tk-str">"video/webm"</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;track</span> <span class="tk-attr">kind</span>=<span class="tk-str">"captions"</span> <span class="tk-attr">src</span>=<span class="tk-str">"demo.uk.vtt"</span>
+         <span class="tk-attr">srclang</span>=<span class="tk-str">"uk"</span> <span class="tk-attr">label</span>=<span class="tk-str">"Українська"</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;p</span><span class="tk-tag">&gt;</span>Відео не підтримується. <span class="tk-tag">&lt;a</span> <span class="tk-attr">href</span>=<span class="tk-str">"demo.mp4"</span><span class="tk-tag">&gt;</span>Завантажити файл<span class="tk-tag">&lt;/a</span><span class="tk-tag">&gt;</span><span class="tk-tag">&lt;/p</span><span class="tk-tag">&gt;</span>
+<span class="tk-tag">&lt;/video</span><span class="tk-tag">&gt;</span></code></pre>
+
+    <p>Підсумуємо вибір елемента картою (рис. 2): спершу з’ясуйте, що це за вміст, і лише потім шукайте для нього розмітку.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 580" role="img" aria-label="Таблиця відповідностей «що маєте → який елемент обрати → що не забути»: списки ul, ol, dl; таблиця з caption і th scope; зображення з alt, width і height; декоративне зображення; picture із source; video з controls, source type і track; audio з controls." xmlns="http://www.w3.org/2000/svg"><text x="24" y="34" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЩО МАЄТЕ</text><text x="318" y="34" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЕЛЕМЕНТ</text><text x="616" y="34" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">НЕ ЗАБУТИ</text><line x1="24" y1="46" x2="876" y2="46" stroke="var(--line)" stroke-width="1.4"/><rect x="16" y="58" width="868" height="46" rx="8" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><rect x="16" y="58" width="5" height="46" rx="2" fill="var(--accent)" stroke="none" stroke-width="1.4"/><text x="28" y="80" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Перелік, порядок неважливий</text><line x1="292" y1="78" x2="303.1" y2="78.0" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="308.0,78.0 301.6,80.9 301.6,75.1" fill="var(--ink-muted)"/><text x="322" y="82" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;ul&gt; + &lt;li&gt;</text><text x="620" y="82" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Меню навігації — теж список посилань</text><rect x="16" y="112" width="868" height="46" rx="8" fill="var(--surface)" stroke="none" stroke-width="1.4"/><rect x="16" y="112" width="5" height="46" rx="2" fill="var(--accent)" stroke="none" stroke-width="1.4"/><text x="28" y="134" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Кроки, порядок важливий</text><line x1="292" y1="132" x2="303.1" y2="132.0" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="308.0,132.0 301.6,134.9 301.6,129.1" fill="var(--ink-muted)"/><text x="322" y="136" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;ol&gt; + &lt;li&gt;</text><text x="620" y="136" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Атрибути start і reversed — за потреби</text><rect x="16" y="166" width="868" height="46" rx="8" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><rect x="16" y="166" width="5" height="46" rx="2" fill="var(--accent)" stroke="none" stroke-width="1.4"/><text x="28" y="180" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Термін — опис, питання —</text><text x="28" y="196" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">відповідь</text><line x1="292" y1="186" x2="303.1" y2="186.0" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="308.0,186.0 301.6,188.9 301.6,183.1" fill="var(--ink-muted)"/><text x="322" y="190" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;dl&gt; + &lt;dt&gt; + &lt;dd&gt;</text><text x="620" y="190" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Один термін може мати кілька &lt;dd&gt;</text><rect x="16" y="220" width="868" height="46" rx="8" fill="var(--surface)" stroke="none" stroke-width="1.4"/><rect x="16" y="220" width="5" height="46" rx="2" fill="var(--task)" stroke="none" stroke-width="1.4"/><text x="28" y="242" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Дані в рядках і стовпцях</text><line x1="292" y1="240" x2="303.1" y2="240.0" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="308.0,240.0 301.6,242.9 301.6,237.1" fill="var(--ink-muted)"/><text x="322" y="244" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;table&gt; + &lt;caption&gt; + &lt;th scope&gt;</text><text x="620" y="244" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Таблиці — не для макета сторінки</text><rect x="16" y="274" width="868" height="46" rx="8" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><rect x="16" y="274" width="5" height="46" rx="2" fill="var(--test)" stroke="none" stroke-width="1.4"/><text x="28" y="296" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Зображення несе зміст</text><line x1="292" y1="294" x2="303.1" y2="294.0" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="308.0,294.0 301.6,296.9 301.6,291.1" fill="var(--ink-muted)"/><text x="322" y="298" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;img alt width height&gt;</text><text x="620" y="289" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">alt — коротко й по суті; підпис — у</text><text x="620" y="305" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">&lt;figcaption&gt;</text><rect x="16" y="328" width="868" height="46" rx="8" fill="var(--surface)" stroke="none" stroke-width="1.4"/><rect x="16" y="328" width="5" height="46" rx="2" fill="var(--test)" stroke="none" stroke-width="1.4"/><text x="28" y="350" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Зображення — лише прикраса</text><line x1="292" y1="348" x2="303.1" y2="348.0" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="308.0,348.0 301.6,350.9 301.6,345.1" fill="var(--ink-muted)"/><text x="322" y="352" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">CSS background або alt=""</text><text x="620" y="343" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Екранний читач пропустить</text><text x="620" y="359" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">зображення</text><rect x="16" y="382" width="868" height="46" rx="8" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><rect x="16" y="382" width="5" height="46" rx="2" fill="var(--test)" stroke="none" stroke-width="1.4"/><text x="28" y="396" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Різні файли для різних екранів</text><text x="28" y="412" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">чи форматів</text><line x1="292" y1="402" x2="303.1" y2="402.0" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="308.0,402.0 301.6,404.9 301.6,399.1" fill="var(--ink-muted)"/><text x="322" y="406" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;picture&gt; + &lt;source&gt; + &lt;img&gt;</text><text x="620" y="397" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Усередині &lt;picture&gt; &lt;img&gt; з src і alt</text><text x="620" y="413" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">обов’язковий</text><rect x="16" y="436" width="868" height="46" rx="8" fill="var(--surface)" stroke="none" stroke-width="1.4"/><rect x="16" y="436" width="5" height="46" rx="2" fill="var(--fail)" stroke="none" stroke-width="1.4"/><text x="28" y="458" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Відео</text><line x1="292" y1="456" x2="303.1" y2="456.0" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="308.0,456.0 301.6,458.9 301.6,453.1" fill="var(--ink-muted)"/><text x="322" y="451" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;video controls&gt; + &lt;source type&gt; +</text><text x="322" y="467" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;track&gt;</text><text x="620" y="460" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Без autoplay; субтитри через WebVTT</text><rect x="16" y="490" width="868" height="46" rx="8" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><rect x="16" y="490" width="5" height="46" rx="2" fill="var(--fail)" stroke="none" stroke-width="1.4"/><text x="28" y="512" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Звук</text><line x1="292" y1="510" x2="303.1" y2="510.0" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="308.0,510.0 301.6,512.9 301.6,507.1" fill="var(--ink-muted)"/><text x="322" y="514" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">&lt;audio controls&gt; + &lt;source type&gt;</text><text x="620" y="514" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Поруч — текстова розшифровка</text></svg>
+      <figcaption>Рис. 2. Карта вибору елемента: що маєте — яку розмітку застосувати — що не забути.</figcaption>
+    </figure>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Семантична сторінка за фахом<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>У редакторі коду (наприклад, Visual Studio Code) створіть папку <code>lecture6</code> і файл <code>index.html</code>. Додайте мінімальний документ: <code>&lt;!doctype html&gt;</code>, <code>&lt;html lang="uk"&gt;</code>, <code>&lt;meta charset="utf-8"&gt;</code>, <code>&lt;meta name="viewport" content="width=device-width"&gt;</code> і <code>&lt;title&gt;</code> з назвою вашого проєкту.</li>
+        <li>Оберіть тему за своєю спеціальністю: «Інформаційні системи» — опис вебсервісу (що робить і для кого); «Право» — коротка інструкція для клієнта: які документи підготувати до консультації юриста; «Маркетинг» — сторінка продукту чи рекламної кампанії.</li>
+        <li>Побудуйте семантичний каркас: <code>&lt;header&gt;</code> з єдиним <code>&lt;h1&gt;</code> і <code>&lt;nav&gt;</code> зі списком із трьох посилань; <code>&lt;main&gt;</code> з одним <code>&lt;article&gt;</code>, у якому дві <code>&lt;section&gt;</code> (кожна із заголовком <code>&lt;h2&gt;</code>); <code>&lt;aside&gt;</code> із пов’язаними посиланнями; <code>&lt;footer&gt;</code> з авторством.</li>
+        <li>Наповніть сторінку реальним змістом: нумерований список <code>&lt;ol&gt;</code> (кроки), маркований <code>&lt;ul&gt;</code> (ознаки чи переваги) і таблицю щонайменше з трьома рядками даних: <code>&lt;caption&gt;</code>, <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code>, <code>&lt;th scope&gt;</code>.</li>
+        <li>Додайте зображення: <code>&lt;figure&gt;</code> з <code>&lt;img&gt;</code> (змістовий <code>alt</code>, <code>width</code> і <code>height</code>) та <code>&lt;figcaption&gt;</code>; одне декоративне зображення з <code>alt=""</code>; а також <code>&lt;picture&gt;</code> із двома <code>&lt;source media&gt;</code> для широкого й вузького кадрування.</li>
+        <li>Перевірте результат: пропустіть код через W3C Nu Html Checker (validator.w3.org/nu) — виправте всі помилки; у DevTools браузера відкрийте дерево доступності й переконайтеся, що <code>header</code>, <code>nav</code>, <code>main</code> і <code>footer</code> відображаються як орієнтири.</li>
+      </ol>
+      <div class="box-close">Заархівуйте папку lecture6 (ZIP) і прикріпіть архів до завдання в Classroom.</div>
+    </div>
+  </section>
+  <!-- ================= 03. Форми та їхні елементи, атрибути валідації ================= -->
+  <section class="topic" id="forms" aria-labelledby="forms-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">03</span>
+      <h2 id="forms-h">Форми та їхні елементи, атрибути валідації</h2>
+    </div>
+
+    <p>Форма — місце, де сторінка перестає лише розповідати й починає слухати. Саме тут найчастіше ламаються доступність (поле без підпису), безпека (довіра до введеного) і зручність (помилку видно лише після відправлення).</p>
+
+    <p><b>Елемент <code>&lt;form&gt;</code>.</b> <code>&lt;form&gt;</code> формально визначає форму: усі її елементи розміщують усередині, а вкладати одну форму в іншу категорично заборонено. Атрибут <b><code>action</code></b> — адреса, куди надсилати дані (якщо його немає, дані підуть на адресу поточної сторінки), <b><code>method</code></b> — як саме. <b>GET</b> додає дані до URL (<code>?say=Hi&amp;to=Mom</code>), і їх видно в адресному рядку; <b>POST</b> передає їх у тілі запиту. Паролі й інші чутливі дані через GET надсилати не можна; великі обсяги теж краще передавати через POST, бо довжина URL обмежена. Якщо <code>action</code> веде на адресу HTTPS, дані шифруються разом із запитом; якщо ж сторінку захищено, а <code>action</code> веде на HTTP, браузери показують попередження про небезпеку. На сервер потрапляють пари <b><code>name=value</code></b> (імена й значення полів, окрім файлів), з’єднані символом <code>&amp;</code>; поле без атрибута <code>name</code> до відправлених даних не входить.</p>
+
+    <p><b>Підписи.</b> <code>&lt;label&gt;</code> — формальний спосіб підписати елемент форми і, за MDN, найважливіший елемент для побудови доступних форм. Зв’язок задає атрибут <b><code>for</code></b> зі значенням <code>id</code> поля: екранний читач озвучить «Name, edit text», а без підпису — лише «Edit text blank». Додаткова перевага: клік по підпису ставить фокус у поле (а для прапорців і перемикачів — вмикає їх). Підказку <code>placeholder</code> підписом вважати не можна: вона зникає під час введення. Одному елементу — один <code>&lt;label&gt;</code>.</p>
+
+    <p><b>Елементи введення.</b> <code>&lt;input&gt;</code> змінює поведінку залежно від атрибута <b><code>type</code></b>: <code>text</code>, <code>email</code>, <code>tel</code>, <code>url</code>, <code>number</code>, <code>password</code>, <code>checkbox</code>, <code>radio</code>, <code>file</code>, <code>date</code> та інші. Тип <code>email</code> вмикає перевірку формату адреси (стан <code>typeMismatch</code>) і зазвичай зручну клавіатуру на телефоні; тип <code>tel</code> формат номера не перевіряє, а лише підказує цифрову клавіатуру (разом із <code>inputmode</code>). Багаторядковий текст вводять у <code>&lt;textarea&gt;</code>, вибір зі списку — через <code>&lt;select&gt;</code> з <code>&lt;option&gt;</code>. Кнопка <code>&lt;button&gt;</code> у формі за замовчуванням має тип <code>submit</code> і відправляє форму; для кнопки, що лише запускає скрипт, ставлять <code>type="button"</code>. Кнопки скидання (<code>type="reset"</code>) — погана практика: їх легко натиснути помилково й втратити введене.</p>
+
+    <p>Групу пов’язаних полів, передусім перемикачів, огортають елементом <b><code>&lt;fieldset&gt;</code></b> із назвою в <b><code>&lt;legend&gt;</code></b>: екранний читач озвучує назву групи разом із кожним варіантом. Атрибут <b><code>autocomplete</code></b> (<code>name</code>, <code>email</code>, <code>tel</code> тощо) дозволяє браузеру підставити збережені дані; для полів, що збирають дані про користувача, це вимога WCAG 1.3.5 (рівень AA). Усі ці елементи разом показано на рис. 3.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 640" role="img" aria-label="Ліворуч — макет форми: поле Email, група перемикачів «Спосіб відповіді», текстове поле повідомлення та кнопка «Надіслати». Праворуч — відповідна розмітка. Нумеровані позначки пояснюють: action і method, зв’язок label for з id, атрибут name, атрибути валідації, fieldset із legend та кнопку submit." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЩО БАЧИТЬ КОРИСТУВАЧ</text><text x="444" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">РОЗМІТКА</text><rect x="20" y="46" width="390" height="408" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><text x="40" y="80" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Email</text><rect x="40" y="90" width="350" height="34" rx="7" fill="var(--surface-2)" stroke="var(--ink-muted)" stroke-width="1.4"/><text x="52" y="112" font-size="13" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">anna@example.com</text><text x="40" y="156" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Спосіб відповіді</text><rect x="36" y="164" width="358" height="76" rx="8" fill="none" stroke="var(--ink-muted)" stroke-width="1.2" stroke-dasharray="5 4"/><circle cx="58" cy="188" r="7" fill="none" stroke="var(--ink-muted)" stroke-width="1.6"/><circle cx="58" cy="188" r="3.4" fill="var(--accent)"/><text x="74" y="193" font-size="13" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Пошта</text><circle cx="58" cy="218" r="7" fill="none" stroke="var(--ink-muted)" stroke-width="1.6"/><text x="74" y="223" font-size="13" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Телефон</text><text x="40" y="272" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Повідомлення</text><rect x="40" y="282" width="350" height="70" rx="7" fill="var(--surface-2)" stroke="var(--ink-muted)" stroke-width="1.4"/><text x="52" y="304" font-size="13" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Мінімум 20 символів…</text><rect x="40" y="368" width="120" height="36" rx="8" fill="var(--accent)" stroke="none" stroke-width="1.4"/><text x="100" y="391" font-size="13.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Надіслати</text><circle cx="398" cy="107" r="11" fill="var(--fail)"/><text x="398" y="111.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">2</text><circle cx="398" cy="190" r="11" fill="var(--fail)"/><text x="398" y="194.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">5</text><circle cx="398" cy="317" r="11" fill="var(--fail)"/><text x="398" y="321.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">4</text><circle cx="172" cy="386" r="11" fill="var(--fail)"/><text x="172" y="390.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">6</text><rect x="430" y="46" width="454" height="408" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="442" y="74.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;form</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">action</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"/feedback"</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">method</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"post"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="94.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;label</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">for</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"email"</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">Email</tspan><tspan fill="var(--accent)">&lt;/label</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="115.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;input</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">id</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"email"</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">name</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"email"</tspan></text><text x="442" y="135.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">         </tspan><tspan fill="var(--test-ink)">type</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"email"</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--ink-soft)">required</tspan></text><text x="442" y="156.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">         </tspan><tspan fill="var(--test-ink)">autocomplete</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"email"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="176.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"></text><text x="442" y="197.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;fieldset</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="217.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--accent)">&lt;legend</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">Спосіб</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--ink-soft)">відповіді</tspan><tspan fill="var(--accent)">&lt;/legend</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="238.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--accent)">&lt;input</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">type</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"radio"</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">id</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"r1"</tspan></text><text x="442" y="258.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">           </tspan><tspan fill="var(--test-ink)">name</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"reply"</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">value</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"mail"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="279.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--accent)">&lt;label</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">for</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"r1"</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">Пошта</tspan><tspan fill="var(--accent)">&lt;/label</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="299.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--ink-soft)">…</tspan></text><text x="442" y="320.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;/fieldset</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="340.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"></text><text x="442" y="361.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;textarea</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">name</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"msg"</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">minlength</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"20"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="381.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;/textarea</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="402.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;button</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">type</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"submit"</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">Надіслати</tspan><tspan fill="var(--accent)">&lt;/button</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="442" y="422.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;/form</tspan><tspan fill="var(--accent)">&gt;</tspan></text><circle cx="868" cy="70.0" r="11" fill="var(--fail)"/><text x="868" y="74.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">1</text><circle cx="868" cy="90.5" r="11" fill="var(--fail)"/><text x="868" y="95.0" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">2</text><circle cx="868" cy="121.0" r="11" fill="var(--fail)"/><text x="868" y="125.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">3</text><circle cx="868" cy="152.0" r="11" fill="var(--fail)"/><text x="868" y="156.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">4</text><circle cx="868" cy="213.5" r="11" fill="var(--fail)"/><text x="868" y="218.0" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">5</text><circle cx="868" cy="357.0" r="11" fill="var(--fail)"/><text x="868" y="361.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">4</text><circle cx="868" cy="398.0" r="11" fill="var(--fail)"/><text x="868" y="402.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">6</text><circle cx="35" cy="488" r="11" fill="var(--fail)"/><text x="35" y="492.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">1</text><text x="54" y="492" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">action + method: куди й як відправити. GET додає дані в</text><text x="54" y="508" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">URL, POST — у тіло запиту</text><circle cx="475" cy="488" r="11" fill="var(--fail)"/><text x="475" y="492.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">2</text><text x="494" y="492" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">label for = id: підпис для екранного читача; клік по підпису</text><text x="494" y="508" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">ставить фокус у поле</text><circle cx="35" cy="534" r="11" fill="var(--fail)"/><text x="35" y="538.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">3</text><text x="54" y="538" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">name: ключ пари name=value; поле без name на сервер не</text><text x="54" y="554" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">потрапляє</text><circle cx="475" cy="534" r="11" fill="var(--fail)"/><text x="475" y="538.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">4</text><text x="494" y="538" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">type, required, minlength, autocomplete: вбудована</text><text x="494" y="554" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">валідація й підказки браузера</text><circle cx="35" cy="580" r="11" fill="var(--fail)"/><text x="35" y="584.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">5</text><text x="54" y="584" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">fieldset + legend: група пов’язаних полів із назвою (role</text><text x="54" y="600" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">group)</text><circle cx="475" cy="580" r="11" fill="var(--fail)"/><text x="475" y="584.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">6</text><text x="494" y="584" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">button type="submit": запускає перевірку й відправлення</text></svg>
+      <figcaption>Рис. 3. Анатомія форми: розмітка полів, підписів, груп і кнопки відправлення.</figcaption>
+    </figure>
+
+    <p><b>Вбудована валідація (constraint validation)</b> працює без жодного рядка JavaScript. Основні атрибути: <b><code>required</code></b> — поле не можна залишити порожнім; <b><code>minlength</code></b> і <b><code>maxlength</code></b> — довжина тексту; <b><code>min</code></b>, <b><code>max</code></b>, <b><code>step</code></b> — межі й крок для числових типів; <b><code>type</code></b> — формат (число, email, url); <b><code>pattern</code></b> — регулярний вираз, якому має відповідати <b>усе</b> введене значення (для <code>&lt;textarea&gt;</code> він не працює). Важлива тонкість: <b>порожнє необов’язкове поле недійсним не вважається</b>, тому для обов’язковості потрібен <code>required</code>.</p>
+
+    <p>Стан поля видно в CSS через псевдокласи <code>:valid</code> і <code>:invalid</code>. Але <code>:invalid</code> спрацьовує ще до того, як користувач щось ввів, тому стилізувати повідомлення про помилку зручніше через <b><code>:user-invalid</code></b> — він діє лише після взаємодії користувача з полем. Для власних повідомлень є <b>Constraint Validation API</b>: властивість <code>validity</code> (прапорці <code>valueMissing</code>, <code>typeMismatch</code>, <code>patternMismatch</code>, <code>tooShort</code>, <code>rangeUnderflow</code> тощо), <code>validationMessage</code> і методи <code>checkValidity()</code>, <code>reportValidity()</code>, <code>setCustomValidity(текст)</code> — непорожнє повідомлення робить поле недійсним, а порожній рядок знімає помилку. Атрибут <b><code>novalidate</code></b> на <code>&lt;form&gt;</code> вимикає стандартні «бульбашки» браузера, але не саме API і не псевдокласи: тоді повідомлення показують у DOM.</p>
+
+    <p><b>Зрозумілі помилки.</b> За WCAG 3.3.1 (рівень A) помилку потрібно визначити й описати текстом, а не лише кольором рамки; за 3.3.2 (рівень A) поля мають підписи або інструкції. Текст помилки пов’язують із полем через <code>aria-describedby</code>, а повідомлення, що з’являється динамічно, оголошують через <code>role="alert"</code> (негайно) або <code>role="status"</code> (м’яко) — це вимога 4.1.3 (рівень AA).</p>
+
+    <p><b>Безпека.</b> Клієнтська перевірка — це зручність, а не захист: її легко обійти, тому сервер мусить перевірити дані ще раз (рис. 4). MDN формулює це жорстко: ніколи не довіряйте даним, які сервер отримує від клієнта.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 470" role="img" aria-label="Схема: користувач натискає «Надіслати», браузер перевіряє обмеження полів. Якщо є помилка, показує підказку й ставить фокус на перше невалідне поле, запит не надсилається. Якщо помилок немає, запит GET або POST іде на сервер, який перевіряє дані ще раз і повертає відповідь. Клієнтська перевірка — зручність, серверна — безпека." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ВІД НАТИСКАННЯ «НАДІСЛАТИ» ДО ВІДПОВІДІ</text><rect x="20" y="64" width="150" height="118" rx="10" fill="var(--surface-2)" stroke="var(--ink-muted)" stroke-width="1.8"/><text x="32" y="88" font-size="13" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Користувач</text><text x="32" y="108" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Заповнює форму й</text><text x="32" y="124" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">натискає</text><text x="32" y="140" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">«Надіслати».</text><rect x="210" y="64" width="230" height="118" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.8"/><text x="222" y="88" font-size="13" font-weight="700" fill="var(--accent)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Браузер перевіряє</text><text x="222" y="108" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">required · type · pattern ·</text><text x="222" y="124" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">minlength / maxlength · min /</text><text x="222" y="140" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">max / step</text><rect x="480" y="64" width="190" height="118" rx="10" fill="var(--surface-2)" stroke="var(--ink-muted)" stroke-width="1.8"/><text x="492" y="88" font-size="13" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Запит на сервер</text><text x="492" y="108" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">GET — дані в URL; POST —</text><text x="492" y="124" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">у тілі запиту. Адреса</text><text x="492" y="140" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">action — краще HTTPS.</text><rect x="710" y="64" width="170" height="118" rx="10" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.8"/><text x="722" y="88" font-size="13" font-weight="700" fill="var(--fail)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Сервер: ще раз</text><text x="722" y="108" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Клієнтським даним не</text><text x="722" y="124" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">довіряють: перевірку</text><text x="722" y="140" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">обходять.</text><line x1="170" y1="123" x2="203.7" y2="123.0" stroke="var(--ink-muted)" stroke-width="1.8"/><polygon points="210.0,123.0 201.8,126.7 201.8,119.3" fill="var(--ink-muted)"/><line x1="440" y1="123" x2="473.7" y2="123.0" stroke="var(--task)" stroke-width="2.2"/><polygon points="480.0,123.0 471.8,126.7 471.8,119.3" fill="var(--task)"/><text x="460" y="113" font-size="12" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">так</text><line x1="670" y1="123" x2="703.7" y2="123.0" stroke="var(--ink-muted)" stroke-width="1.8"/><polygon points="710.0,123.0 701.8,126.7 701.8,119.3" fill="var(--ink-muted)"/><line x1="325" y1="182" x2="325.0" y2="233.7" stroke="var(--fail)" stroke-width="2.2"/><polygon points="325.0,240.0 321.3,231.8 328.7,231.8" fill="var(--fail)"/><text x="335" y="216" font-size="12" font-weight="700" fill="var(--fail)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">є помилка</text><rect x="210" y="242" width="230" height="108" rx="10" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.8"/><text x="222" y="266" font-size="13" font-weight="700" fill="var(--fail)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Повідомлення й фокус</text><text x="222" y="286" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Браузер показує підказку,</text><text x="222" y="302" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">ставить фокус на перше</text><text x="222" y="318" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">невалідне поле. Запит не</text><text x="222" y="334" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">надсилається.</text><line x1="210" y1="296" x2="95" y2="296" stroke="var(--ink-muted)" stroke-width="1.6" stroke-dasharray="5 4"/><line x1="95" y1="296" x2="95.0" y2="190.3" stroke="var(--ink-muted)" stroke-width="1.6" stroke-dasharray="5 4"/><polygon points="95.0,184.0 98.7,192.2 91.3,192.2" fill="var(--ink-muted)"/><text x="104" y="278" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">виправляє</text><line x1="795" y1="182" x2="795.0" y2="233.7" stroke="var(--ink-muted)" stroke-width="1.8"/><polygon points="795.0,240.0 791.3,231.8 798.7,231.8" fill="var(--ink-muted)"/><rect x="620" y="242" width="260" height="108" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.8"/><text x="632" y="266" font-size="13" font-weight="700" fill="var(--task)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Відповідь</text><text x="632" y="286" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Успіх або список помилок по полях</text><text x="632" y="302" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">— його знову треба показати</text><text x="632" y="318" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">користувачу текстом.</text><rect x="20" y="382" width="430" height="66" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="36" y="408" font-size="13.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Клієнтська перевірка</text><text x="36" y="430" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">зручність: швидкий відгук без запиту до сервера</text><rect x="470" y="382" width="410" height="66" rx="10" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.4"/><text x="486" y="408" font-size="13.5" font-weight="700" fill="var(--fail)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Серверна перевірка</text><text x="486" y="430" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">безпека: єдина перевірка, на яку можна покластися</text></svg>
+      <figcaption>Рис. 4. Шлях даних форми: перевірка в браузері, запит, повторна перевірка на сервері.</figcaption>
+    </figure>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Порожнє поле й pattern<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Поле <code>&lt;input type="text" name="pin" pattern="[0-9]{4}"&gt;</code> без атрибута <code>required</code> залишили порожнім і натиснули «Надіслати». Що зробить браузер?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>заблокує відправлення: порожній рядок не збігається з шаблоном із чотирьох цифр</span></button>
+        <button class="test-opt" type="button"><span>відправить форму: порожнє необов’язкове поле недійсним не вважається, а <code>pattern</code> перевіряє лише введене значення</span></button>
+        <button class="test-opt" type="button"><span>відправить форму лише після того, як користувач введе будь-які символи</span></button>
+        <button class="test-opt" type="button"><span>покаже помилку <code>typeMismatch</code>, бо поле має тип <code>text</code></span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+  <!-- ================= 04. Основи SEO-розмітки (метатеги, мікророзмітка, Open Graph) ================= -->
+  <section class="topic" id="seo" aria-labelledby="seo-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">04</span>
+      <h2 id="seo-h">Основи SEO-розмітки (метатеги, мікророзмітка, Open Graph)</h2>
+    </div>
+
+    <p>SEO (search engine optimization) — це не «фокуси для обману пошуку», а те, щоб сторінку можна було знайти, правильно зрозуміти й гідно показати: у пошуковій видачі та в картці, яку месенджер малює з вашого посилання. Усе це читається з <code>&lt;head&gt;</code> та з розмітки вмісту (рис. 5). Одразу застереження: жодна розмітка не гарантує ні позицій у видачі, ні особливого вигляду результату — вона лише допомагає системі зрозуміти сторінку.</p>
+
+    <p><b>Заголовок сторінки.</b> Google формує заголовок результату автоматично, спираючись на елемент <code>&lt;title&gt;</code>, головний заголовок <code>&lt;h1&gt;</code>, <code>og:title</code>, текст посилань на сторінку й інше. Найпростіше вплинути на нього якісним <code>&lt;title&gt;</code>: він є на кожній сторінці, унікальний, змістовний і стислий (без порожніх «Головна» чи «Профіль» і без повторення ключових слів), а назву сайту додають на початку чи в кінці через розділювач. Обмеження довжини немає, але задовгий заголовок у видачі обрізається.</p>
+
+    <p><b>Опис сторінки.</b> <code>&lt;meta name="description" content="…"&gt;</code> — стислий опис сторінки. Google створює сніпет (snippet) переважно з тексту самої сторінки й лише іноді бере meta description — коли вважає, що він точніше описує сторінку; гарантій немає. Рекомендації такі: унікальний опис для кожної сторінки (однакові на всіх сторінках не допомагають), короткий підсумок змісту, а не перелік ключових слів. Обмеження довжини немає — довгий опис просто обрізається у видачі. Керувати сніпетом можна директивами <code>nosnippet</code>, <code>max-snippet:[число]</code> та атрибутом <code>data-nosnippet</code>.</p>
+
+    <p><b>Які метатеги розуміє Google.</b> <code>description</code>; <code>robots</code> і <code>googlebot</code> (керують скануванням та індексацією; у разі суперечності діє суворіша директива); <code>notranslate</code>; <code>google-site-verification</code> (підтвердження прав власності в Search Console); <code>viewport</code>; кодування. Тег <code>&lt;meta name="keywords"&gt;</code> <b>Google не використовує взагалі</b>: він не впливає ні на індексацію, ні на ранжування, тож його додавати не потрібно. Переспрямування через <code>meta refresh</code> Google не радить — краще серверний редирект 301.</p>
+
+    <p><b>Канонічна адреса.</b> Якщо той самий вміст доступний за кількома URL, у <code>&lt;head&gt;</code> указують <code>&lt;link rel="canonical" href="…"&gt;</code> з адресою бажаної версії; це рекомендують робити й на самій канонічній сторінці. Адресу вказують абсолютну. Для Google це сильний сигнал, але не наказ, і елемент приймається лише в <code>&lt;head&gt;</code>.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 616" role="img" aria-label="Ліворуч — вміст head, згрупований кольорами: title, meta description і canonical (пошукова видача), чотири обов’язкові властивості Open Graph (картка в соцмережі), JSON-LD зі схемою Organization (структуровані дані). Праворуч — три споживачі цієї розмітки: пошукова видача, картка в соцмережі та розбір структурованих даних." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЩО ПИШЕМО В &lt;head&gt;</text><text x="494" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ХТО ЦЕ ЧИТАЄ</text><rect x="20" y="46" width="452" height="546" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="36" y="76.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;head</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="99.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;title</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">Лекція</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--ink-soft)">6</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--ink-soft)">—</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--ink-soft)">Вебдизайн</tspan><tspan fill="var(--accent)">&lt;/title</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="123.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;meta</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">name</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"description"</tspan></text><text x="36" y="146.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">        </tspan><tspan fill="var(--test-ink)">content</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"Семантика, форми, SEO."</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="170.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;link</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">rel</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"canonical"</tspan></text><text x="36" y="193.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">        </tspan><tspan fill="var(--test-ink)">href</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"https://example.com/l6"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="217.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"></text><text x="36" y="240.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;meta</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">property</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"og:title"</tspan></text><text x="36" y="264.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">        </tspan><tspan fill="var(--test-ink)">content</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"Лекція 6 — Вебдизайн"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="287.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;meta</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">property</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"og:type"</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">content</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"website"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="311.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;meta</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">property</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"og:url"</tspan></text><text x="36" y="334.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">        </tspan><tspan fill="var(--test-ink)">content</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"https://example.com/l6"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="358.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;meta</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">property</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"og:image"</tspan></text><text x="36" y="381.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">        </tspan><tspan fill="var(--test-ink)">content</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"https://example.com/cover.png"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="405.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"></text><text x="36" y="428.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;script</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">type</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"application/ld+json"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="452.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--ink-soft)">{</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--task-ink)">"@context"</tspan><tspan fill="var(--ink-soft)">:</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--task-ink)">"https://schema.org"</tspan><tspan fill="var(--ink-soft)">,</tspan></text><text x="36" y="475.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--task-ink)">"@type"</tspan><tspan fill="var(--ink-soft)">:</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--task-ink)">"Organization"</tspan><tspan fill="var(--ink-soft)">,</tspan></text><text x="36" y="499.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--task-ink)">"name"</tspan><tspan fill="var(--ink-soft)">:</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--task-ink)">"Студія «Піксель»"</tspan><tspan fill="var(--ink-soft)">,</tspan></text><text x="36" y="522.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--task-ink)">"url"</tspan><tspan fill="var(--ink-soft)">:</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--task-ink)">"https://example.com/"</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--ink-soft)">}</tspan></text><text x="36" y="546.0" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;/script</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="569.5" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;/head</tspan><tspan fill="var(--accent)">&gt;</tspan></text><rect x="24" y="84.5" width="5" height="115.0" rx="2" fill="var(--accent)" stroke="none" stroke-width="1.4"/><rect x="24" y="225.5" width="5" height="162.0" rx="2" fill="var(--task)" stroke="none" stroke-width="1.4"/><rect x="24" y="413.5" width="5" height="138.5" rx="2" fill="var(--test)" stroke="none" stroke-width="1.4"/><rect x="494" y="46" width="386" height="170" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.8"/><rect x="508.0" y="58" width="108.8" height="19" rx="5" fill="var(--accent)"/><text x="562.4" y="71.3" font-size="10.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">пошукова видача</text><text x="512" y="108" font-size="17" font-weight="700" fill="var(--accent)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Лекція 6 — Вебдизайн</text><text x="512" y="128" font-size="12" font-weight="400" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">example.com › l6</text><text x="512" y="150" font-size="13" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Семантика, форми, SEO.</text><text x="512" y="182" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Заголовок — зазвичай із title; опис — із meta description,</text><text x="512" y="197" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">якщо Google визнає його точнішим за текст сторінки.</text><rect x="494" y="230" width="386" height="180" rx="10" fill="var(--surface)" stroke="var(--task)" stroke-width="1.8"/><rect x="508.0" y="242" width="127.8" height="19" rx="5" fill="var(--task)"/><text x="571.9" y="255.3" font-size="10.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">картка в соцмережі</text><rect x="512" y="270" width="120" height="76" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="572" y="314" font-size="12" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">og:image</text><text x="646" y="290" font-size="11" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">og:title</text><text x="646" y="310" font-size="14.5" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Лекція 6 — Вебдизайн</text><text x="646" y="330" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">example.com</text><text x="512" y="372" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Чотири обов’язкові властивості Open Graph: og:title,</text><text x="512" y="387" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">og:type, og:image, og:url.</text><rect x="494" y="424" width="386" height="168" rx="10" fill="var(--surface)" stroke="var(--test)" stroke-width="1.8"/><rect x="508.0" y="436" width="127.8" height="19" rx="5" fill="var(--test)"/><text x="571.9" y="449.3" font-size="10.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">структуровані дані</text><text x="512" y="478" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">@type</text><text x="574" y="478" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">Organization</text><text x="512" y="498" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">name</text><text x="574" y="498" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Студія «Піксель»</text><text x="512" y="530" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Машинозчитуваний опис сутності на сторінці. Розмітка</text><text x="512" y="545" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">має відповідати видимому вмісту й не гарантує</text><text x="512" y="560" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">розширеного відображення.</text></svg>
+      <figcaption>Рис. 5. Розмітка в head і її споживачі: пошукова видача, картка в соцмережі, структуровані дані.</figcaption>
+    </figure>
+
+    <p><b>Open Graph.</b> Протокол Open Graph (ogp.me) перетворює сторінку на «об’єкт» у соціальному графі; його теги читають багато соцмереж і месенджерів, коли будують картку попереднього перегляду посилання. Метадані записують у <code>&lt;meta&gt;</code> усередині <code>&lt;head&gt;</code> з атрибутами <code>property</code> (назва з префіксом <code>og:</code>) і <code>content</code> (значення). Чотири обов’язкові властивості: <b><code>og:title</code></b> (назва об’єкта), <b><code>og:type</code></b> (тип, наприклад <code>website</code>), <b><code>og:image</code></b> (адреса зображення), <b><code>og:url</code></b> (канонічна адреса — постійний ідентифікатор об’єкта). Рекомендують також <b><code>og:description</code></b> (одне-два речення), <code>og:site_name</code> і <code>og:locale</code> (мова й територія у форматі <code>language_TERRITORY</code>, наприклад <code>uk_UA</code>; за замовчуванням <code>en_US</code>). Специфікація пропонує оголошувати префікс на кореневому елементі: <code>&lt;html prefix="og: https://ogp.me/ns#"&gt;</code>.</p>
+
+    <p><b>Мікророзмітка (structured data).</b> Це стандартизований спосіб описати вміст сторінки словником <b>schema.org</b>: що це — організація, товар, подія, стаття — і які в нього властивості. Є три формати: <b>JSON-LD</b>, <b>Microdata</b> і <b>RDFa</b>. Google рекомендує JSON-LD, хоча всі три рівноцінні, якщо розмітка коректна. Microdata вбудовує опис прямо в HTML трьома атрибутами: <b><code>itemscope</code></b> (елемент описує один об’єкт), <b><code>itemtype</code></b> (тип — адреса зі schema.org) і <b><code>itemprop</code></b> (властивість об’єкта). JSON-LD, навпаки, окремий блок <code>&lt;script type="application/ld+json"&gt;</code>, що не чіпає видимої розмітки.</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">&lt;div</span> itemscope <span class="tk-attr">itemtype</span>=<span class="tk-str">"https://schema.org/Organization"</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;span</span> <span class="tk-attr">itemprop</span>=<span class="tk-str">"name"</span><span class="tk-tag">&gt;</span>Студія «Піксель»<span class="tk-tag">&lt;/span</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;a</span> <span class="tk-attr">itemprop</span>=<span class="tk-str">"url"</span> <span class="tk-attr">href</span>=<span class="tk-str">"https://example.com/"</span><span class="tk-tag">&gt;</span>Сайт<span class="tk-tag">&lt;/a</span><span class="tk-tag">&gt;</span>
+<span class="tk-tag">&lt;/div</span><span class="tk-tag">&gt;</span></code></pre>
+
+    <pre class="codeblock"><code><span class="tk-tag">&lt;script</span> <span class="tk-attr">type</span>=<span class="tk-str">"application/ld+json"</span><span class="tk-tag">&gt;</span>
+{
+  <span class="tk-str">"@context"</span>: <span class="tk-str">"https://schema.org"</span>,
+  <span class="tk-str">"@type"</span>: <span class="tk-str">"Organization"</span>,
+  <span class="tk-str">"name"</span>: <span class="tk-str">"Студія «Піксель»"</span>,
+  <span class="tk-str">"url"</span>: <span class="tk-str">"https://example.com/"</span>
+}
+<span class="tk-tag">&lt;/script</span><span class="tk-tag">&gt;</span></code></pre>
+
+    <p>Google ставить до мікророзмітки чіткі умови. Розмітка має описувати <b>видимий</b> вміст сторінки: не розмічайте те, чого користувач не бачить, навіть якщо це правда. Потрібно вказати всі обов’язкові властивості конкретного типу, а краще менше рекомендованих, але повних і точних, ніж багато недописаних. І навіть коректна розмітка лише може дати розширений результат (rich result) — гарантії немає. Перевіряють розмітку інструментом Rich Results Test, а після публікації — звітами Search Console про розширені результати; загальну коректність словника допомагає перевірити Schema Markup Validator (validator.schema.org).</p>
+
+    <p><b>Де це знадобиться.</b> Семантична розмітка — спільна основа доступності, видимості в пошуку й підтримки коду: той самий <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, змістовні <code>alt</code>, <code>&lt;label&gt;</code> і <code>&lt;title&gt;</code> одночасно допомагають екранному читачу, пошуковому роботу та колезі, який через рік відкриє ваш файл. Маркетолог отримує коректні картки посилань і заголовки у видачі, юрист — зрозумілу структуру роз’яснень, а фахівець з інформаційних систем — міцний фундамент, на який у наступних темах лягатимуть стилі та скрипти: CSS і JavaScript без якісної розмітки схожі на ремонт у будинку без фундаменту.</p>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> Форма й SEO-розмітка сторінки<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Скопіюйте <code>index.html</code> у файл <code>contact.html</code> і додайте форму зворотного зв’язку: поля «Ім’я» (<code>autocomplete="name"</code>, <code>required</code>), «Email» (<code>type="email"</code>, <code>required</code>, <code>autocomplete="email"</code>), «Повідомлення» (<code>&lt;textarea&gt;</code>, <code>minlength="20"</code>), прапорець згоди (<code>required</code>) і група перемикачів «Спосіб відповіді» у <code>&lt;fieldset&gt;</code> з <code>&lt;legend&gt;</code>. Кожне поле має <code>&lt;label for&gt;</code>, кнопка — <code>type="submit"</code>.</li>
+        <li>Задайте <code>method="get"</code> і <code>action=""</code>, заповніть форму й надішліть її: подивіться на адресний рядок і випишіть, як дані потрапили в URL. Потім змініть метод на <code>post</code> і поясніть різницю.</li>
+        <li>Перевірте валідацію: надішліть порожню форму, некоректний email і повідомлення з п’яти символів — зафіксуйте повідомлення браузера. Додайте CSS-правило з <code>:user-invalid</code>, що виділяє помилкове поле рамкою.</li>
+        <li>Допишіть у <code>&lt;head&gt;</code>: унікальний <code>&lt;title&gt;</code>, <code>&lt;meta name="description"&gt;</code> (1–2 речення), <code>&lt;link rel="canonical"&gt;</code> з абсолютною адресою (можна умовну, на кшталт https://example.com/contact.html) та чотири обов’язкові теги Open Graph: <code>og:title</code>, <code>og:type</code>, <code>og:image</code>, <code>og:url</code>.</li>
+        <li>Додайте блок JSON-LD з типом зі schema.org, що відповідає темі сторінки (наприклад, <code>Organization</code>, <code>Product</code> чи <code>WebPage</code>), і властивостями <code>name</code>, <code>description</code>, <code>url</code>. Вставте код розмітки в Schema Markup Validator (validator.schema.org) і виправте помилки.</li>
+        <li>У файлі <code>README.txt</code> у 3–4 реченнях поясніть, з яких елементів Google може сформувати заголовок і сніпет вашої сторінки та чому ви не додавали <code>&lt;meta name="keywords"&gt;</code>.</li>
+      </ol>
+      <div class="box-close">Заархівуйте оновлену папку lecture6 (ZIP) і прикріпіть архів до завдання в Classroom.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Лекція 6 · Тема 6 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 08.10.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture6-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState();
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId]);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
 </body>
 </html>
