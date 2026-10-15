@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CSS3: Flexbox, Grid та адаптивна верстка — Вебдизайн</title>
-<meta name="description" content="Лекція 7. CSS3: Flexbox, Grid та адаптивна верстка. Конспект готується.">
+<title>CSS3: Flexbox, Grid та адаптивна верстка</title>
+<meta name="description" content="Лекція 7 курсу «Вебдизайн»: каскадні таблиці стилів, селектори, специфічність і каскад, Flexbox, CSS Grid, медіазапити, адаптивна й респонсивна верстка, підхід mobile-first">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +26,59 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --fail:#C0392B;
+    --fail-tint:#FBE3E0;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --fail:#E8746A;
+      --fail-tint:#3A1512;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --fail:#E8746A;
+    --fail-tint:#3A1512;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,123 +91,700 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{max-width:1000px;margin:28px auto 0;padding:0 24px;}
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
-    padding:12px 16px;
-    background:var(--surface-2);
-    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:12px 16px;
+    background:var(--surface-2);border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
   .addr{
-    flex:1;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;
-    color:var(--ink-muted);
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:6px 12px;
+    flex:1;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
-  }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
+  .hero{padding:56px 40px 48px;}
   .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent-tint);display:inline-block;padding:5px 11px;
+    border-radius:99px;margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.14;font-weight:800;}
+  .hero .theme{margin-top:14px;font-size:clamp(16px,2vw,19px);color:var(--ink-soft);font-weight:500;max-width:34em;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .meta-chip{
+    font-size:13px;color:var(--ink-muted);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:99px;padding:6px 13px;display:flex;align-items:center;gap:6px;
   }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- sticky toc ---------- */
+  .toc-bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    text-decoration:none;padding:13px 12px;border-bottom:2px solid transparent;white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{flex:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);padding:13px 0 13px 14px;white-space:nowrap;}
+  .toc-progress b{color:var(--accent);}
+  .progress-track{max-width:1000px;margin:0 auto;padding:0 24px;height:3px;}
+  .progress-track .fill{height:100%;width:0%;background:linear-gradient(90deg, var(--task), var(--accent));transition:width .3s ease;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
 
-  footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
-  }
+  .lit{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin:36px 0 0;box-shadow:var(--shadow);}
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
 
+  section.topic{margin-top:64px;padding-top:8px;}
+  .topic-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .topic-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);background:var(--accent-tint);border-radius:8px;padding:4px 10px;flex:none;}
+  .topic h2{font-size:clamp(21px,2.6vw,27px);font-weight:700;}
+  .topic p{color:var(--ink-soft);font-size:16px;margin:0 0 16px;}
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{margin:0 0 18px;padding-left:22px;color:var(--ink-soft);font-size:15.5px;}
+  .topic ul li{margin-bottom:9px;}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);}
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px 16px;margin:26px 0 30px;box-shadow:var(--shadow);}
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{margin-top:14px;font-size:13px;color:var(--ink-muted);text-align:center;}
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+  .zone-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.02em;}
+
+  /* ---------- task / test boxes ---------- */
+  .box{border-radius:var(--radius);padding:24px 26px 20px;margin:24px 0 30px;box-shadow:var(--shadow);border:1px solid;}
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:6px;color:#fff;}
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  .box-close{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-style:italic;font-size:14px;color:var(--ink-muted);}
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.02em;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--ink-muted);border:1px solid var(--line);white-space:nowrap;}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
+
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{display:flex;gap:12px;align-items:flex-start;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .step .num{
+    flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);
+    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num, .step:has(.chk:checked) .num, .step.checked .num{background:var(--task);border-color:var(--task);color:#fff;}
+  .step:has(.chk:checked) .step-text, .step.checked .step-text{color:var(--ink-muted);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1.5px;}
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;width:100%;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink-soft);
+    padding:9px 12px;margin:0 0 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);
+    font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{content:"";width:15px;height:15px;border:1.5px solid var(--test);border-radius:50%;flex:none;margin-top:2px;}
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:var(--fail);background:color-mix(in srgb, var(--fail) 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:var(--fail);border-color:var(--fail);}
+  .test-feedback{margin-top:10px;font-size:13.5px;font-weight:600;display:none;}
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:var(--fail);}
+
+  .reset-btn{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{max-width:1000px;margin:0 auto;padding:40px 24px 60px;border-top:1px solid var(--line);color:var(--ink-muted);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
+
+  /* ---------- доповнення для лекції 6: код, довгі посилання, пропуск до змісту ---------- */
+  .skip-link{position:absolute;left:-9999px;top:8px;background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;z-index:50;font-weight:700;text-decoration:none;}
+  .skip-link:focus{left:12px;}
+  .topic code, .box code, .lit code, .hero code{
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--ink);overflow-wrap:anywhere;
+  }
+  .topic b code{font-weight:700;}
+  .box.test .test-opt code{background:var(--surface-2);}
+  pre.codeblock{
+    background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:16px 20px;margin:0 0 20px;
+    overflow-x:auto;font-size:13px;line-height:1.65;box-shadow:var(--shadow);tab-size:2;
+  }
+  pre.codeblock code{background:none;border:0;padding:0;font-size:inherit;color:inherit;overflow-wrap:normal;}
+  .tk-tag{color:#8FA3FF;} .tk-str{color:#58D3B0;} .tk-attr{color:#F0B45A;} .tk-cm{color:#8A90A6;}
+  .test-opt > span{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .box-title{flex-wrap:wrap;}
+  .step-text{min-width:0;overflow-wrap:anywhere;}
+  .lit li{overflow-wrap:anywhere;}
+  .lit a{word-break:break-all;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  @media (prefers-reduced-motion: reduce){ .progress-track .fill{transition:none;} html{scroll-behavior:auto;} }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Перейти до основного вмісту</a>
 
-
-<div class="chrome">
+<header class="chrome">
   <div class="browser">
     <div class="browser-bar">
-      <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-07</div>
+      <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="addr">вебдизайн-курс.ua/лекція-7/css3-flexbox-grid-adaptyvna-verstka</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль III · Лекція 7</div>
-      <span class="eyebrow">Дисципліна · Лекція 7</span>
+      <span class="eyebrow">Лекція 7 · Тема 7</span>
       <h1>CSS3: Flexbox, Grid та адаптивна верстка</h1>
-      <p class="sub">Модуль III «Верстка та реалізація вебдизайну (HTML/CSS)»</p>
-
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
-      </div>
+      <p class="theme">HTML описує, <b>що</b> є на сторінці, а CSS — <b>як</b> це виглядає й де стоїть: чому одне правило перемагає інше, як <code>display: flex</code> вишиковує меню в рядок, як <code>display: grid</code> переносить у код сітку з Figma і як медіазапити перетворюють одну сторінку на зручну і для телефона, і для монітора.</p>
+  
     </div>
   </div>
-</div>
+</header>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar" aria-label="Зміст лекції">
+  <div class="toc-inner">
+    <a href="#cascade" data-toc="cascade">1. Каскад</a>
+    <a href="#flexbox" data-toc="flexbox">2. Flexbox</a>
+    <a href="#grid" data-toc="grid">3. Grid</a>
+    <a href="#responsive" data-toc="responsive">4. Адаптивність</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
 
+<main id="main">
+
+  <section class="lit" id="literature" aria-labelledby="lit-h">
+    <h2 id="lit-h">Література до теми</h2>
+    <ol>
+      <li>MDN Web Docs. Introduction to the CSS cascade. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Introduction" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Introduction</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. Specificity. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Specificity" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Specificity</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. Inheritance. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Inheritance" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascade/Inheritance</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. Combinators. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Combinators" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Combinators</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. box-sizing. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/box-sizing" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/box-sizing</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. Flexbox (навчальний модуль). URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. Basic concepts of flexbox. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout/Basic_concepts" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout/Basic_concepts</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. gap. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/gap" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/gap</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. Grids (навчальний модуль). URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Grids" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Grids</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. repeat() — auto-fill та auto-fit. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/repeat" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/repeat</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. Using media queries. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Guides/Media_queries/Using</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. Responsive web design. URL: <a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. clamp(). URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/clamp" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/clamp</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. CSS container queries. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries</a> (дата звернення: 15.10.2026).</li>
+      <li>W3C WAI. Understanding Success Criterion 1.4.10: Reflow (WCAG 2.2). URL: <a href="https://www.w3.org/WAI/WCAG22/Understanding/reflow.html" target="_blank" rel="noopener">www.w3.org/WAI/WCAG22/Understanding/reflow.html</a> (дата звернення: 15.10.2026).</li>
+    </ol>
+  </section>
+
+  <!-- ================= 01. Каскадні таблиці стилів: селектори, специфічність, каскад ================= -->
+  <section class="topic" id="cascade" aria-labelledby="cascade-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">01</span>
+      <h2 id="cascade-h">Каскадні таблиці стилів: селектори, специфічність, каскад</h2>
+    </div>
+
+    <p>У темі 6 ми описали <b>зміст</b> сторінки мовою HTML і свідомо не торкалися її вигляду. Тепер настає черга <b>CSS (Cascading Style Sheets, каскадні таблиці стилів)</b> — мови, якою задають кольори, шрифти, відступи й розташування блоків. Розподіл ролей простий: HTML відповідає на запитання «що це?», CSS — «як це виглядає й де розташоване?». Завдяки такому розподілу один і той самий HTML можна показати по-різному на телефоні, комп’ютері й під час друку.</p>
+
+    <p><b>Як підключити стилі.</b> Найкращий спосіб — <b>зовнішній файл</b>: у <code>&lt;head&gt;</code> кожної сторінки додають <code>&lt;link rel="stylesheet" href="css/style.css"&gt;</code>, і всі сторінки сайту користуються одними правилами. Для однієї сторінки можна записати стилі в елемент <code>&lt;style&gt;</code> усередині <code>&lt;head&gt;</code>. Атрибут <code>style</code> прямо на елементі (вбудовані, inline-стилі) змішує зміст з оформленням, і його важко перевизначити — до цього способу вдаються лише у виняткових випадках.</p>
+
+    <p><b>Анатомія правила.</b> Правило CSS складається із <b>селектора</b> (до яких елементів застосувати) і <b>блоку оголошень</b> у фігурних дужках. Кожне <b>оголошення</b> — пара «властивість: значення», а оголошення відокремлюють крапкою з комою (рис. 1).</p>
+
+    <pre class="codeblock"><code><span class="tk-cm">/* коментар: картка послуги */</span>
+<span class="tk-tag">.card </span>{
+  <span class="tk-attr">padding</span>: <span class="tk-str">1.5rem</span>;
+  <span class="tk-attr">border</span>: <span class="tk-str">1px solid #d7dae3</span>;
+  <span class="tk-attr">border-radius</span>: <span class="tk-str">12px</span>;
+}</code></pre>
+
+    <p><b>Основні селектори.</b> Для щоденної роботи достатньо кількох видів:</p>
+
+    <ul>
+      <li><b>селектор типу</b> — <code>p</code>, <code>h2</code>, <code>button</code>: усі елементи цього типу;</li>
+      <li><b>селектор класу</b> — <code>.card</code>: елементи з атрибутом <code>class="card"</code>; клас можна повторювати на будь-якій кількості елементів, тож саме класи — головний інструмент стилізації;</li>
+      <li><b>селектор ідентифікатора</b> — <code>#main</code>: один елемент з <code>id="main"</code>; через високу специфічність для оформлення його використовують рідко, а <code>id</code> залишають для якорів, <code>label for</code> і скриптів;</li>
+      <li><b>селектор атрибута</b> — <code>[type="email"]</code>, <code>[href^="https"]</code>: елементи з певним атрибутом чи значенням;</li>
+      <li><b>псевдокласи</b> — стани й позиції: <code>:hover</code>, <code>:focus-visible</code>, <code>:nth-child(2n)</code>, <code>:user-invalid</code> (з теми 6);</li>
+      <li><b>псевдоелементи</b> — частини елемента: <code>::before</code>, <code>::after</code>, <code>::placeholder</code>;</li>
+      <li><b>універсальний селектор</b> <code>*</code> та <b>список селекторів</b> через кому: <code>h1, h2, h3</code> — одне правило для кількох селекторів.</li>
+    </ul>
+
+    <p><b>Комбінатори</b> поєднують селектори за взаємним розташуванням елементів: <b>пробіл</b> — нащадок на будь-якому рівні (<code>.box p</code> — усі абзаци всередині <code>.box</code>); <b><code>&gt;</code></b> — лише прямі дочірні елементи (<code>ul &gt; li</code>); <b><code>+</code></b> — сусід, що йде одразу після (<code>h2 + p</code> — перший абзац після заголовка); <b><code>~</code></b> — усі наступні сусіди того самого батька (<code>h2 ~ p</code>).</p>
+
+    <p><b>Специфічність (specificity)</b> — «вага» селектора, за якою браузер вирішує, яке з двох правил для того самого елемента важливіше. Її записують трьома числами <b>ID–CLASS–TYPE</b> і порівнюють зліва направо: стовпчик ID — кількість ідентифікаторів; CLASS — класів, атрибутів і псевдокласів; TYPE — типів і псевдоелементів. Більше значення в лівішому стовпчику перемагає незалежно від решти: за MDN, навіть 150 селекторів типу програють одному класу. Універсальний селектор <code>*</code> і комбінатори ваги не додають, <code>:where()</code> завжди має нульову специфічність, а <code>:is()</code>, <code>:not()</code> і <code>:has()</code> беруть вагу найспецифічнішого зі своїх аргументів.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 470" role="img" aria-label="Ліворуч — правило .card h3 з двома оголошеннями: позначено селектор, властивість, значення й блок оголошень у фігурних дужках. Праворуч — таблиця специфічності за стовпчиками ID, CLASS, TYPE для селекторів від * (0-0-0) до #main .card h3 (1-1-1); пояснено, що стовпчики порівнюють зліва направо і #nav a (1-0-1) перемагає .menu .item a:hover (0-3-1)." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">АНАТОМІЯ ПРАВИЛА</text><text x="470" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">СПЕЦИФІЧНІСТЬ: ID – CLASS – TYPE</text><rect x="20" y="46" width="420" height="270" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="48" y="96" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="18" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.card h3 </tspan><tspan fill="var(--ink-muted)">{</tspan></text><text x="48" y="152" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="18" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">color</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">#1636b0;</tspan></text><text x="48" y="208" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="18" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">font-size</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">1.25rem;</tspan></text><text x="48" y="252" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="18" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">}</tspan></text><line x1="48" y1="106" x2="134.6875" y2="106" stroke="var(--accent)" stroke-width="2.4"/><text x="48" y="126" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">селектор</text><line x1="69.671875" y1="162" x2="123.8515625" y2="162" stroke="var(--test)" stroke-width="2.4"/><text x="69.671875" y="182" font-size="12.5" font-weight="700" fill="var(--test-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">властивість</text><line x1="145.5234375" y1="162" x2="221.375" y2="162" stroke="var(--task)" stroke-width="2.4"/><text x="231.375" y="166" font-size="12.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">значення</text><line x1="400" y1="82" x2="412" y2="82" stroke="var(--ink-muted)" stroke-width="1.6"/><line x1="412" y1="82" x2="412" y2="258" stroke="var(--ink-muted)" stroke-width="1.6"/><line x1="400" y1="258" x2="412" y2="258" stroke="var(--ink-muted)" stroke-width="1.6"/><text x="404" y="284" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="end" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">блок оголошень { }</text><text x="36" y="300" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Оголошення = властивість : значення ;</text><rect x="466" y="46" width="414" height="34" rx="8" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="476" y="68" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Селектор</text><text x="712" y="68" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">ID</text><text x="758" y="68" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">CLASS</text><text x="820" y="68" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">TYPE</text><text x="476" y="102" font-size="13" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">*</text><text x="726" y="102" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><text x="772" y="102" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><text x="834" y="102" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><rect x="466" y="114" width="414" height="34" rx="0" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><text x="476" y="136" font-size="13" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">p</text><text x="726" y="136" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><text x="772" y="136" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><text x="834" y="136" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><text x="476" y="170" font-size="13" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">.card h3</text><text x="726" y="170" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><text x="772" y="170" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><text x="834" y="170" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><rect x="466" y="182" width="414" height="34" rx="0" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><text x="476" y="204" font-size="13" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">:where(.card) h3</text><text x="726" y="204" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><text x="772" y="204" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><text x="834" y="204" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><text x="476" y="238" font-size="13" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">.menu .item a:hover</text><text x="726" y="238" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><text x="772" y="238" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">3</text><text x="834" y="238" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><rect x="466" y="250" width="414" height="34" rx="0" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><text x="476" y="272" font-size="13" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">#nav a</text><text x="726" y="272" font-size="14" font-weight="700" fill="var(--fail)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><text x="772" y="272" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0</text><text x="834" y="272" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><text x="476" y="306" font-size="13" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">#main .card h3</text><text x="726" y="306" font-size="14" font-weight="700" fill="var(--fail)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><text x="772" y="306" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><text x="834" y="306" font-size="14" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><line x1="466" y1="318" x2="880" y2="318" stroke="var(--line)" stroke-width="1.2"/><text x="466" y="344" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Порівнюйте стовпчики зліва направо: 1-0-1 перемагає 0-3-1,</text><text x="466" y="361" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">бо більше значення в стовпчику ID важливіше за будь-яку</text><text x="466" y="378" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">кількість класів.</text><text x="466" y="404" font-size="12.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">* і комбінатори ваги не додають; :where() завжди 0-0-0; :is(),</text><text x="466" y="421" font-size="12.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">:not(), :has() беруть вагу найсильнішого аргументу.</text><rect x="20" y="334" width="420" height="120" rx="10" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><text x="36" y="360" font-size="13" font-weight="700" fill="var(--test-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Inline-стиль та !important</text><text x="36" y="384" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Атрибут style перевизначає звичайні правила з таблиць</text><text x="36" y="401" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">стилів, а перебити його можна лише !important. Боротьба</text><text x="36" y="418" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">зі специфічністю через !important — погана практика.</text></svg>
+      <figcaption>Рис. 1. Анатомія CSS-правила та обчислення специфічності за стовпчиками ID – CLASS – TYPE.</figcaption>
+    </figure>
+
+    <p>Окремо стоять <b>inline-стилі</b> (атрибут <code>style</code>): вони перевизначають звичайні оголошення авторських таблиць стилів, і перебити їх можна лише позначкою <code>!important</code>. Сама <code>!important</code> робить оголошення важливішим за всі звичайні в межах того самого джерела й шару, але MDN прямо називає використання <code>!important</code> для боротьби зі специфічністю <b>поганою практикою</b>: стилі стають непередбачуваними, а наступне виправлення вимагатиме нового <code>!important</code>. Краще знизити специфічність селекторів або впорядкувати стилі шарами <code>@layer</code>.</p>
+
+    <p><b>Каскад</b> — алгоритм, яким браузер обирає одне значення властивості з кількох конкурентів. MDN описує його кроками (рис. 2): <b>1) доречність</b> — залишаються лише правила, чий селектор відповідає елементу і чиї медіаумови виконано; <b>2) джерело й важливість</b> — стилі браузера (user-agent), користувача й автора сайту; для звичайних оголошень авторські стилі перемагають, а для <code>!important</code> порядок обертається; <b>3) специфічність</b>; <b>4) близькість області видимості</b> (для правил <code>@scope</code>); <b>5) порядок появи</b> — за інших рівних перемагає оголошення, записане <b>останнім</b>. Шари <code>@layer</code> додають ще один рівень: звичайні стилі поза шарами перемагають звичайні стилі в шарах, хоч би якою була специфічність.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 420" role="img" aria-label="Каскад як послідовність фільтрів: доречність, джерело й важливість, специфічність, близькість області @scope, порядок появи — і переможне значення. Приклад праворуч: для p з класом note перемагає .note (navy) завдяки специфічності, для звичайного p — останнє правило (green)." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЯК БРАУЗЕР ОБИРАЄ ЗНАЧЕННЯ ВЛАСТИВОСТІ</text><rect x="24" y="50" width="600" height="52" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><circle cx="48" cy="76" r="11" fill="var(--accent)"/><text x="48" y="80.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">1</text><text x="70" y="72" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Доречність</text><text x="70" y="91" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">селектор відповідає елементу, медіаумову виконано</text><line x1="312" y1="102" x2="312.0" y2="109.1" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="312.0,114.0 309.1,107.6 314.9,107.6" fill="var(--ink-muted)"/><rect x="46" y="114" width="556" height="52" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><circle cx="70" cy="140" r="11" fill="var(--accent)"/><text x="70" y="144.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">2</text><text x="92" y="136" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Джерело й важливість</text><text x="92" y="155" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">браузер · користувач · автор; !important обертає порядок</text><line x1="312" y1="166" x2="312.0" y2="173.1" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="312.0,178.0 309.1,171.6 314.9,171.6" fill="var(--ink-muted)"/><rect x="68" y="178" width="512" height="52" rx="10" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.4"/><circle cx="92" cy="204" r="11" fill="var(--test)"/><text x="92" y="208.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">3</text><text x="114" y="200" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Специфічність</text><text x="114" y="219" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">ID – CLASS – TYPE, зліва направо</text><line x1="312" y1="230" x2="312.0" y2="237.1" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="312.0,242.0 309.1,235.6 314.9,235.6" fill="var(--ink-muted)"/><rect x="90" y="242" width="468" height="52" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><circle cx="114" cy="268" r="11" fill="var(--accent)"/><text x="114" y="272.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">4</text><text x="136" y="264" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Близькість області</text><text x="136" y="283" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">лише для правил @scope</text><line x1="312" y1="294" x2="312.0" y2="301.1" stroke="var(--ink-muted)" stroke-width="1.6"/><polygon points="312.0,306.0 309.1,299.6 314.9,299.6" fill="var(--ink-muted)"/><rect x="112" y="306" width="424" height="52" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><circle cx="136" cy="332" r="11" fill="var(--accent)"/><text x="136" y="336.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">5</text><text x="158" y="328" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Порядок появи</text><text x="158" y="347" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">за інших рівних перемагає останнє оголошення</text><rect x="170" y="372" width="284" height="38" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="312" y="396" font-size="14" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">переможне значення</text><line x1="312" y1="356" x2="312.0" y2="367.1" stroke="var(--task)" stroke-width="1.8"/><polygon points="312.0,372.0 309.1,365.6 314.9,365.6" fill="var(--task)"/><rect x="650" y="50" width="230" height="360" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="664" y="76" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Приклад</text><text x="664" y="104" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">p </tspan><tspan fill="var(--ink-muted)">{ color: gray; }</tspan></text><text x="664" y="126" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.note </tspan><tspan fill="var(--ink-muted)">{ color: navy; }</tspan></text><text x="664" y="148" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">p </tspan><tspan fill="var(--ink-muted)">{ color: green; }</tspan></text><text x="664" y="186" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Для &lt;p class="note"&gt;:</text><text x="664" y="210" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">.note (0-1-0) сильніше за p</text><text x="664" y="227" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">(0-0-1), тож порядок появи</text><text x="664" y="244" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">вже не важить.</text><rect x="664.0" y="262" width="44.9" height="22" rx="5" fill="var(--accent)"/><text x="686.5" y="277.3" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">navy</text><text x="664" y="312" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Для звичайного &lt;p&gt; обидва</text><text x="664" y="329" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">правила мають 0-0-1, і</text><text x="664" y="346" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">перемагає останнє:</text><rect x="664.0" y="372" width="52.1" height="22" rx="5" fill="var(--task)"/><text x="690.1" y="387.3" font-size="12" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace">green</text></svg>
+      <figcaption>Рис. 2. Каскад: послідовність кроків, якими браузер обирає переможне значення властивості.</figcaption>
+    </figure>
+
+    <p><b>Успадкування.</b> Частина властивостей <b>успадковується</b>: якщо задати абзацу <code>color: green</code>, курсив <code>&lt;em&gt;</code> усередині теж стане зеленим. Інші — <b>не успадковуються</b> й отримують початкове значення: рамка абзацу не з’явиться навколо <code>&lt;em&gt;</code>. Загальне правило: текстові властивості (<code>color</code>, <code>font-family</code>, <code>line-height</code>) зазвичай успадковуються, а «коробкові» (<code>border</code>, <code>padding</code>, <code>margin</code>, <code>background</code>) — ні. Ключове слово <code>inherit</code> примусово вмикає успадкування. І важливо: стиль, заданий <b>безпосередньо</b> елементу, завжди переважає успадкований, якою б великою не була специфічність правила батьківського елемента.</p>
+
+    <p><b>Блокова модель і <code>box-sizing</code>.</b> Кожен елемент — прямокутник із вмісту, внутрішнього відступу <code>padding</code>, рамки <code>border</code> і зовнішнього відступу <code>margin</code>. За замовчуванням (<code>box-sizing: content-box</code>) ширина <code>width</code> стосується лише вмісту: блок із <code>width: 160px</code>, <code>padding: 20px</code> і рамкою 8px насправді займе 216px. Зі значенням <b><code>border-box</code></b> <code>width</code> враховує вміст, <code>padding</code> і рамку, тож розміри стають передбачуваними. Тому більшість проєктів починають стилі з короткого «скидання»:</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">*, *::before, *::after </span>{
+  <span class="tk-attr">box-sizing</span>: <span class="tk-str">border-box</span>;
+}
+<span class="tk-tag">img, picture, video </span>{
+  <span class="tk-attr">max-width</span>: <span class="tk-str">100%</span>;  <span class="tk-cm">/* не ширше за контейнер */</span>
+}</code></pre>
+
+    <p><b>Одиниці виміру.</b> <code>px</code> — фіксовані CSS-пікселі; <code>%</code> — частка від розміру батька; <b><code>rem</code></b> — частка від розміру шрифту кореневого елемента <code>&lt;html&gt;</code> (зазвичай 16px), тож <code>1.5rem</code> = 24px; <code>em</code> — від розміру шрифту поточного елемента; <code>vw</code> і <code>vh</code> — відсотки ширини й висоти вікна; <code>fr</code> — частка вільного місця в сітці Grid. Розміри шрифтів і відступів зручно задавати в <code>rem</code>: вони масштабуються разом із налаштуваннями шрифту, які людина обрала в браузері.</p>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Специфічність<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Для одного посилання в меню записано два правила: <code>#nav a { color: navy; }</code> і <code>.menu .item a:hover { color: red; }</code>. Який колір матиме посилання, коли на нього навести курсор?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button"><span>червоний, бо друге правило записано пізніше</span></button>
+        <button class="test-opt" type="button"><span>червоний, бо в другому селекторі більше частин (0-3-1 проти 1-0-1)</span></button>
+        <button class="test-opt" type="button"><span>темно-синій: специфічність <code>#nav a</code> — 1-0-1, а другого селектора — 0-3-1, і стовпчик ID перемагає незалежно від інших</span></button>
+        <button class="test-opt" type="button"><span>колір визначить браузер випадково, бо правила конфліктують</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+  <!-- ================= 02. Flexbox: вирівнювання та розподіл елементів ================= -->
+  <section class="topic" id="flexbox" aria-labelledby="flexbox-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">02</span>
+      <h2 id="flexbox-h">Flexbox: вирівнювання та розподіл елементів</h2>
+    </div>
+
+    <p>Довгий час верстальники розставляли блоки «милицями»: таблицями, плаваючими елементами (<code>float</code>), позиціюванням. Сучасний CSS має два спеціальні механізми розкладки — <b>Flexbox</b> і <b>Grid</b>. За визначенням MDN, Flexbox — <b>одновимірний</b> метод: він керує розташуванням елементів в одному напрямку за раз — або в рядку, або в стовпці. Grid, навпаки, двовимірний і керує рядками й стовпцями одночасно.</p>
+
+    <p><b>Контейнер і елементи.</b> Розкладка вмикається на батьківському елементі: <code>display: flex</code>. Він стає <b>flex-контейнером</b>, а його прямі нащадки — <b>flex-елементами</b>. Відтепер усе вирішують дві осі (рис. 3): <b>головна вісь (main axis)</b> — напрямок, у якому вишиковуються елементи (за замовчуванням — рядок зліва направо), і <b>поперечна вісь (cross axis)</b> — перпендикулярна до неї.</p>
+
+    <p>Щойно ви напишете <code>display: flex</code>, діють <b>початкові значення</b>: елементи стають у рядок (<code>flex-direction: row</code>) і починаються від початку головної осі; уздовж головної осі вони не розтягуються (<code>flex-grow: 0</code>), але можуть стискатися (<code>flex-shrink: 1</code>); уздовж поперечної — розтягуються на всю висоту контейнера (<code>align-items</code> працює як <code>stretch</code>); <code>flex-basis</code> дорівнює <code>auto</code>; а всі елементи вміщуються в один рядок (<code>flex-wrap: nowrap</code>), навіть якщо для цього доведеться вийти за межі контейнера.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 470" role="img" aria-label="Ліворуч — flex-контейнер із трьома елементами в рядок: червона стрілка — головна вісь (flex-direction: row), зелена — поперечна вісь. Праворуч — приклади justify-content уздовж головної осі (start, center, space-between, space-evenly) і align-items уздовж поперечної (stretch, center, start)." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ОСІ FLEX-КОНТЕЙНЕРА</text><rect x="24" y="50" width="400" height="190" rx="12" fill="var(--surface-2)" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="6 4"/><text x="36" y="72" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">display: flex</text><rect x="56" y="96" width="96" height="120" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="104" y="162" font-size="18" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">1</text><rect x="168" y="96" width="96" height="120" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="216" y="162" font-size="18" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">2</text><rect x="280" y="96" width="96" height="120" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="328" y="162" font-size="18" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">3</text><line x1="40" y1="230" x2="405.7" y2="230.0" stroke="var(--fail)" stroke-width="2.4"/><polygon points="412.0,230.0 403.8,233.7 403.8,226.3" fill="var(--fail)"/><text x="226" y="258" font-size="12.5" font-weight="700" fill="var(--fail)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">головна вісь (flex-direction: row)</text><line x1="434" y1="56" x2="434.0" y2="229.7" stroke="var(--task)" stroke-width="2.4"/><polygon points="434.0,236.0 430.3,227.8 437.7,227.8" fill="var(--task)"/><text x="446" y="150" font-size="12.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">поперечна</text><text x="446" y="168" font-size="12.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">вісь</text><text x="24" y="290" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">За замовчуванням елементи стоять у рядок, не</text><text x="24" y="307" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">розтягуються вздовж головної осі (flex-grow: 0), але</text><text x="24" y="324" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">розтягуються на всю висоту — уздовж поперечної</text><text x="24" y="341" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">(align-items: stretch).</text><text x="530" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">JUSTIFY-CONTENT (ГОЛОВНА ВІСЬ)</text><rect x="530" y="48" width="250" height="44" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="536" y="56" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><rect x="572" y="56" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><rect x="608" y="56" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><text x="792" y="75" font-size="12.5" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">start</text><rect x="530" y="104" width="250" height="44" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="605" y="112" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><rect x="641" y="112" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><rect x="677" y="112" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><text x="792" y="131" font-size="12.5" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">center</text><rect x="530" y="160" width="250" height="44" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="536" y="168" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><rect x="641" y="168" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><rect x="746" y="168" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><text x="792" y="187" font-size="12.5" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">space-between</text><rect x="530" y="216" width="250" height="44" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="574.5" y="224" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><rect x="641" y="224" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><rect x="707.5" y="224" width="28" height="28" rx="5" fill="var(--accent)" stroke="none" stroke-width="1.4"/><text x="792" y="243" font-size="12.5" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">space-evenly</text><text x="530" y="290" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ALIGN-ITEMS (ПОПЕРЕЧНА ВІСЬ)</text><rect x="530" y="304" width="104" height="110" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="538" y="312" width="25" height="94" rx="4" fill="var(--task)" stroke="none" stroke-width="1.4"/><rect x="569" y="312" width="25" height="94" rx="4" fill="var(--task)" stroke="none" stroke-width="1.4"/><rect x="600" y="312" width="25" height="94" rx="4" fill="var(--task)" stroke="none" stroke-width="1.4"/><text x="582" y="434" font-size="12" font-weight="700" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">stretch</text><rect x="648" y="304" width="104" height="110" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="656" y="329.0" width="25" height="60" rx="4" fill="var(--task)" stroke="none" stroke-width="1.4"/><rect x="687" y="339.0" width="25" height="40" rx="4" fill="var(--task)" stroke="none" stroke-width="1.4"/><rect x="718" y="321.0" width="25" height="76" rx="4" fill="var(--task)" stroke="none" stroke-width="1.4"/><text x="700" y="434" font-size="12" font-weight="700" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">center</text><rect x="766" y="304" width="104" height="110" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="774" y="312" width="25" height="60" rx="4" fill="var(--task)" stroke="none" stroke-width="1.4"/><rect x="805" y="312" width="25" height="40" rx="4" fill="var(--task)" stroke="none" stroke-width="1.4"/><rect x="836" y="312" width="25" height="76" rx="4" fill="var(--task)" stroke="none" stroke-width="1.4"/><text x="818" y="434" font-size="12" font-weight="700" fill="var(--ink-soft)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">start</text><text x="24" y="370" font-size="12.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">gap задає проміжки між елементами без зовнішніх відступів</text><text x="24" y="387" font-size="12.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">по краях контейнера.</text></svg>
+      <figcaption>Рис. 3. Головна й поперечна осі flex-контейнера, вирівнювання justify-content і align-items.</figcaption>
+    </figure>
+
+    <p><b>Властивості контейнера:</b></p>
+
+    <ul>
+      <li><b><code>flex-direction</code></b> — напрямок головної осі: <code>row</code> (типово), <code>row-reverse</code>, <code>column</code>, <code>column-reverse</code>;</li>
+      <li><b><code>flex-wrap: wrap</code></b> — дозволяє перенести елементи, що не вмістилися, на новий рядок; <code>flex-flow: row wrap</code> поєднує обидві властивості;</li>
+      <li><b><code>justify-content</code></b> — розподіл уздовж <b>головної</b> осі: <code>start</code>, <code>center</code>, <code>end</code>, <code>space-between</code> (без відступів по краях), <code>space-around</code>, <code>space-evenly</code>;</li>
+      <li><b><code>align-items</code></b> — вирівнювання вздовж <b>поперечної</b> осі: <code>stretch</code> (типово), <code>center</code>, <code>start</code>, <code>end</code>, <code>baseline</code>;</li>
+      <li><b><code>align-content</code></b> — розподіл рядків, коли їх кілька (лише разом із <code>flex-wrap: wrap</code>);</li>
+      <li><b><code>gap</code></b> — відстань між елементами без зовнішніх відступів по краях; працює у flex-, grid- і багатоколонкових контейнерах.</li>
+    </ul>
+
+    <p><b>Властивості елементів.</b> Скорочення <b><code>flex</code></b> об’єднує три значення: <code>flex-grow</code> (чи можна рости), <code>flex-shrink</code> (чи можна стискатися) і <code>flex-basis</code> (початковий розмір). За MDN: <code>flex: 1</code> — те саме, що <code>flex: 1 1 0</code> (елементи ділять вільне місце порівну); <code>flex: auto</code> — <code>1 1 auto</code>; <code>flex: none</code> — <code>0 0 auto</code> (жорсткий елемент); <code>flex: initial</code> — <code>0 1 auto</code> (початкові значення). <b><code>align-self</code></b> перевизначає <code>align-items</code> для одного елемента, а <b><code>order</code></b> змінює візуальний порядок (типове значення — 0).</p>
+
+    <p><b>Обережно з <code>order</code> і <code>-reverse</code>.</b> Ці властивості змінюють лише <b>відображення</b>: порядок переходу клавішею Tab і читання екранним читачем залишається порядком у HTML. MDN попереджає, що зміна порядку елементів, які отримують фокус, шкодить людям, які користуються клавіатурою, а WCAG вимагає, щоб послідовність читання й порядок фокусу зберігали зміст (критерії 1.3.2 і 2.4.3, рівень A). Тому правильний порядок закладають у HTML, а <code>order</code> використовують лише для дрібних декоративних перестановок.</p>
+
+    <p><b>Типові застосування.</b> Flexbox ідеально підходить для одновимірних фрагментів інтерфейсу: шапки з логотипом і меню, панелі кнопок, внутрішньої розкладки картки, а також для класичного завдання — розмістити щось точно по центру:</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">.site-header </span>{
+  <span class="tk-attr">display</span>: <span class="tk-str">flex</span>;
+  <span class="tk-attr">justify-content</span>: <span class="tk-str">space-between</span>; <span class="tk-cm">/* лого ліворуч, меню праворуч */</span>
+  <span class="tk-attr">align-items</span>: <span class="tk-str">center</span>;            <span class="tk-cm">/* по центру по вертикалі */</span>
+  <span class="tk-attr">flex-wrap</span>: <span class="tk-str">wrap</span>;
+  <span class="tk-attr">gap</span>: <span class="tk-str">1rem</span>;
+}
+<span class="tk-tag">.menu </span>{ <span class="tk-attr">display</span>: <span class="tk-str">flex</span>; <span class="tk-attr">gap</span>: <span class="tk-str">1.5rem</span>; <span class="tk-attr">list-style</span>: <span class="tk-str">none</span>; <span class="tk-attr">padding</span>: <span class="tk-str">0</span>; }
+<span class="tk-tag">.cards </span>{ <span class="tk-attr">display</span>: <span class="tk-str">flex</span>; <span class="tk-attr">flex-wrap</span>: <span class="tk-str">wrap</span>; <span class="tk-attr">gap</span>: <span class="tk-str">1.5rem</span>; }
+<span class="tk-tag">.card  </span>{ <span class="tk-attr">flex</span>: <span class="tk-str">1 1 16rem</span>; } <span class="tk-cm">/* рости й стискатися, база 16rem */</span>
+<span class="tk-tag">.center </span>{
+  <span class="tk-attr">display</span>: <span class="tk-str">flex</span>; <span class="tk-attr">justify-content</span>: <span class="tk-str">center</span>; <span class="tk-attr">align-items</span>: <span class="tk-str">center</span>;
+}</code></pre>
+
+    <p>Зверніть увагу на <code>.card { flex: 1 1 16rem; }</code>: кожна картка «хоче» мати ширину 16rem, ділить вільне місце з сусідами, а коли місця забракне, <code>flex-wrap</code> перенесе її на новий рядок. Так картки самі пристосовуються до ширини екрана — без жодного медіазапиту.</p>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Шапка й картки на Flexbox<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>У редакторі коду створіть папку <code>lecture7</code>, у ній — <code>index.html</code> і <code>css/style.css</code>. У <code>&lt;head&gt;</code> підключіть стилі: <code>&lt;link rel="stylesheet" href="css/style.css"&gt;</code>.</li>
+        <li>Оберіть тему за спеціальністю: «Інформаційні системи» — тарифи вебсервісу; «Право» — види юридичних послуг; «Маркетинг» — пакети рекламних кампаній. Розмітьте <code>&lt;header&gt;</code> з логотипом (текстом) і <code>&lt;nav&gt;</code> зі списком із трьох посилань, а в <code>&lt;main&gt;</code> — секцію з <code>&lt;h2&gt;</code> і трьома картками <code>&lt;article&gt;</code> (заголовок <code>&lt;h3&gt;</code>, абзац, кнопка).</li>
+        <li>Почніть <code>style.css</code> зі «скидання» <code>box-sizing: border-box</code> і <code>max-width: 100%</code> для зображень. Зробіть шапку flex-контейнером: логотип ліворуч, меню праворуч, обидва по центру по вертикалі, <code>gap</code> і <code>flex-wrap: wrap</code>.</li>
+        <li>Розмістіть картки за допомогою <code>display: flex</code>, <code>flex-wrap: wrap</code>, <code>gap</code> і <code>flex: 1 1 16rem</code>. Звужуйте вікно браузера й поспостерігайте, як картки переходять у два, а потім в один стовпець.</li>
+        <li>Проведіть експеримент зі специфічністю: задайте <code>h3 { color: green; }</code> і <code>.card h3 { color: navy; }</code>. У DevTools (F12 → Elements → Styles) знайдіть перекреслене оголошення й запишіть специфічність обох селекторів.</li>
+        <li>Відкрийте в DevTools панель Elements і клацніть позначку <code>flex</code> біля вашого контейнера — з’явиться візуальне накладання осей і відступів. Зробіть скриншот.</li>
+      </ol>
+      <div class="box-close">Заархівуйте папку lecture7 (ZIP) і прикріпіть архів до завдання в Classroom.</div>
+    </div>
+  </section>
+  <!-- ================= 03. CSS Grid: побудова сіток ================= -->
+  <section class="topic" id="grid" aria-labelledby="grid-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">03</span>
+      <h2 id="grid-h">CSS Grid: побудова сіток</h2>
+    </div>
+
+    <p>У темі 4 ви будували у Figma макети на 12-, 8- і 4-колонковій сітці. <b>CSS Grid</b> переносить цю ідею в код. За MDN, це <b>двовимірна</b> система розкладки: вона впорядковує вміст одночасно в рядках і стовпцях. Розкладку вмикають на батьківському елементі — <code>display: grid</code>, — і його прямі нащадки стають елементами сітки. На відміну від Flexbox, після цього рядка нічого помітно не змінюється: сітку ще треба описати.</p>
+
+    <p><b>Анатомія сітки</b> (рис. 4). <b>Доріжки (tracks)</b> — стовпці й рядки сітки. <b>Лінії (lines)</b> розділяють доріжки й нумеруються з 1; у документах, що пишуться зліва направо, лінія 1 стовпців — ліворуч. Від’ємні номери рахують від кінця: <code>-1</code> — остання лінія явної сітки. <b>Комірка (cell)</b> — перетин рядка й стовпця, <b>область (area)</b> — прямокутник із кількох комірок. Проміжки між доріжками задають властивістю <b><code>gap</code></b> (окремо — <code>row-gap</code> і <code>column-gap</code>); вони можуть бути в будь-яких одиницях довжини чи відсотках, але не у <code>fr</code>.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 450" role="img" aria-label="Сітка три на три з проміжками gap. Позначено пронумеровані лінії стовпців і рядків (останню лінію стовпців можна назвати -1), доріжку-стовпець, окрему комірку й область, що займає два стовпці (grid-column: 1 / 3). Праворуч — код сітки з repeat(3, 1fr) і gap." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">АНАТОМІЯ СІТКИ</text><rect x="70" y="80" width="150" height="90" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="238" y="80" width="150" height="90" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="406" y="80" width="150" height="90" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="70" y="188" width="150" height="90" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="238" y="188" width="150" height="90" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="406" y="188" width="150" height="90" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="70" y="296" width="150" height="90" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="238" y="296" width="150" height="90" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="406" y="296" width="150" height="90" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="402" y="76" width="158" height="314" rx="8" fill="none" stroke="var(--test)" stroke-width="2.4" stroke-dasharray="6 4"/><text x="481.0" y="130.0" font-size="12.5" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">доріжка</text><text x="481.0" y="147.0" font-size="12" font-weight="400" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">(стовпець)</text><rect x="70" y="80" width="150" height="90" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="2"/><text x="145.0" y="130.0" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">комірка</text><rect x="70" y="296" width="318" height="90" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="2"/><text x="229.0" y="337.0" font-size="12.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">область: grid-column: 1 / 3</text><text x="229.0" y="356.0" font-size="11.5" font-weight="400" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">або grid-area з grid-template-areas</text><rect x="220" y="188" width="18" height="90" rx="0" fill="var(--fail-tint)" stroke="none" stroke-width="1.4"/><text x="229.0" y="182" font-size="11.5" font-weight="700" fill="var(--fail)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">gap</text><line x1="70" y1="58" x2="70" y2="392" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="70" cy="46" r="11" fill="var(--fail)"/><text x="70" y="50.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">1</text><line x1="229.0" y1="58" x2="229.0" y2="392" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="229.0" cy="46" r="11" fill="var(--fail)"/><text x="229.0" y="50.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">2</text><line x1="397.0" y1="58" x2="397.0" y2="392" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="397.0" cy="46" r="11" fill="var(--fail)"/><text x="397.0" y="50.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">3</text><line x1="556" y1="58" x2="556" y2="392" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="556" cy="46" r="11" fill="var(--fail)"/><text x="556" y="50.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">4</text><text x="572" y="50" font-size="12" font-weight="700" fill="var(--fail)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">= -1</text><line x1="48" y1="80" x2="562" y2="80" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="36" cy="80" r="11" fill="var(--fail)"/><text x="36" y="84.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">1</text><line x1="48" y1="179.0" x2="562" y2="179.0" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="36" cy="179.0" r="11" fill="var(--fail)"/><text x="36" y="183.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">2</text><line x1="48" y1="287.0" x2="562" y2="287.0" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="36" cy="287.0" r="11" fill="var(--fail)"/><text x="36" y="291.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">3</text><line x1="48" y1="386" x2="562" y2="386" stroke="var(--fail)" stroke-width="1.2" stroke-dasharray="3 3"/><circle cx="36" cy="386" r="11" fill="var(--fail)"/><text x="36" y="390.5" font-size="12.5" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">4</text><rect x="600" y="60" width="280" height="230" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="616" y="92" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="13" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.grid </tspan><tspan fill="var(--ink-muted)">{</tspan></text><text x="616" y="113" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="13" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">display</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">grid;</tspan></text><text x="616" y="134" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="13" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">grid-template-columns</tspan><tspan fill="var(--ink-muted)">:</tspan><tspan fill="var(--task-ink)"></tspan></text><text x="616" y="155" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="13" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">    repeat(3, 1fr);</tspan></text><text x="616" y="176" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="13" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">gap</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">18px;</tspan></text><text x="616" y="197" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="13" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">}</tspan></text><text x="616" y="218" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="13" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.wide </tspan><tspan fill="var(--ink-muted)">{</tspan></text><text x="616" y="239" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="13" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">grid-column</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">1 / 3;</tspan></text><text x="616" y="260" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="13" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">}</tspan></text><text x="600" y="316" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Лінії нумеруються з 1, від’ємні номери</text><text x="600" y="333" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">рахують від кінця: -1 — остання лінія</text><text x="600" y="350" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">явної сітки.</text><text x="600" y="380" font-size="12.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">fr — частка вільного місця; для gap fr не</text><text x="600" y="397" font-size="12.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">використовують.</text></svg>
+      <figcaption>Рис. 4. Анатомія CSS Grid: лінії, доріжки, комірка, область і проміжки gap.</figcaption>
+    </figure>
+
+    <p><b>Явна й неявна сітка.</b> Явну сітку описують властивостями <b><code>grid-template-columns</code></b> і <b><code>grid-template-rows</code></b>. Якщо елементів більше, ніж комірок, браузер додає рядки сам — це <b>неявна сітка</b>; за замовчуванням її доріжки мають розмір <code>auto</code> (за вмістом), а задати їм висоту можна властивістю <code>grid-auto-rows</code>.</p>
+
+    <p><b>Одиниця <code>fr</code></b> — частка <b>вільного</b> місця в контейнері: <code>grid-template-columns: 2fr 1fr</code> віддає першому стовпцю дві третини вільної ширини. Одиниці можна поєднувати: у записі <code>250px 1fr</code> спершу виділяється місце під фіксований стовпець, а решта йде гнучкому. Функція <b><code>repeat()</code></b> скорочує повтори: <code>repeat(12, 1fr)</code> — дванадцять рівних стовпців, як у вашому макеті. Функція <b><code>minmax()</code></b> задає межі доріжки: <code>minmax(100px, auto)</code> — не менше 100px, а далі — скільки потребує вміст.</p>
+
+    <p><b>Сітка без медіазапитів.</b> Якщо замість кількості в <code>repeat()</code> передати ключове слово, браузер сам вирахує, скільки стовпців уміщується: <code>repeat(auto-fit, minmax(15rem, 1fr))</code> створює стільки стовпців завширшки щонайменше 15rem, скільки поміститься, і ділить залишок місця між ними. Різниця між ключовими словами проявляється, коли елементів мало: <b><code>auto-fill</code></b> залишає порожні доріжки, і вони займають місце, а <b><code>auto-fit</code></b> після розміщення елементів <b>згортає порожні доріжки</b> до нуля, тож наявні елементи розтягуються на всю ширину.</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">.cards </span>{
+  <span class="tk-attr">display</span>: <span class="tk-str">grid</span>;
+  <span class="tk-attr">grid-template-columns</span>: <span class="tk-str">repeat(auto-fit, minmax(15rem, 1fr))</span>;
+  <span class="tk-attr">gap</span>: <span class="tk-str">1.5rem</span>;
+}</code></pre>
+
+    <p><b>Розміщення за лініями.</b> Елемент можна поставити в конкретне місце сітки: <code>grid-column: 1 / 3</code> — від лінії 1 до лінії 3 (тобто два стовпці), <code>grid-column: 1 / -1</code> — на всю ширину явної сітки, <code>grid-column: span 2</code> — на два стовпці від поточної позиції. Аналогічно працює <code>grid-row</code>.</p>
+
+    <p><b>Іменовані області.</b> Найнаочніший спосіб описати макет сторінки — <b><code>grid-template-areas</code></b>: ви буквально «малюєте» сітку назвами, а елементам призначаєте області властивістю <code>grid-area</code>. MDN називає кілька правил: кожна комірка має бути заповнена; щоб розтягнути область на кілька комірок, назву повторюють; порожню комірку позначають крапкою <code>.</code>; область має бути прямокутною і не може повторюватися в різних місцях.</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">.page </span>{
+  <span class="tk-attr">display</span>: <span class="tk-str">grid</span>;
+  <span class="tk-attr">grid-template-columns</span>: <span class="tk-str">1fr 3fr</span>;
+  <span class="tk-attr">grid-template-areas</span>:<span class="tk-str"></span>
+    "header  header"
+    "sidebar content"
+    "footer  footer";
+  <span class="tk-attr">gap</span>: <span class="tk-str">1.5rem</span>;
+}
+<span class="tk-tag">.page &gt; header </span>{ <span class="tk-attr">grid-area</span>: <span class="tk-str">header</span>; }
+<span class="tk-tag">.page &gt; aside  </span>{ <span class="tk-attr">grid-area</span>: <span class="tk-str">sidebar</span>; }
+<span class="tk-tag">.page &gt; main   </span>{ <span class="tk-attr">grid-area</span>: <span class="tk-str">content</span>; }
+<span class="tk-tag">.page &gt; footer </span>{ <span class="tk-attr">grid-area</span>: <span class="tk-str">footer</span>; }</code></pre>
+
+    <p><b>Grid чи Flexbox?</b> Це не суперники, а інструменти для різних задач. Grid зручний, коли важливо вирівняти вміст <b>в обох напрямках одразу</b>: каркас сторінки, галерея, таблиця тарифів. Flexbox — коли елементи шикуються <b>в одну лінію</b> і їхня кількість чи розмір заздалегідь невідомі: меню, панель кнопок, теги. На практиці їх поєднують: каркас сторінки — на Grid, а вміст кожного блоку — на Flexbox. І пам’ятайте про те саме застереження, що й для <code>order</code>: розміщення на сітці змінює лише вигляд, а порядок фокусу й читання визначає HTML.</p>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> auto-fill чи auto-fit<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Контейнер шириною 1200px має <code>grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))</code>, але в ньому лише два елементи. Як вони розташуються?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>два елементи по 200px, а праворуч залишиться порожнє місце під чотири невидимі стовпці</span></button>
+        <button class="test-opt" type="button"><span>два елементи розтягнуться й поділять усю ширину навпіл: auto-fit згортає порожні доріжки</span></button>
+        <button class="test-opt" type="button"><span>елементи стануть один під одним, бо стовпців менше, ніж вміщується</span></button>
+        <button class="test-opt" type="button"><span>сітка не працюватиме: <code>auto-fit</code> можна використовувати лише з одиницею <code>fr</code></span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+  <!-- ================= 04. Медіазапити, адаптивна й респонсивна верстка, підхід mobile-first ================= -->
+  <section class="topic" id="responsive" aria-labelledby="responsive-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">04</span>
+      <h2 id="responsive-h">Медіазапити, адаптивна й респонсивна верстка, підхід mobile-first</h2>
+    </div>
+
+    <p>Сторінку відкривають на телефоні завширшки 360 пікселів і на моніторі завширшки 2560. Фіксована ширина не підходить: за MDN, вона дає смуги прокручування на вузьких екранах і забагато порожнього місця на широких. Термін <b>«респонсивний вебдизайн» (responsive web design)</b> запровадив Ітан Маркотт (Ethan Marcotte) у 2010 році: він описав поєднання <b>гнучких сіток, гнучких зображень і медіазапитів</b>. Це не окрема технологія, а підхід — набір практик, завдяки яким розкладка «відповідає» на пристрій, на якому її переглядають.</p>
+
+    <p><b>Адаптивна чи респонсивна?</b> У професійних текстах ці терміни вживають неоднаково. Найчастіше <b>адаптивною (adaptive)</b> називають верстку з кількома <b>фіксованими</b> макетами під наперед визначені ширини екрана: між ними макет «перемикається» стрибком. <b>Респонсивна (responsive, «гумова»)</b> верстка між точками перемикання <b>плавно тягнеться</b>, бо побудована на відсотках, <code>fr</code>, <code>minmax()</code> і гнучких зображеннях. В українській практиці словом «адаптивна» часто називають і те, й інше. Сучасні сайти поєднують обидва підходи: гнучка сітка всередині діапазону й кілька точок, де розкладка змінюється принципово.</p>
+
+    <p><b>Обов’язкова умова — тег viewport</b> із теми 6: <code>&lt;meta name="viewport" content="width=device-width"&gt;</code>. Без нього мобільний браузер вдає, що екран ширший, і зменшує сторінку; MDN наголошує, що цей тег слід додавати <b>завжди</b>.</p>
+
+    <p><b>Синтаксис медіазапиту.</b> Медіазапит застосовує вкладені правила лише тоді, коли виконано умову. Він може містити <b>тип носія</b> (<code>all</code>, <code>print</code>, <code>screen</code>; якщо не вказано — <code>all</code>), <b>медіахарактеристики</b> в дужках і <b>логічні оператори</b> <code>and</code>, <code>not</code>, <code>only</code>; кома між запитами означає «або». Для діапазонних характеристик є два рівноцінні записи: класичні префікси <code>min-</code> і <code>max-</code> (включно) та новіший <b>синтаксис діапазону</b> з операторами <code>&gt;=</code>, <code>&lt;=</code>, <code>&lt;</code>, <code>&gt;</code>:</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">@media (min-width: 48rem) </span>{ <span class="tk-cm">/* від 768px, якщо 1rem = 16px */</span> }
+<span class="tk-tag">@media (width &gt;= 48rem)   </span>{ <span class="tk-cm">/* те саме: синтаксис діапазону */</span> }
+<span class="tk-tag">@media (30em &lt;= width &lt;= 50em) </span>{ <span class="tk-cm">/* діапазон «від і до» */</span> }
+<span class="tk-tag">@media print </span>{ nav, .cards { <span class="tk-attr">display</span>: <span class="tk-str">none</span>; } } <span class="tk-cm">/* друк */</span></code></pre>
+
+    <p><b>Підхід mobile-first.</b> MDN описує поширену практику: спершу створити простий <b>одноколонковий</b> макет для вузьких екранів, а потім медіазапитами з <code>min-width</code> перевіряти, чи достатньо ширини, і <b>додавати</b> колонки (рис. 5). Базові стилі без медіазапитів — це мобільна версія; кожен наступний запит лише ускладнює розкладку. Протилежний підхід, <b>desktop-first</b>, починає з широкого макета й «відбирає» колонки запитами з <code>max-width</code>, через що доводиться більше перевизначати. Mobile-first збігається з принципом прогресивного покращення: найпростіший пристрій отримує робочу сторінку, а складність додається тоді, коли для неї є місце.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 480" role="img" aria-label="Три макети тієї самої сторінки: на телефоні базові стилі ставлять header, content, sidebar і footer в один стовпець; від 48rem медіазапит додає дві колонки (вміст і бічна панель); від 75rem — три колонки з порожньою лівою колонкою та обмеженою шириною." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">MOBILE-FIRST: ВІД ПРОСТОГО ДО СКЛАДНОГО</text><rect x="40" y="70" width="150" height="300" rx="16" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="2"/><rect x="52" y="86" width="126" height="36" rx="5" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.3"/><text x="115.0" y="108.0" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">header</text><rect x="52" y="130" width="126" height="110" rx="5" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="115.0" y="189.0" font-size="11" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">content</text><rect x="52" y="248" width="126" height="60" rx="5" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.3"/><text x="115.0" y="282.0" font-size="11" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">sidebar</text><rect x="52" y="316" width="126" height="38" rx="5" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.3"/><text x="115.0" y="339.0" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">footer</text><text x="115" y="396" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">базові стилі</text><text x="115" y="414" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">один стовпець</text><line x1="205" y1="220" x2="233.7" y2="220.0" stroke="var(--ink-muted)" stroke-width="2"/><polygon points="240.0,220.0 231.8,223.7 231.8,216.3" fill="var(--ink-muted)"/><rect x="252" y="90" width="250" height="260" rx="12" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="2"/><rect x="264" y="104" width="226" height="34" rx="5" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.3"/><text x="377.0" y="125.0" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">header</text><rect x="264" y="146" width="140" height="150" rx="5" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="334.0" y="225.0" font-size="11" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">content</text><rect x="412" y="146" width="78" height="150" rx="5" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.3"/><text x="451.0" y="225.0" font-size="11" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">sidebar</text><rect x="264" y="304" width="226" height="32" rx="5" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.3"/><text x="377.0" y="324.0" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">footer</text><text x="377" y="376" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">@media (min-width: 48rem)</text><text x="377" y="394" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">дві колонки</text><line x1="516" y1="220" x2="544.7" y2="220.0" stroke="var(--ink-muted)" stroke-width="2"/><polygon points="551.0,220.0 542.8,223.7 542.8,216.3" fill="var(--ink-muted)"/><rect x="562" y="100" width="318" height="240" rx="10" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="2"/><rect x="574" y="112" width="294" height="32" rx="5" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.3"/><text x="721.0" y="132.0" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">header</text><rect x="574" y="152" width="50" height="140" rx="5" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2" stroke-dasharray="4 3"/><rect x="632" y="152" width="160" height="140" rx="5" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="712.0" y="226.0" font-size="11" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">content</text><rect x="800" y="152" width="68" height="140" rx="5" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.3"/><text x="834.0" y="226.0" font-size="11" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">sidebar</text><rect x="574" y="300" width="294" height="28" rx="5" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.3"/><text x="721.0" y="318.0" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">footer</text><text x="721" y="366" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">@media (min-width: 75rem)</text><text x="721" y="384" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">три колонки, обмежена ширина</text><text x="40" y="440" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Кожен медіазапит із min-width лише додає складність до базового мобільного макета; порожня колонка ліворуч — крапка</text><text x="40" y="457" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">«.» у grid-template-areas.</text></svg>
+      <figcaption>Рис. 5. Підхід mobile-first: базовий одноколонковий макет і медіазапити з min-width, що додають колонки.</figcaption>
+    </figure>
+
+    <p><b>Точки перелому (breakpoints)</b> — ширини, на яких медіазапит змінює розкладку. Найкраще обирати їх за <b>вмістом</b>: розширюйте вікно, доки макет не почне виглядати погано (наприклад, рядки стають задовгими чи картки — заширокими), і саме там додавайте точку. MDN радить задавати точки у відносних одиницях (<code>em</code>, <code>rem</code>), а не під ширину конкретного пристрою. Як орієнтир можна взяти контрольні точки з теми 4 (375, 768 і 1440 пікселів) або набір фреймворку Bootstrap (576, 768, 992, 1200 і 1400 пікселів), але без прив’язки до моделей телефонів.</p>
+
+    <pre class="codeblock"><code><span class="tk-cm">/* mobile-first: базові стилі — один стовпець */</span>
+<span class="tk-tag">.page </span>{
+  <span class="tk-attr">display</span>: <span class="tk-str">grid</span>;
+  <span class="tk-attr">gap</span>: <span class="tk-str">1rem</span>;
+  <span class="tk-attr">grid-template-areas</span>: <span class="tk-str">"header" "content" "sidebar" "footer"</span>;
+}
+<span class="tk-tag">@media (min-width: 48rem) </span>{   <span class="tk-cm">/* ≈ 768px: дві колонки */</span>
+<span class="tk-tag">  .page </span>{
+    <span class="tk-attr">grid-template-columns</span>: <span class="tk-str">2fr 1fr</span>;
+    <span class="tk-attr">grid-template-areas</span>:<span class="tk-str"></span>
+      "header  header"
+      "content sidebar"
+      "footer  footer";
+  }
+}
+<span class="tk-tag">@media (min-width: 75rem) </span>{   <span class="tk-cm">/* ≈ 1200px: три колонки */</span>
+<span class="tk-tag">  .page </span>{
+    <span class="tk-attr">grid-template-columns</span>: <span class="tk-str">1fr 3fr 1fr</span>;
+    <span class="tk-attr">grid-template-areas</span>:<span class="tk-str"></span>
+      "header header  header"
+      ".      content sidebar"
+      "footer footer  footer";
+    <span class="tk-attr">max-width</span>: <span class="tk-str">90rem</span>;
+    <span class="tk-attr">margin</span>: <span class="tk-str">0 auto</span>;
+  }
+}</code></pre>
+
+    <p><b>Гнучкість між точками.</b> Зображення роблять гнучкими правилом <code>max-width: 100%</code>: вони не виходять за межі контейнера. Розмір шрифту можна змінювати плавно функцією <b><code>clamp(MIN, ЗНАЧЕННЯ, MAX)</code></b>: наприклад, <code>font-size: clamp(1.8rem, 2.5vw, 2.8rem)</code> росте разом з шириною вікна, але не менше 1.8rem і не більше 2.8rem. Два застереження з MDN: ніколи не задавайте текст <b>лише</b> в одиницях <code>vw</code> — такий текст не збільшується масштабуванням; а у <code>clamp()</code> максимальне значення має бути щонайменше вдвічі більшим за мінімальне, щоб текст можна було збільшити до 200 %.</p>
+
+    <p><b>Не лише ширина.</b> Медіазапити перевіряють і інші характеристики: <code>orientation</code> (<code>portrait</code> чи <code>landscape</code>), <code>hover</code> (чи може пристрій наводити курсор), <code>prefers-color-scheme</code> (світла чи темна тема в системі), <code>prefers-reduced-motion</code> (людина попросила зменшити анімацію — корисно вимкнути великі рухи для людей із вестибулярними порушеннями). А <b>контейнерні запити</b> (<code>@container</code>) реагують не на ширину вікна, а на ширину батьківського контейнера: ту саму картку можна показати по-різному у вузькій бічній колонці й у широкому блоці.</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">.cards </span>{ <span class="tk-attr">container-type</span>: <span class="tk-str">inline-size</span>; }
+<span class="tk-tag">@container (width &gt; 40rem) </span>{ .card { <span class="tk-attr">display</span>: <span class="tk-str">flex</span>; <span class="tk-attr">gap</span>: <span class="tk-str">1rem</span>; } }
+<span class="tk-tag">@media (prefers-reduced-motion: reduce) </span>{
+<span class="tk-tag">  * </span>{ <span class="tk-attr">animation</span>: <span class="tk-str">none</span>; <span class="tk-attr">transition</span>: <span class="tk-str">none</span>; }
+}</code></pre>
+
+    <p><b>Як перевіряти.</b> У Chrome DevTools режим пристроїв вмикає комбінація <b>Ctrl+Shift+M</b>: можна задати ширину 375, 768 чи 1440 пікселів і подивитися, як спрацьовують медіазапити. Дві перевірки доступності обов’язкові. Критерій WCAG 2.2 <b>1.4.10 Reflow</b> (рівень AA): вміст має читатися без прокручування у двох напрямках за ширини <b>320 CSS-пікселів</b> — це те саме, що вікно завширшки 1280 пікселів за масштабу 400 %. Критерій <b>1.4.4 Resize Text</b> (рівень AA): текст можна збільшити до 200 % без втрати змісту чи функцій. Звузьте вікно до 320 пікселів і переконайтеся, що горизонтальної смуги прокручування немає.</p>
+
+    <p><b>Де це знадобиться.</b> Значну частину переглядів вебсторінок сьогодні роблять із телефонів, тож сайт, який «розвалюється» на вузькому екрані, втрачає відвідувачів ще до того, як вони прочитали перший абзац. Фахівцю з інформаційних систем адаптивна верстка потрібна для інтерфейсів вебсервісів і панелей керування, юристу — щоб клієнт зміг прочитати роз’яснення чи договір з телефона, маркетологу — щоб посадкова сторінка рекламної кампанії однаково добре продавала на будь-якому екрані. А знання каскаду й специфічності заощаджує години: замість «чому стиль не застосувався?» ви за хвилину знайдете відповідь у DevTools.</p>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> Адаптивна сторінка за принципом mobile-first<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Продовжте проєкт <code>lecture7</code>. Додайте в розмітку <code>&lt;aside&gt;</code> (наприклад, контакти чи корисні посилання) і <code>&lt;footer&gt;</code>, а <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;aside&gt;</code> і <code>&lt;footer&gt;</code> обгорніть у <code>&lt;div class="page"&gt;</code>. Перевірте, що в <code>&lt;head&gt;</code> є <code>&lt;meta name="viewport" content="width=device-width"&gt;</code>.</li>
+        <li>Замініть розкладку карток із завдання 1 на Grid: <code>display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1.5rem;</code>. Порівняйте поведінку з flex-варіантом і запишіть одну відмінність.</li>
+        <li>Опишіть мобільний макет <b>без медіазапитів</b>: <code>.page</code> — сітка в один стовпець з областями <code>header</code>, <code>content</code>, <code>sidebar</code>, <code>footer</code> (<code>grid-template-areas</code>). Розмір головного заголовка задайте через <code>clamp()</code> так, щоб максимум був щонайменше вдвічі більшим за мінімум.</li>
+        <li>Додайте медіазапит <code>@media (min-width: 48rem)</code> з двома колонками (вміст і бічна панель) та <code>@media (min-width: 75rem)</code> з обмеженням ширини сторінки (<code>max-width</code> і <code>margin: 0 auto</code>). Усі точки перелому задавайте в <code>rem</code>.</li>
+        <li>У DevTools увімкніть режим пристроїв (Ctrl+Shift+M) і зробіть три скриншоти: 375, 768 і 1440 пікселів. Потім звузьте вікно до 320 пікселів і переконайтеся, що немає горизонтального прокручування (WCAG 1.4.10).</li>
+        <li>Додайте правило <code>@media (prefers-reduced-motion: reduce)</code>, що вимикає переходи (<code>transition</code>) і анімації, якщо вони є у ваших стилях, і перевірте <code>style.css</code> у валідаторі CSS (validator.w3.org/nu з прапорцем check as CSS).</li>
+      </ol>
+      <div class="box-close">Заархівуйте оновлену папку lecture7 разом зі скриншотами (ZIP) і прикріпіть архів до завдання в Classroom.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Лекція 7 · Тема 7 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 15.10.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture7-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState();
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId]);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
 </body>
 </html>
