@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CSS-фреймворки, препроцесори та публікація сайту — Вебдизайн</title>
-<meta name="description" content="Лекція 8. CSS-фреймворки, препроцесори та публікація сайту. Конспект готується.">
+<title>CSS-фреймворки, препроцесори та публікація сайту</title>
+<meta name="description" content="Лекція 8 курсу «Вебдизайн»: CSS-фреймворки Bootstrap і Tailwind CSS, препроцесор Sass/SCSS (змінні, міксини, вкладеність, модулі @use), публікація статичного сайту на GitHub Pages, Netlify і Vercel">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +26,59 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --fail:#C0392B;
+    --fail-tint:#FBE3E0;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --fail:#E8746A;
+      --fail-tint:#3A1512;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --fail:#E8746A;
+    --fail-tint:#3A1512;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,123 +91,766 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{max-width:1000px;margin:28px auto 0;padding:0 24px;}
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
-    padding:12px 16px;
-    background:var(--surface-2);
-    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:12px 16px;
+    background:var(--surface-2);border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
   .addr{
-    flex:1;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;
-    color:var(--ink-muted);
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:6px 12px;
+    flex:1;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
-  }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
+  .hero{padding:56px 40px 48px;}
   .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent-tint);display:inline-block;padding:5px 11px;
+    border-radius:99px;margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.14;font-weight:800;}
+  .hero .theme{margin-top:14px;font-size:clamp(16px,2vw,19px);color:var(--ink-soft);font-weight:500;max-width:34em;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .meta-chip{
+    font-size:13px;color:var(--ink-muted);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:99px;padding:6px 13px;display:flex;align-items:center;gap:6px;
   }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- sticky toc ---------- */
+  .toc-bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    text-decoration:none;padding:13px 12px;border-bottom:2px solid transparent;white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{flex:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);padding:13px 0 13px 14px;white-space:nowrap;}
+  .toc-progress b{color:var(--accent);}
+  .progress-track{max-width:1000px;margin:0 auto;padding:0 24px;height:3px;}
+  .progress-track .fill{height:100%;width:0%;background:linear-gradient(90deg, var(--task), var(--accent));transition:width .3s ease;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
 
-  footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
-  }
+  .lit{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin:36px 0 0;box-shadow:var(--shadow);}
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
 
+  section.topic{margin-top:64px;padding-top:8px;}
+  .topic-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .topic-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);background:var(--accent-tint);border-radius:8px;padding:4px 10px;flex:none;}
+  .topic h2{font-size:clamp(21px,2.6vw,27px);font-weight:700;}
+  .topic p{color:var(--ink-soft);font-size:16px;margin:0 0 16px;}
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{margin:0 0 18px;padding-left:22px;color:var(--ink-soft);font-size:15.5px;}
+  .topic ul li{margin-bottom:9px;}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);}
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px 16px;margin:26px 0 30px;box-shadow:var(--shadow);}
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{margin-top:14px;font-size:13px;color:var(--ink-muted);text-align:center;}
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+  .zone-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.02em;}
+
+  /* ---------- task / test boxes ---------- */
+  .box{border-radius:var(--radius);padding:24px 26px 20px;margin:24px 0 30px;box-shadow:var(--shadow);border:1px solid;}
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:6px;color:#fff;}
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  .box-close{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-style:italic;font-size:14px;color:var(--ink-muted);}
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.02em;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--ink-muted);border:1px solid var(--line);white-space:nowrap;}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
+
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{display:flex;gap:12px;align-items:flex-start;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .step .num{
+    flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);
+    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num, .step:has(.chk:checked) .num, .step.checked .num{background:var(--task);border-color:var(--task);color:#fff;}
+  .step:has(.chk:checked) .step-text, .step.checked .step-text{color:var(--ink-muted);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1.5px;}
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;width:100%;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink-soft);
+    padding:9px 12px;margin:0 0 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);
+    font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{content:"";width:15px;height:15px;border:1.5px solid var(--test);border-radius:50%;flex:none;margin-top:2px;}
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:var(--fail);background:color-mix(in srgb, var(--fail) 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:var(--fail);border-color:var(--fail);}
+  .test-feedback{margin-top:10px;font-size:13.5px;font-weight:600;display:none;}
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:var(--fail);}
+
+  .reset-btn{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{max-width:1000px;margin:0 auto;padding:40px 24px 60px;border-top:1px solid var(--line);color:var(--ink-muted);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
+
+  /* ---------- доповнення для лекції 6: код, довгі посилання, пропуск до змісту ---------- */
+  .skip-link{position:absolute;left:-9999px;top:8px;background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;z-index:50;font-weight:700;text-decoration:none;}
+  .skip-link:focus{left:12px;}
+  .topic code, .box code, .lit code, .hero code{
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--ink);overflow-wrap:anywhere;
+  }
+  .topic b code{font-weight:700;}
+  .box.test .test-opt code{background:var(--surface-2);}
+  pre.codeblock{
+    background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:16px 20px;margin:0 0 20px;
+    overflow-x:auto;font-size:13px;line-height:1.65;box-shadow:var(--shadow);tab-size:2;
+  }
+  pre.codeblock code{background:none;border:0;padding:0;font-size:inherit;color:inherit;overflow-wrap:normal;}
+  .tk-tag{color:#8FA3FF;} .tk-str{color:#58D3B0;} .tk-attr{color:#F0B45A;} .tk-cm{color:#8A90A6;}
+  .test-opt > span{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .box-title{flex-wrap:wrap;}
+  .step-text{min-width:0;overflow-wrap:anywhere;}
+  .lit li{overflow-wrap:anywhere;}
+  .lit a{word-break:break-all;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .tbl-wrap{overflow-x:auto;margin:6px 0 24px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);}
+  table.cmp{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;line-height:1.5;}
+  table.cmp th, table.cmp td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);}
+  table.cmp thead th{background:var(--accent-tint);color:var(--accent-ink);font-weight:700;}
+  table.cmp tbody th{font-weight:700;color:var(--ink);background:var(--surface-2);}
+  table.cmp tr:last-child > *{border-bottom:0;}
+  table.cmp code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;}
+  .tk-sh{color:#E9ECF5;}
+  @media (prefers-reduced-motion: reduce){ .progress-track .fill{transition:none;} html{scroll-behavior:auto;} }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Перейти до основного вмісту</a>
 
-
-<div class="chrome">
+<header class="chrome">
   <div class="browser">
     <div class="browser-bar">
-      <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-08</div>
+      <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="addr">вебдизайн-курс.ua/лекція-8/frejmvorky-preprocesory-publikaciya</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль III · Лекція 8</div>
-      <span class="eyebrow">Дисципліна · Лекція 8</span>
+      <span class="eyebrow">Лекція 8 · Тема 8</span>
       <h1>CSS-фреймворки, препроцесори та публікація сайту</h1>
-      <p class="sub">Модуль III «Верстка та реалізація вебдизайну (HTML/CSS)»</p>
+      <p class="theme">Як працювати швидше, не втрачаючи контролю: готові рішення Bootstrap і утиліти Tailwind, змінні та міксини Sass, які перетворюються на звичайний CSS, — і нарешті головне: як перетворити папку з файлами на живий сайт з адресою, яку можна надіслати роботодавцю чи замовнику.</p>
 
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
-      </div>
     </div>
   </div>
-</div>
+</header>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar" aria-label="Зміст лекції">
+  <div class="toc-inner">
+    <a href="#frameworks" data-toc="frameworks">1. Фреймворки</a>
+    <a href="#sass" data-toc="sass">2. Sass/SCSS</a>
+    <a href="#deploy" data-toc="deploy">3. Публікація</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
 
+<main id="main">
+
+  <section class="lit" id="literature" aria-labelledby="lit-h">
+    <h2 id="lit-h">Література до теми</h2>
+    <ol>
+      <li>Bootstrap 5.3. Get started with Bootstrap. URL: <a href="https://getbootstrap.com/docs/5.3/getting-started/introduction/" target="_blank" rel="noopener">getbootstrap.com/docs/5.3/getting-started/introduction</a> (дата звернення: 15.10.2026).</li>
+      <li>Bootstrap 5.3. Grid system. URL: <a href="https://getbootstrap.com/docs/5.3/layout/grid/" target="_blank" rel="noopener">getbootstrap.com/docs/5.3/layout/grid</a> (дата звернення: 15.10.2026).</li>
+      <li>Bootstrap 5.3. Breakpoints. URL: <a href="https://getbootstrap.com/docs/5.3/layout/breakpoints/" target="_blank" rel="noopener">getbootstrap.com/docs/5.3/layout/breakpoints</a> (дата звернення: 15.10.2026).</li>
+      <li>Otto M. Bootstrap 6 Alpha. Bootstrap Blog, 08.10.2026. URL: <a href="https://blog.getbootstrap.com/2026/10/08/bootstrap-6-alpha/" target="_blank" rel="noopener">blog.getbootstrap.com/2026/10/08/bootstrap-6-alpha</a> (дата звернення: 15.10.2026).</li>
+      <li>Tailwind CSS. Installing with Tailwind CLI. URL: <a href="https://tailwindcss.com/docs/installation/tailwind-cli" target="_blank" rel="noopener">tailwindcss.com/docs/installation/tailwind-cli</a> (дата звернення: 15.10.2026).</li>
+      <li>Tailwind CSS. Responsive design. URL: <a href="https://tailwindcss.com/docs/responsive-design" target="_blank" rel="noopener">tailwindcss.com/docs/responsive-design</a> (дата звернення: 15.10.2026).</li>
+      <li>Tailwind CSS. Compatibility. URL: <a href="https://tailwindcss.com/docs/compatibility" target="_blank" rel="noopener">tailwindcss.com/docs/compatibility</a> (дата звернення: 15.10.2026).</li>
+      <li>Tailwind CSS. Upgrade guide. URL: <a href="https://tailwindcss.com/docs/upgrade-guide" target="_blank" rel="noopener">tailwindcss.com/docs/upgrade-guide</a> (дата звернення: 15.10.2026).</li>
+      <li>Sass. Sass Basics. URL: <a href="https://sass-lang.com/guide/" target="_blank" rel="noopener">sass-lang.com/guide</a> (дата звернення: 15.10.2026).</li>
+      <li>Sass. Breaking Change: @import and global built-in functions. URL: <a href="https://sass-lang.com/d/import" target="_blank" rel="noopener">sass-lang.com/d/import</a> (дата звернення: 15.10.2026).</li>
+      <li>MDN Web Docs. Using CSS nesting. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting</a> (дата звернення: 15.10.2026).</li>
+      <li>GitHub Docs. Creating a GitHub Pages site. URL: <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site" target="_blank" rel="noopener">docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site</a> (дата звернення: 15.10.2026).</li>
+      <li>GitHub Docs. GitHub Pages limits. URL: <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits" target="_blank" rel="noopener">docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits</a> (дата звернення: 15.10.2026).</li>
+      <li>Netlify Docs. Create deploys. URL: <a href="https://docs.netlify.com/deploy/create-deploys/" target="_blank" rel="noopener">docs.netlify.com/deploy/create-deploys</a> (дата звернення: 15.10.2026).</li>
+      <li>Netlify Docs. Credit-based pricing plans. URL: <a href="https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/" target="_blank" rel="noopener">docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans</a> (дата звернення: 15.10.2026).</li>
+      <li>Vercel Docs. Deploying to Vercel. URL: <a href="https://vercel.com/docs/deployments" target="_blank" rel="noopener">vercel.com/docs/deployments</a> (дата звернення: 15.10.2026).</li>
+      <li>Vercel Docs. Vercel Hobby Plan. URL: <a href="https://vercel.com/docs/plans/hobby" target="_blank" rel="noopener">vercel.com/docs/plans/hobby</a> (дата звернення: 15.10.2026).</li>
+    </ol>
+  </section>
+
+  <!-- ================= 01. Огляд CSS-фреймворків: Tailwind CSS, Bootstrap ================= -->
+  <section class="topic" id="frameworks" aria-labelledby="frameworks-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">01</span>
+      <h2 id="frameworks-h">Огляд CSS-фреймворків: Tailwind CSS, Bootstrap</h2>
+    </div>
+
+    <p>У темі 7 ми власноруч писали кожне правило: скидання <code>box-sizing</code>, сітку карток, медіазапити. Для навчання це єдиний правильний шлях, але в реальному проєкті ті самі задачі повторюються щоразу: кнопки, форми, меню, сітка з 12 колонок, точки перелому. <b>CSS-фреймворк</b> — це готовий, перевірений набір таких рішень: файл стилів (іноді разом зі скриптами) і домовленості про назви класів. Ви підключаєте його й одразу користуєтеся класами замість того, щоб писати CSS з нуля.</p>
+
+    <p><b>Що дає фреймворк:</b> швидкий старт і прототипування; узгоджений вигляд усіх елементів; продумані точки перелому й сітку; документацію, за якою працює вся команда. <b>Чим за це платять:</b> сайти стають схожими один на одного, у проєкті з’являється залежність від чужого коду та його версій, а розмітка обростає класами. І головне застереження: фреймворк <b>не скасовує знання CSS</b>. Щойно вигляд треба змінити не так, як передбачили автори, без розуміння каскаду, специфічності й Flexbox/Grid з теми 7 не обійтися.</p>
+
+    <p>Сьогодні найчастіше говорять про два фреймворки з протилежною філософією (рис. 1). <b>Bootstrap</b> — <b>компонентний</b>: ви пишете <code>class="card"</code> чи <code>class="btn btn-primary"</code> і отримуєте готовий компонент. <b>Tailwind CSS</b> — <b>утилітарний (utility-first)</b>: готових компонентів немає, а є сотні дрібних класів, кожен з яких робить одну річ (<code>p-6</code> — внутрішній відступ, <code>rounded-xl</code> — заокруглення, <code>text-white</code> — колір тексту), і вигляд ви складаєте з них просто в HTML.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 562" role="img" aria-label="Порівняння двох фреймворків на однаковій картці «Тариф «Старт»». Ліворуч — Bootstrap: класи card, card-body, card-title, btn btn-primary і готовий результат; стилі — увесь bootstrap.min.css, близько 230 КБ. Праворуч — Tailwind CSS: утилітарні класи rounded-xl, p-6, text-xl, bg-brand і такий самий результат; стилі — лише використані класи, 7,6 КБ." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">BOOTSTRAP · КОМПОНЕНТНИЙ ПІДХІД</text><rect x="20" y="44" width="420" height="176" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="36" y="72" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;article</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">class</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"card"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="93" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;div</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">class</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"card-body"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="114" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--accent)">&lt;h3</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">class</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"card-title h5"</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">…</tspan><tspan fill="var(--accent)">&lt;/h3</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="135" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--accent)">&lt;p</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">class</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"card-text"</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">…</tspan><tspan fill="var(--accent)">&lt;/p</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="156" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--accent)">&lt;a</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">class</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"btn btn-primary"</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">…</tspan><tspan fill="var(--accent)">&lt;/a</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="177" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;/div</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="36" y="198" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;/article</tspan><tspan fill="var(--accent)">&gt;</tspan></text><line x1="230" y1="228" x2="230.0" y2="246.4" stroke="var(--accent)" stroke-width="2.2"/><polygon points="230.0,252.0 226.7,244.7 233.3,244.7" fill="var(--accent)"/><rect x="20" y="260" width="420" height="190" rx="12" fill="var(--paper)" stroke="none" stroke-width="1.4"/><image x="80.0" y="268" width="300" height="170.3" href="data:image/png;base64,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"/><text x="24" y="476" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Стилі: увесь bootstrap.min.css</text><text x="24" y="498" font-size="13" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">≈ 230 КБ (≈ 31 КБ gzip)</text><text x="464" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">TAILWIND CSS · UTILITY-FIRST</text><rect x="460" y="44" width="420" height="176" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="476" y="72" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;article</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">class</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"rounded-xl border bg-white p-6"</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="476" y="93" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;h3</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">class</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"text-xl font-semibold"</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">…</tspan><tspan fill="var(--accent)">&lt;/h3</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="476" y="114" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;p</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">class</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"mt-2 text-slate-600"</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">…</tspan><tspan fill="var(--accent)">&lt;/p</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="476" y="135" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--accent)">&lt;a</tspan><tspan fill="var(--ink-soft)"> </tspan><tspan fill="var(--test-ink)">class</tspan><tspan fill="var(--ink-soft)">=</tspan><tspan fill="var(--task-ink)">"rounded-lg bg-brand px-4 py-2"</tspan><tspan fill="var(--accent)">&gt;</tspan><tspan fill="var(--ink-soft)">…</tspan><tspan fill="var(--accent)">&lt;/a</tspan><tspan fill="var(--accent)">&gt;</tspan></text><text x="476" y="156" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">&lt;/article</tspan><tspan fill="var(--accent)">&gt;</tspan></text><line x1="670" y1="228" x2="670.0" y2="246.4" stroke="var(--task)" stroke-width="2.2"/><polygon points="670.0,252.0 666.7,244.7 673.3,244.7" fill="var(--task)"/><rect x="460" y="260" width="420" height="190" rx="12" fill="var(--paper)" stroke="none" stroke-width="1.4"/><image x="480.0" y="268" width="380" height="164.3" href="data:image/png;base64,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"/><text x="464" y="476" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Стилі: лише використані класи</text><text x="464" y="498" font-size="13" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">7,6 КБ (≈ 2 КБ gzip)</text><text x="20" y="530" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Однакова картка: у Bootstrap вигляд задає готовий компонент, у Tailwind — набір дрібних класів у розмітці (фрагменти коду</text><text x="20" y="547" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">скорочено).</text></svg>
+      <figcaption>Рис. 1. Компонентний (Bootstrap) і утилітарний (Tailwind CSS) підходи: однакова картка, різний код і різний обсяг стилів.</figcaption>
+    </figure>
+
+    <p><b>Bootstrap.</b> Фреймворк створили Марк Отто (Mark Otto) і Джейкоб Торнтон (Jacob Thornton) у компанії Twitter; першу версію оприлюднили в серпні 2011 року. Бібліотека JavaScript jQuery, без якої колись не обходився Bootstrap, з п’ятої версії (2021) більше не потрібна. Актуальна стабільна версія станом на жовтень 2026 року — <b>5.3.8</b>. 8 жовтня 2026 року вийшла перша альфа-версія <b>Bootstrap 6</b>, але автори прямо попереджають, що до бета-версії в ній ще можуть суттєво змінитися речі, тож для реальних проєктів і для навчання беремо 5.3.</p>
+
+    <p><b>Як підключити.</b> Найпростіше — через CDN (мережу доставки вмісту): у <code>&lt;head&gt;</code> додають посилання на стилі, а перед <code>&lt;/body&gt;</code> — скрипт. Файл <code>bootstrap.bundle.min.js</code> уже містить бібліотеку Popper, потрібну для випадних меню, підказок і спливних вікон. Атрибут <code>integrity</code> — це контрольна сума файлу: браузер перевірить, що файл на CDN ніхто не підмінив. Для кожної версії вона своя, тому посилання копіюйте з документації цілком.</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">&lt;link</span> <span class="tk-attr">rel</span>=<span class="tk-str">"stylesheet"</span>
+  <span class="tk-attr">href</span>=<span class="tk-str">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"</span>
+  <span class="tk-attr">integrity</span>=<span class="tk-str">"sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"</span>
+  <span class="tk-attr">crossorigin</span>=<span class="tk-str">"anonymous"</span><span class="tk-tag">&gt;</span>
+<span class="tk-cm">&lt;!-- ... вміст сторінки ... --&gt;</span>
+<span class="tk-tag">&lt;script</span>
+  <span class="tk-attr">src</span>=<span class="tk-str">"https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"</span>
+  <span class="tk-attr">integrity</span>=<span class="tk-str">"sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"</span>
+  <span class="tk-attr">crossorigin</span>=<span class="tk-str">"anonymous"</span><span class="tk-tag">&gt;</span><span class="tk-tag">&lt;/script</span><span class="tk-tag">&gt;</span></code></pre>
+
+    <p><b>Сітка Bootstrap</b> побудована на Flexbox і працює за принципом mobile-first, який ви знаєте з теми 7. Три рівні вкладеності: <b><code>.container</code></b> центрує вміст і обмежує його ширину; <b><code>.row</code></b> — рядок, обгортка для колонок; <b><code>.col-*</code></b> — колонки. У рядку 12 колонок, і число в класі показує, скільки з них займає блок: <code>col-4</code> — третину, <code>col-6</code> — половину. Інфікс точки перелому означає «від цієї ширини й більше»: <code>col-12 col-md-6 col-lg-4</code> — на всю ширину на телефоні, половина від 768px і третина від 992px (рис. 2). Проміжки між колонками задають класи <code>g-*</code> (наприклад, <code>g-4</code>).</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">&lt;div</span> <span class="tk-attr">class</span>=<span class="tk-str">"container"</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;div</span> <span class="tk-attr">class</span>=<span class="tk-str">"row g-4"</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;div</span> <span class="tk-attr">class</span>=<span class="tk-str">"col-12 col-md-6 col-lg-4"</span><span class="tk-tag">&gt;</span>
+      <span class="tk-tag">&lt;article</span> <span class="tk-attr">class</span>=<span class="tk-str">"card h-100"</span><span class="tk-tag">&gt;</span>
+        <span class="tk-tag">&lt;div</span> <span class="tk-attr">class</span>=<span class="tk-str">"card-body"</span><span class="tk-tag">&gt;</span>
+          <span class="tk-tag">&lt;h3</span> <span class="tk-attr">class</span>=<span class="tk-str">"card-title h5"</span><span class="tk-tag">&gt;</span>Тариф «Старт»<span class="tk-tag">&lt;/h3</span><span class="tk-tag">&gt;</span>
+          <span class="tk-tag">&lt;p</span> <span class="tk-attr">class</span>=<span class="tk-str">"card-text"</span><span class="tk-tag">&gt;</span>Лендинг на 5 блоків і хостинг на рік.<span class="tk-tag">&lt;/p</span><span class="tk-tag">&gt;</span>
+          <span class="tk-tag">&lt;a</span> <span class="tk-attr">href</span>=<span class="tk-str">"#order"</span> <span class="tk-attr">class</span>=<span class="tk-str">"btn btn-primary"</span><span class="tk-tag">&gt;</span>Замовити<span class="tk-tag">&lt;/a</span><span class="tk-tag">&gt;</span>
+        <span class="tk-tag">&lt;/div</span><span class="tk-tag">&gt;</span>
+      <span class="tk-tag">&lt;/article</span><span class="tk-tag">&gt;</span>
+    <span class="tk-tag">&lt;/div</span><span class="tk-tag">&gt;</span>
+    <span class="tk-cm">&lt;!-- ще дві такі колонки --&gt;</span>
+  <span class="tk-tag">&lt;/div</span><span class="tk-tag">&gt;</span>
+<span class="tk-tag">&lt;/div</span><span class="tk-tag">&gt;</span></code></pre>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 492" role="img" aria-label="Сітка Bootstrap з 12 колонок і три ширини екрана для колонок col-12 col-md-6 col-lg-4: менше 768px — три картки одна під одною на всю ширину; від 768px — по дві картки в рядку (6 з 12 колонок); від 992px — три картки в рядку (4 з 12)." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">12 КОЛОНОК · col-12 col-md-6 col-lg-4</text><rect x="24.0" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="56.75" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><rect x="95.5" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="128.25" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">2</text><rect x="167.0" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="199.75" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">3</text><rect x="238.5" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="271.25" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">4</text><rect x="310.0" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="342.75" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">5</text><rect x="381.5" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="414.25" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">6</text><rect x="453.0" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="485.75" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">7</text><rect x="524.5" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="557.25" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">8</text><rect x="596.0" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="628.75" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">9</text><rect x="667.5" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="700.25" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">10</text><rect x="739.0" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="771.75" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">11</text><rect x="810.5" y="44" width="65.5" height="26" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><text x="843.25" y="62" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">12</text><rect x="24" y="100" width="150" height="300" rx="16" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="2"/><rect x="36" y="116" width="126" height="82" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="99.0" y="161.0" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">картка 1</text><rect x="36" y="208" width="126" height="82" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="99.0" y="253.0" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">картка 2</text><rect x="36" y="300" width="126" height="82" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="99.0" y="345.0" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">картка 3</text><text x="99" y="426" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">менше 768px</text><text x="99" y="444" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">col-12 — 12 з 12</text><rect x="206" y="120" width="270" height="260" rx="12" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="2"/><rect x="218" y="136" width="118.0" height="110" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="277.0" y="195.0" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">картка 1</text><rect x="346.0" y="136" width="118.0" height="110" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="405.0" y="195.0" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">картка 2</text><rect x="218" y="256" width="118.0" height="110" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="277.0" y="315.0" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">картка 3</text><text x="341" y="406" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">від 768px (md)</text><text x="341" y="424" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">col-md-6 — 6 з 12</text><rect x="508" y="200" width="368" height="152" rx="10" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="2"/><rect x="520.0" y="216" width="108.0" height="120" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="574.0" y="280.0" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">картка 1</text><rect x="638.0" y="216" width="108.0" height="120" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="692.0" y="280.0" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">картка 2</text><rect x="756.0" y="216" width="108.0" height="120" rx="6" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.3"/><text x="810.0" y="280.0" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">картка 3</text><text x="692" y="406" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">від 992px (lg)</text><text x="692" y="424" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">col-lg-4 — 4 з 12</text><text x="24" y="478" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Клас з інфіксом діє від своєї точки перелому й ширше (mobile-first): sm 576 · md 768 · lg 992 · xl 1200 · xxl 1400 px.</text></svg>
+      <figcaption>Рис. 2. Сітка Bootstrap: колонки col-12 col-md-6 col-lg-4 на трьох ширинах екрана.</figcaption>
+    </figure>
+
+    <p><b>Точки перелому Bootstrap 5.3:</b> без інфікса — менше 576px; <code>sm</code> — від 576px; <code>md</code> — від 768px; <code>lg</code> — від 992px; <code>xl</code> — від 1200px; <code>xxl</code> — від 1400px. Крім сітки, Bootstrap має десятки <b>компонентів</b> (навігаційна панель <code>navbar</code>, картки, кнопки, форми, модальні вікна, акордеон) і <b>утиліти</b> — дрібні допоміжні класи на кшталт <code>mt-3</code> (відступ зверху), <code>d-flex</code> (Flexbox), <code>text-center</code>. Приклади в документації вже містять потрібні ARIA-атрибути (<code>aria-expanded</code>, <code>aria-label</code> тощо) — копіюючи компонент, не видаляйте їх: від них залежить, чи зрозуміє меню екранний читач.</p>
+
+    <p><b>Tailwind CSS.</b> Утилітарний фреймворк від компанії Tailwind Labs. Четверта версія вийшла в січні 2025 року, актуальна — <b>4.3</b> (травень 2026). Головна ідея: замість того, щоб вигадувати назву класу (<code>.price-card</code>) і переходити в CSS-файл, ви одразу пишете властивості в розмітці короткими класами. Інструмент Tailwind <b>сканує ваші файли</b> й генерує CSS <b>лише для тих класів, які ви справді використали</b>. Для картки з рис. 1 вийшов файл стилів на 7,6 КБ, тоді як повний <code>bootstrap.min.css</code> важить близько 230 КБ (наші вимірювання для версій 4.3.3 і 5.3.8; зі стисненням gzip — приблизно 2 КБ проти 31 КБ).</p>
+
+    <p><b>Як підключити.</b> Для першого знайомства є <b>Play CDN</b> — скрипт, який генерує стилі просто в браузері. Документація наголошує: він призначений лише для розробки, <b>не для робочого сайту</b>. У реальному проєкті Tailwind встановлюють через npm і запускають у режимі спостереження: інструмент перебудовує CSS щоразу, коли ви зберігаєте файл.</p>
+
+    <pre class="codeblock"><code><span class="tk-cm">&lt;!-- лише для навчання й прототипів --&gt;</span>
+<span class="tk-tag">&lt;script</span> <span class="tk-attr">src</span>=<span class="tk-str">"https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"</span><span class="tk-tag">&gt;</span><span class="tk-tag">&lt;/script</span><span class="tk-tag">&gt;</span></code></pre>
+
+    <pre class="codeblock"><code><span class="tk-cm"># робочий спосіб: Tailwind CLI</span>
+npm install tailwindcss @tailwindcss/cli
+npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch</code></pre>
+
+    <p>Файл <code>input.css</code> у четвертій версії складається з одного рядка <code>@import "tailwindcss";</code>. Налаштування (власні кольори, шрифти, точки перелому) тепер задають <b>у самому CSS</b> директивою <code>@theme</code>, а не в окремому файлі <code>tailwind.config.js</code>, як у версії 3 — пам’ятайте про це, коли натрапите на старі уроки. Кожна змінна з <code>@theme</code> одразу стає класом: <code>--color-brand</code> дає <code>bg-brand</code>, <code>text-brand</code>, <code>border-brand</code>.</p>
+
+    <pre class="codeblock"><code><span class="tk-tag">@import "tailwindcss";</span>
+
+<span class="tk-tag">@theme </span>{
+  <span class="tk-attr">--color-brand</span>: <span class="tk-str">#1d4ed8</span>;
+}</code></pre>
+
+    <pre class="codeblock"><code><span class="tk-tag">&lt;article</span> <span class="tk-attr">class</span>=<span class="tk-str">"max-w-sm rounded-xl border border-slate-200 bg-white p-6 shadow-sm"</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;h3</span> <span class="tk-attr">class</span>=<span class="tk-str">"text-xl font-semibold text-slate-900"</span><span class="tk-tag">&gt;</span>Тариф «Старт»<span class="tk-tag">&lt;/h3</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;p</span> <span class="tk-attr">class</span>=<span class="tk-str">"mt-2 text-slate-600"</span><span class="tk-tag">&gt;</span>Лендинг на 5 блоків і хостинг на рік.<span class="tk-tag">&lt;/p</span><span class="tk-tag">&gt;</span>
+  <span class="tk-tag">&lt;a</span> <span class="tk-attr">href</span>=<span class="tk-str">"#order"</span> <span class="tk-attr">class</span>=mt-4 inline-block rounded-lg bg-brand px-4 py-2
+     font-medium text-white hover:bg-blue-800<span class="tk-tag">&gt;</span>Замовити<span class="tk-tag">&lt;/a</span><span class="tk-tag">&gt;</span>
+<span class="tk-tag">&lt;/article</span><span class="tk-tag">&gt;</span></code></pre>
+
+    <p><b>Адаптивність у Tailwind</b> теж mobile-first: клас без префікса діє на всіх ширинах, а з префіксом — <b>від</b> точки перелому й більше. Типові точки: <code>sm</code> — 40rem (640px), <code>md</code> — 48rem (768px), <code>lg</code> — 64rem (1024px), <code>xl</code> — 80rem (1280px), <code>2xl</code> — 96rem (1536px). Запис <code>grid gap-6 md:grid-cols-2 lg:grid-cols-3</code> означає: один стовпець на телефоні, два від 768px, три від 1024px. Документація окремо застерігає: <b>не використовуйте <code>sm:</code>, щоб націлитися на телефон</b>. Читайте <code>sm:</code> як «від малої точки перелому», а не «на малих екранах». Стан наведення й фокусу задають так само, префіксами: <code>hover:</code>, <code>focus-visible:</code>.</p>
+
+    <p><b>Сумісність.</b> Tailwind 4 спирається на сучасні можливості CSS і працює в Chrome від 111, Safari від 16.4 і Firefox від 128. Якщо сайт мусить відкриватися в старіших браузерах, документація радить залишитися на версії 3.4. А ось зі старими браузерами Bootstrap 5.3 почувається впевнено — у цьому одна з причин, чому його досі обирають для корпоративних систем.</p>
+
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Порівняльна таблиця"><table class="cmp">
+      <thead><tr><th scope="col">Критерій</th><th scope="col">Bootstrap 5.3</th><th scope="col">Tailwind CSS 4.3</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Підхід</th><td>компонентний: готові <code>card</code>, <code>navbar</code>, <code>modal</code></td><td>утилітарний: дрібні класи <code>p-6</code>, <code>flex</code>, <code>rounded-xl</code></td></tr>
+        <tr><th scope="row">Старт</th><td>посилання на CDN — і вже працює</td><td>Play CDN для навчання; для сайту — CLI або Vite</td></tr>
+        <tr><th scope="row">Розмір CSS</th><td>увесь фреймворк, ≈230 КБ (≈31 КБ gzip)</td><td>лише використані класи, кілька кілобайтів для малої сторінки</td></tr>
+        <tr><th scope="row">JavaScript</th><td>потрібен для меню, модальних вікон, акордеона</td><td>не містить; поведінку пишете самі</td></tr>
+        <tr><th scope="row">Налаштування</th><td>змінні Sass (див. розділ 2), CSS-змінні <code>--bs-*</code></td><td>директива <code>@theme</code> у CSS</td></tr>
+        <tr><th scope="row">Вигляд «з коробки»</th><td>впізнаваний, схожий на тисячі сайтів</td><td>немає готового вигляду — дизайн повністю ваш</td></tr>
+        <tr><th scope="row">Кому підходить</th><td>адмінпанелі, прототипи, внутрішні системи</td><td>проєкти з власним дизайном і макетом із Figma</td></tr>
+      </tbody>
+    </table></div>
+
+    <p><b>Як обрати.</b> Якщо потрібен робочий інтерфейс за день — адмінпанель, внутрішня система, прототип для замовника, — Bootstrap дасть готові компоненти. Якщо у вас є власний макет у Figma (тема 4) і важливо відтворити саме його, зручніший Tailwind. Якщо сайт невеликий, а ви добре знаєте CSS — цілком можливо, що фреймворк не потрібен узагалі: сучасні Flexbox, Grid і CSS-змінні закривають більшість задач. Порада викладачам: давайте фреймворки <b>після</b> чистого CSS, а не замість нього, — інакше студенти запам’ятовують назви класів, а не принципи.</p>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Префікс sm: у Tailwind<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">У розмітці записано <code>&lt;p class="sm:text-center"&gt;</code>. Як буде вирівняно текст на телефоні завширшки 375px?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>по центру, бо префікс <code>sm:</code> означає «на малих екранах»</span></button>
+        <button class="test-opt" type="button"><span>за типовим вирівнюванням (ліворуч): <code>sm:</code> діє лише від 40rem (640px) і ширше</span></button>
+        <button class="test-opt" type="button"><span>по центру лише в книжковій орієнтації</span></button>
+        <button class="test-opt" type="button"><span>клас не спрацює на жодній ширині, бо префікс треба писати після назви: <code>text-center:sm</code></span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Одна сторінка — два фреймворки<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Створіть папку <code>lecture8</code> з двома файлами: <code>bootstrap.html</code> і <code>tailwind.html</code>. Оберіть тему за спеціальністю: «Інформаційні системи» — тарифи хмарного сервісу; «Право» — пакети юридичних консультацій; «Маркетинг» — пакети SMM-просування.</li>
+        <li>У <code>bootstrap.html</code> підключіть Bootstrap 5.3.8 через CDN (посилання й <code>integrity</code> — з лекції або документації). Зробіть <code>container</code> → <code>row g-4</code> → три колонки <code>col-12 col-md-6 col-lg-4</code>, у кожній — компонент <code>card</code> із заголовком, описом, ціною і кнопкою <code>btn btn-primary</code>.</li>
+        <li>У <code>tailwind.html</code> підключіть Play CDN і зверстайте ті самі три картки утилітами: обгортка <code>grid gap-6 md:grid-cols-2 lg:grid-cols-3</code>, картка — <code>rounded-xl border bg-white p-6</code>, кнопка — <code>rounded-lg px-4 py-2 text-white</code> з кольоровим фоном і <code>hover:</code>.</li>
+        <li>У DevTools (Ctrl+Shift+M) перевірте обидві сторінки на ширинах 375, 768, 1000 і 1280 пікселів. Запишіть, на яких ширинах змінюється кількість колонок у кожному фреймворку і чому на 1000px сторінки виглядають по-різному.</li>
+        <li>Пройдіть кнопки клавішею Tab. Якщо на сторінці Tailwind рамку фокусу погано видно, додайте кнопкам <code>focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-800</code>.</li>
+        <li>Напишіть 3–4 речення: яка версія верстається швидше, яку розмітку легше читати і який фреймворк ви обрали б для сайту своєї спеціальності — та чому.</li>
+      </ol>
+      <div class="box-close">Заархівуйте папку lecture8 разом із висновками (ZIP) і прикріпіть архів до завдання в Classroom.</div>
+    </div>
+  </section>
+  <!-- ================= 02. Препроцесори Sass/SCSS: змінні, міксини, вкладеність ================= -->
+  <section class="topic" id="sass" aria-labelledby="sass-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">02</span>
+      <h2 id="sass-h">Препроцесори Sass/SCSS: змінні, міксини, вкладеність</h2>
+    </div>
+
+    <p><b>Препроцесор CSS</b> — програма, яка перетворює («компілює») код, написаний розширеною мовою, у звичайний CSS. Браузер про препроцесор нічого не знає: він отримує лише готовий файл <code>.css</code>. Найпоширеніший препроцесор — <b>Sass</b> (Syntactically Awesome Style Sheets). Його створили Гемптон Кетлін (Hampton Catlin) і Наталі Вайценбаум (Natalie Weizenbaum) у 2006 році. Офіційно назву пишуть <b>Sass</b> — не «SASS»: це слово, а не абревіатура.</p>
+
+    <p><b>Два синтаксиси.</b> Sass має синтаксис <b>SCSS</b> (файли <code>.scss</code>) — з фігурними дужками й крапками з комою, як у CSS. Будь-який коректний CSS-файл уже є коректним SCSS, тож перехід безболісний. Старіший <b>відступний синтаксис</b> (файли <code>.sass</code>) обходиться без дужок і крапок з комою — структуру задають відступи. У цій лекції й на практичних ми використовуємо SCSS.</p>
+
+    <p><b>Компілятор.</b> Основна й рекомендована реалізація — <b>Dart Sass</b> (актуальна версія — 1.105.1). LibSass і пакет <code>node-sass</code>, які досі трапляються в старих уроках, застаріли й більше не розвиваються. Встановити Sass можна через npm (потрібен Node.js) або завантажити окрему програму зі сторінки релізів Dart Sass на GitHub. Ключ <code>--watch</code> змушує компілятор стежити за файлами й перекомпільовувати CSS після кожного збереження (рис. 3).</p>
+
+    <pre class="codeblock"><code>npm install -g sass
+sass --version
+<span class="tk-cm"># одноразова компіляція</span>
+sass scss/main.scss css/style.css
+<span class="tk-cm"># компіляція після кожного збереження</span>
+sass --watch scss/main.scss css/style.css</code></pre>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 380" role="img" aria-label="Схема компіляції: у папці scss лежать частини _variables.scss і _mixins.scss та головний файл main.scss, який підключає їх через @use. Компілятор Dart Sass у режимі --watch перетворює main.scss на css/style.css, і саме цей CSS-файл читає браузер." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ВІД SCSS ДО БРАУЗЕРА</text><rect x="24" y="50" width="270" height="250" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="40" y="76" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">scss/</text><rect x="40" y="92" width="238" height="54" rx="8" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="1.3" stroke-dasharray="5 4"/><text x="54" y="114" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">_variables.scss</text><text x="54" y="133" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">частина: $brand, $radius</text><rect x="40" y="158" width="238" height="54" rx="8" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="1.3" stroke-dasharray="5 4"/><text x="54" y="180" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">_mixins.scss</text><text x="54" y="199" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">частина: @mixin from, button</text><rect x="40" y="224" width="238" height="54" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.3"/><text x="54" y="246" font-size="13" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">main.scss</text><text x="54" y="265" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">@use "variables" as v; …</text><text x="40" y="318" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Частини (з «_») окремих CSS-файлів не</text><text x="40" y="335" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">дають — main.scss підключає їх через</text><text x="40" y="352" font-size="12" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">@use.</text><line x1="296" y1="245" x2="353.7" y2="245.0" stroke="var(--accent)" stroke-width="2.2"/><polygon points="360.0,245.0 351.8,248.7 351.8,241.3" fill="var(--accent)"/><rect x="362" y="196" width="186" height="98" rx="12" fill="var(--accent)" stroke="none" stroke-width="1.4"/><text x="455" y="232" font-size="15" font-weight="700" fill="var(--surface)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Dart Sass</text><text x="455" y="256" font-size="12.5" font-weight="700" fill="var(--surface)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">sass --watch</text><text x="455" y="276" font-size="9.5" font-weight="400" fill="var(--surface)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">scss/main.scss css/style.css</text><line x1="550" y1="245" x2="603.7" y2="245.0" stroke="var(--accent)" stroke-width="2.2"/><polygon points="610.0,245.0 601.8,248.7 601.8,241.3" fill="var(--accent)"/><rect x="612" y="196" width="130" height="98" rx="12" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="677" y="236" font-size="13" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">css/</text><text x="677" y="258" font-size="13" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">style.css</text><line x1="744" y1="245" x2="783.7" y2="245.0" stroke="var(--task)" stroke-width="2.2"/><polygon points="790.0,245.0 781.8,248.7 781.8,241.3" fill="var(--task)"/><rect x="792" y="196" width="88" height="98" rx="12" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="1.6"/><rect x="792" y="196" width="88" height="20" rx="12" fill="var(--surface-2)" stroke="var(--ink-muted)" stroke-width="1.6"/><text x="836" y="252" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">браузер</text><text x="836" y="270" font-size="11" font-weight="400" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">читає CSS</text><text x="362" y="86" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Компілятор стежить за файлами (--watch) і після кожного збереження заново</text><text x="362" y="103" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">створює style.css. Помилка в SCSS — повідомлення в терміналі, а не</text><text x="362" y="120" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">«зламана» сторінка.</text><text x="362" y="330" font-size="12.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">На сервер публікують скомпільований CSS: браузер не вміє читати SCSS.</text></svg>
+      <figcaption>Рис. 3. Як працює препроцесор: частини SCSS, компілятор Dart Sass і готовий CSS для браузера.</figcaption>
+    </figure>
+
+    <p><b>Змінні.</b> Змінну оголошують знаком <code>$</code>: <code>$brand: #1d4ed8;</code>. Змінюєте значення в одному місці — і нове значення з’являється скрізь, де змінну використано. Важливо розуміти відмінність від <b>CSS-змінних</b> (<code>--brand</code>), які ви вже бачили: змінна Sass існує лише <b>під час компіляції</b> й у готовому CSS перетворюється на звичайне значення, а CSS-змінна живе <b>в браузері</b> — її можна змінити медіазапитом, класом <code>.dark</code> чи скриптом. Тому для тем оформлення (світла й темна) обирають CSS-змінні, а змінні Sass — для сталих налаштувань проєкту: точок перелому, розмірів сітки, базових кольорів.</p>
+
+    <p><b>Вкладеність (nesting).</b> Правила можна вкладати одне в одне, повторюючи структуру HTML. Символ <b><code>&amp;</code></b> означає «батьківський селектор»: <code>&amp;:hover</code> всередині <code>.card</code> дає <code>.card:hover</code>, а <code>&amp;__title</code> — <code>.card__title</code> (зручно для іменування за методологією BEM). Документація Sass застерігає від надмірної вкладеності: вона породжує задовгі селектори з високою специфічністю, які важко перевизначити. Практичне правило — не глибше <b>трьох рівнів</b>.</p>
+
+    <p><b>Вкладеність тепер є і в чистому CSS.</b> Починаючи з грудня 2023 року всі основні браузери підтримують нативну вкладеність CSS, і MDN позначає її як Baseline (широко доступна). Але є різниця: чистий CSS <b>не склеює</b> частини назв, тож запис <code>&amp;__title</code> працює лише в Sass. Сама по собі вкладеність уже не є причиною брати препроцесор — нею стали модулі, міксини й цикли.</p>
+
+    <p><b>Частини файлів (partials) і модулі.</b> Великі стилі ділять на файли: <code>_variables.scss</code>, <code>_mixins.scss</code>, <code>_header.scss</code>. Підкреслення на початку назви означає <b>частину (partial)</b>: Sass не створює з неї окремого CSS-файлу. Частини підключають правилом <b><code>@use</code></b>, і все, що в них оголошено, доступне через <b>простір імен</b> — за замовчуванням це назва файлу без підкреслення: <code>variables.$brand</code>. Коротше ім’я задають через <code>as</code>: <code>@use "variables" as v;</code> → <code>v.$brand</code>. Правило <code>@forward</code> дозволяє зібрати кілька частин в одну «точку входу» для бібліотеки.</p>
+
+    <p><b>Обережно: <code>@import</code> застарів.</b> У багатьох уроках в інтернеті частини підключають правилом <code>@import</code>. Починаючи з Dart Sass 1.80.0 воно позначене як застаріле: компілятор виводить попередження, а у версії Dart Sass 3.0.0 правило буде вилучено. У нових проєктах використовуйте лише <code>@use</code> і <code>@forward</code>; для переведення старого коду є офіційна утиліта <code>sass-migrator</code>. Застарілими вважаються й глобальні функції на кшталт <code>darken()</code> чи <code>lighten()</code> — їм на зміну прийшли функції модулів <code>sass:color</code> і <code>sass:math</code>.</p>
+
+    <pre class="codeblock"><code><span class="tk-cm">// _variables.scss — дизайн-токени проєкту</span>
+<span class="tk-attr">$brand</span>: <span class="tk-str">#1d4ed8</span>;
+<span class="tk-attr">$ink</span>: <span class="tk-str">#1e293b</span>;
+<span class="tk-attr">$radius</span>: <span class="tk-str">12px</span>;
+<span class="tk-attr">$bp-md</span>: <span class="tk-str">48rem</span>;
+<span class="tk-attr">$themes</span>: <span class="tk-str">(</span>
+  <span class="tk-attr">it</span>: <span class="tk-str">#1d4ed8,</span>
+  <span class="tk-attr">law</span>: <span class="tk-str">#7c2d12,</span>
+  <span class="tk-attr">marketing</span>: <span class="tk-str">#be185d,</span>
+);</code></pre>
+
+    <p><b>Міксини.</b> <b>Міксин</b> — іменований фрагмент оголошень, який вставляють у різні правила. Його оголошують через <code>@mixin</code>, вставляють через <code>@include</code>, і він може приймати параметри зі значеннями за замовчуванням. Директива <b><code>@content</code></b> дозволяє передати в міксин цілий блок правил — так зручно оформити медіазапит mobile-first із теми 7 один раз і користуватися ним скрізь.</p>
+
+    <pre class="codeblock"><code><span class="tk-cm">// _mixins.scss — повторювані фрагменти</span>
+<span class="tk-tag">@use "variables" as v;</span>
+
+<span class="tk-tag">@mixin from($bp) </span>{
+<span class="tk-tag">  @media (min-width: $bp) </span>{
+<span class="tk-tag">    @content;</span>
+  }
+}
+
+<span class="tk-tag">@mixin button($bg: v.$brand) </span>{
+  <span class="tk-attr">display</span>: <span class="tk-str">inline-block</span>;
+  <span class="tk-attr">padding</span>: <span class="tk-str">0.6rem 1.2rem</span>;
+  <span class="tk-attr">border-radius</span>: <span class="tk-str">v.$radius</span>;
+  <span class="tk-attr">background</span>: <span class="tk-str">$bg</span>;
+  <span class="tk-attr">color</span>: <span class="tk-str">#fff</span>;
+  <span class="tk-attr">text-decoration</span>: <span class="tk-str">none</span>;
+}</code></pre>
+
+    <p><b>Цикли й мапи.</b> Мапа (map) — набір пар «ключ: значення», як <code>$themes</code> вище. Цикл <b><code>@each</code></b> перебирає її і генерує однотипні правила, а запис <b><code>#{$name}</code></b> (інтерполяція) вставляє значення змінної просто в назву селектора. Нижче — головний файл, який збирає все разом; на рис. 4 видно, що з нього отримує браузер.</p>
+
+    <pre class="codeblock"><code><span class="tk-cm">// main.scss — точка входу, компілюється в css/style.css</span>
+<span class="tk-tag">@use "variables" as v;</span>
+<span class="tk-tag">@use "mixins" as m;</span>
+
+<span class="tk-tag">.card </span>{
+  <span class="tk-attr">padding</span>: <span class="tk-str">1.5rem</span>;
+  <span class="tk-attr">border-radius</span>: <span class="tk-str">v.$radius</span>;
+  <span class="tk-attr">color</span>: <span class="tk-str">v.$ink</span>;
+<span class="tk-tag">  &amp;__title </span>{ <span class="tk-attr">font-size</span>: <span class="tk-str">1.25rem</span>; }
+<span class="tk-tag">  &amp;:hover </span>{ <span class="tk-attr">box-shadow</span>: <span class="tk-str">0 4px 16px rgb(0 0 0 / 0.12)</span>; }
+<span class="tk-tag">  a </span>{ @include m.button; }
+}
+
+<span class="tk-tag">.cards </span>{
+  <span class="tk-attr">display</span>: <span class="tk-str">grid</span>;
+  <span class="tk-attr">gap</span>: <span class="tk-str">1.5rem</span>;
+<span class="tk-tag">  @include m.from(v.$bp-md) </span>{
+    <span class="tk-attr">grid-template-columns</span>: <span class="tk-str">repeat(2, 1fr)</span>;
+  }
+}
+
+<span class="tk-tag">@each $name, $color in v.$themes </span>{
+<span class="tk-tag">  .badge--#</span>{$name} { <span class="tk-attr">background</span>: <span class="tk-str">$color</span>; }
+}</code></pre>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 560" role="img" aria-label="Ліворуч — фрагмент main.scss із вкладеністю, змінними, міксинами й циклом @each; праворуч — скомпільований style.css. Виділено відповідності: v.$radius стає 12px, &amp;__title — селектором .card__title, @include m.button — набором оголошень, міксин from з @content — медіазапитом @media (min-width: 48rem), а @each — трьома класами .badge--it, .badge--law, .badge--marketing." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">main.scss — ЩО ПИШЕМО</text><text x="484" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">style.css — ЩО ОТРИМУЄ БРАУЗЕР</text><rect x="20" y="44" width="410" height="466" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="470" y="44" width="410" height="466" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="36" y="72" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.card </tspan><tspan fill="var(--ink-muted)">{</tspan></text><text x="36" y="94" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">padding</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">1.5rem;</tspan></text><text x="36" y="116" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">border-radius</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">v.$radius;</tspan></text><text x="36" y="138" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">  &amp;__title </tspan><tspan fill="var(--ink-muted)">{ font-size: 1.25rem; }</tspan></text><text x="36" y="160" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">  a </tspan><tspan fill="var(--ink-muted)">{ @include m.button; }</tspan></text><text x="36" y="182" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">}</tspan></text><text x="36" y="204" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)"></tspan></text><text x="36" y="226" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.cards </tspan><tspan fill="var(--ink-muted)">{</tspan></text><text x="36" y="248" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">display</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">grid;</tspan></text><text x="36" y="270" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--fail)">  @include m.from(v.$bp-md) {</tspan></text><text x="36" y="292" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--test-ink)">grid-template-columns</tspan><tspan fill="var(--ink-muted)">:</tspan><tspan fill="var(--task-ink)"></tspan></text><text x="36" y="314" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">      repeat(2, 1fr);</tspan></text><text x="36" y="336" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">  }</tspan></text><text x="36" y="358" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">}</tspan></text><text x="36" y="380" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)"></tspan></text><text x="36" y="402" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--fail)">@each $name, $color in v.$themes {</tspan></text><text x="36" y="424" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">  .badge--#</tspan><tspan fill="var(--ink-muted)">{$name} {</tspan></text><text x="36" y="446" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--test-ink)">background</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">$color;</tspan></text><text x="36" y="468" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">  }</tspan></text><text x="36" y="490" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12.5" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">}</tspan></text><text x="486" y="72" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.card </tspan><tspan fill="var(--ink-muted)">{</tspan></text><text x="486" y="94" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">padding</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">1.5rem;</tspan></text><text x="486" y="116" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">border-radius</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">12px;</tspan></text><text x="486" y="138" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">}</tspan></text><text x="486" y="160" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.card__title </tspan><tspan fill="var(--ink-muted)">{ font-size: 1.25rem; }</tspan></text><text x="486" y="182" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.card a </tspan><tspan fill="var(--ink-muted)">{</tspan></text><text x="486" y="204" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">display</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">inline-block;</tspan><tspan fill="var(--ink-muted)"> /* … */</tspan></text><text x="486" y="226" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">  </tspan><tspan fill="var(--test-ink)">background</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">#1d4ed8;</tspan></text><text x="486" y="248" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">}</tspan></text><text x="486" y="270" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.cards </tspan><tspan fill="var(--ink-muted)">{ display: grid; }</tspan></text><text x="486" y="292" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--fail)">@media (min-width: 48rem) {</tspan></text><text x="486" y="314" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">  .cards </tspan><tspan fill="var(--ink-muted)">{</tspan></text><text x="486" y="336" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-soft)">    </tspan><tspan fill="var(--test-ink)">grid-template-columns</tspan><tspan fill="var(--ink-muted)">: </tspan><tspan fill="var(--task-ink)">repeat(2, 1fr);</tspan></text><text x="486" y="358" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">  }</tspan></text><text x="486" y="380" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--ink-muted)">}</tspan></text><text x="486" y="402" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.badge--it </tspan><tspan fill="var(--ink-muted)">{ background: #1d4ed8; }</tspan></text><text x="486" y="424" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.badge--law </tspan><tspan fill="var(--ink-muted)">{ background: #7c2d12; }</tspan></text><text x="486" y="446" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" font-size="12" style="white-space:pre" xml:space="preserve"><tspan fill="var(--accent)">.badge--marketing </tspan><tspan fill="var(--ink-muted)">{ background: #be185d; }</tspan></text><rect x="26" y="101" width="398" height="19" rx="5" fill="none" stroke="var(--test)" stroke-width="1.4"/><rect x="476" y="101" width="398" height="19" rx="5" fill="none" stroke="var(--test)" stroke-width="1.4"/><line x1="424" y1="111" x2="450" y2="111" stroke="var(--test)" stroke-width="1.6"/><line x1="450" y1="111" x2="450" y2="111" stroke="var(--test)" stroke-width="1.6"/><line x1="450" y1="111" x2="471.1" y2="111.0" stroke="var(--test)" stroke-width="1.6"/><polygon points="476.0,111.0 469.6,113.9 469.6,108.1" fill="var(--test)"/><rect x="26" y="123" width="398" height="19" rx="5" fill="none" stroke="var(--accent)" stroke-width="1.4"/><rect x="476" y="145" width="398" height="19" rx="5" fill="none" stroke="var(--accent)" stroke-width="1.4"/><line x1="424" y1="133" x2="458" y2="133" stroke="var(--accent)" stroke-width="1.6"/><line x1="458" y1="133" x2="458" y2="155" stroke="var(--accent)" stroke-width="1.6"/><line x1="458" y1="155" x2="471.1" y2="155.0" stroke="var(--accent)" stroke-width="1.6"/><polygon points="476.0,155.0 469.6,157.9 469.6,152.1" fill="var(--accent)"/><rect x="26" y="145" width="398" height="19" rx="5" fill="none" stroke="var(--task)" stroke-width="1.4"/><rect x="476" y="167" width="398" height="19" rx="5" fill="none" stroke="var(--task)" stroke-width="1.4"/><line x1="424" y1="155" x2="440" y2="155" stroke="var(--task)" stroke-width="1.6"/><line x1="440" y1="155" x2="440" y2="177" stroke="var(--task)" stroke-width="1.6"/><line x1="440" y1="177" x2="471.1" y2="177.0" stroke="var(--task)" stroke-width="1.6"/><polygon points="476.0,177.0 469.6,179.9 469.6,174.1" fill="var(--task)"/><rect x="26" y="255" width="398" height="19" rx="5" fill="none" stroke="var(--fail)" stroke-width="1.4"/><rect x="476" y="277" width="398" height="19" rx="5" fill="none" stroke="var(--fail)" stroke-width="1.4"/><line x1="424" y1="265" x2="450" y2="265" stroke="var(--fail)" stroke-width="1.6"/><line x1="450" y1="265" x2="450" y2="287" stroke="var(--fail)" stroke-width="1.6"/><line x1="450" y1="287" x2="471.1" y2="287.0" stroke="var(--fail)" stroke-width="1.6"/><polygon points="476.0,287.0 469.6,289.9 469.6,284.1" fill="var(--fail)"/><rect x="26" y="387" width="398" height="19" rx="5" fill="none" stroke="var(--accent)" stroke-width="1.4"/><rect x="476" y="387" width="398" height="19" rx="5" fill="none" stroke="var(--accent)" stroke-width="1.4"/><line x1="424" y1="397" x2="450" y2="397" stroke="var(--accent)" stroke-width="1.6"/><line x1="450" y1="397" x2="450" y2="397" stroke="var(--accent)" stroke-width="1.6"/><line x1="450" y1="397" x2="471.1" y2="397.0" stroke="var(--accent)" stroke-width="1.6"/><polygon points="476.0,397.0 469.6,399.9 469.6,394.1" fill="var(--accent)"/><rect x="20" y="528" width="14" height="14" rx="3" fill="none" stroke="var(--test)" stroke-width="2"/><text x="42" y="540" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">змінна → значення</text><rect x="184.484375" y="528" width="14" height="14" rx="3" fill="none" stroke="var(--accent)" stroke-width="2"/><text x="206.484375" y="540" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">&amp;__ і @each → нові селектори</text><rect x="416.8984375" y="528" width="14" height="14" rx="3" fill="none" stroke="var(--task)" stroke-width="2"/><text x="438.8984375" y="540" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">@include → оголошення міксину</text><rect x="666.15625" y="528" width="14" height="14" rx="3" fill="none" stroke="var(--fail)" stroke-width="2"/><text x="688.15625" y="540" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">@content → медіазапит</text></svg>
+      <figcaption>Рис. 4. Що робить компілятор: вкладеність, змінні, міксини й цикл @each перетворюються на звичайний CSS.</figcaption>
+    </figure>
+
+    <p>Зверніть увагу на кілька деталей результату. Частини <code>_variables.scss</code> і <code>_mixins.scss</code> окремих CSS-файлів не дали. Міксин <code>from</code> розгорнувся в звичайний <code>@media</code>, а <code>@each</code> створив три класи <code>.badge--it</code>, <code>.badge--law</code> і <code>.badge--marketing</code> — по одному для кожної спеціальності. Коментарі <code>//</code> у CSS не потрапляють (на відміну від <code>/* */</code>). Ще одна корисна функція — <code>color.adjust()</code> із модуля <code>sass:color</code>: <code>color.adjust($brand, $lightness: -10%)</code> обчислює темніший відтінок під час компіляції. У готовому CSS такий колір може з’явитися як <code>rgb()</code> із дробовими відсотками — це нормальний, валідний запис.</p>
+
+    <p><b>Препроцесор і фреймворки.</b> Bootstrap написаний на Sass, і саме так його глибоко налаштовують: підключають вихідні файли й підміняють змінні. Bootstrap 5.3 ще всередині використовує <code>@import</code>, тому компілятор покаже кілька попереджень про застарілість — це не ваша помилка, а ключ <code>--quiet-deps</code> приховує попередження із залежностей. У Bootstrap 6 автори вже перейшли на <code>@use</code> і <code>@forward</code>. А от Tailwind 4, за власною документацією, <b>не призначений</b> для роботи разом із Sass: він сам виконує роль препроцесора (імпорти, вкладеність, змінні).</p>
+
+    <pre class="codeblock"><code><span class="tk-cm">// власний колір Bootstrap (потрібен пакет bootstrap з npm)</span>
+<span class="tk-tag">@use "bootstrap/scss/bootstrap" with (</span>
+  <span class="tk-attr">$primary</span>: <span class="tk-str">#7c2d12</span>
+);</code></pre>
+
+    <pre class="codeblock"><code>npm install bootstrap@5.3.8
+sass --load-path=node_modules --quiet-deps scss/custom.scss css/custom.css</code></pre>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Модулі @use<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">У файлі <code>_variables.scss</code> оголошено <code>$brand: #1d4ed8;</code>, а файл <code>main.scss</code> починається рядком <code>@use "variables";</code>. Як звернутися до кольору в <code>main.scss</code>?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button"><span><code>$brand</code> — після <code>@use</code> змінні стають глобальними</span></button>
+        <button class="test-opt" type="button"><span><code>_variables.$brand</code> — простір імен збігається з назвою файлу разом із підкресленням</span></button>
+        <button class="test-opt" type="button"><span><code>variables.$brand</code> — простір імен за замовчуванням — назва файлу без підкреслення і розширення</span></button>
+        <button class="test-opt" type="button"><span><code>var(--brand)</code> — Sass автоматично перетворює змінні на CSS-змінні</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+  <!-- ================= 03. Публікація сайту: GitHub Pages, Netlify, Vercel ================= -->
+  <section class="topic" id="deploy" aria-labelledby="deploy-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">03</span>
+      <h2 id="deploy-h">Публікація сайту: GitHub Pages, Netlify, Vercel</h2>
+    </div>
+
+    <p>Сайт, який відкривається лише з вашого диска, бачите тільки ви. <b>Публікація (деплой, deploy)</b> — розміщення файлів на сервері, доступному з інтернету, під постійною адресою. Усі сторінки, які ми створюємо в курсі, — <b>статичні сайти</b>: HTML, CSS, зображення й, можливо, JavaScript, які сервер віддає браузеру без змін. Для таких сайтів не потрібен власний сервер чи платний хостинг: є сервіси, що безкоштовно публікують статичні файли, автоматично вмикають HTTPS і розносять копії сайту по серверах у різних країнах (CDN), щоб сторінка швидко відкривалася будь-де.</p>
+
+    <p><b>Що саме публікують.</b> На сервер потрапляє те, що читає браузер: HTML, <b>скомпільований</b> CSS, зображення, шрифти. Файли <code>.scss</code> браузеру не потрібні — їх або не викладають, або доручають компіляцію самому сервісу (це вміють Netlify і Vercel). Головна сторінка має називатися <code>index.html</code> і лежати в корені папки, що публікується.</p>
+
+    <p><b>Чек-лист перед публікацією:</b></p>
+
+    <ul>
+      <li><b>відносні шляхи</b>: <code>css/style.css</code>, а не <code>C:/Users/.../style.css</code> — абсолютний шлях до вашого диска на сервері не існує;</li>
+      <li><b>регістр літер</b>: сервери працюють на Linux, де <code>Style.css</code> і <code>style.css</code> — різні файли; Windows цієї різниці не помічає, тож помилка проявиться лише після публікації. Найпростіше — називати файли й папки малими латинськими літерами, без пробілів і кирилиці;</li>
+      <li><b>валідний HTML</b> (ПР 13) і тег <code>&lt;meta name="viewport"&gt;</code> (тема 7);</li>
+      <li><b>заповнені <code>&lt;title&gt;</code> і <code>&lt;meta name="description"&gt;</code></b> — їх показують пошукові системи й соцмережі;</li>
+      <li><b>жодних секретів</b>: паролі, ключі доступу та особисті дані клієнтів не повинні потрапити в публічний репозиторій — його вміст бачить кожен.</li>
+    </ul>
+
+    <p><b>GitHub Pages</b> — хостинг статичних сайтів просто з репозиторію GitHub. На безкоштовному тарифі репозиторій має бути <b>публічним</b>; сам сайт GitHub Pages завжди публічний. Порядок дій за документацією GitHub:</p>
+
+    <ul>
+      <li>створіть публічний репозиторій (наприклад, <code>webdesign-lecture8</code>) і завантажте в нього файли сайту: <b>Add file → Upload files</b>, або через Git;</li>
+      <li>відкрийте <b>Settings → Pages</b>; у розділі <b>Build and deployment</b> для <b>Source</b> оберіть <b>Deploy from a branch</b>;</li>
+      <li>виберіть гілку <code>main</code> і папку <code>/(root)</code> (або <code>/docs</code>, якщо сайт лежить там) і натисніть <b>Save</b>;</li>
+      <li>зачекайте: за документацією, зміни публікуються протягом <b>до 10 хвилин</b>; посилання <b>Visit site</b> з’явиться на тій самій сторінці.</li>
+    </ul>
+
+    <p>Адреса проєктного сайту має вигляд <code>https://логін.github.io/назва-репозиторію/</code>. Якщо назвати репозиторій <code>логін.github.io</code>, сайт відкриватиметься просто за адресою <code>https://логін.github.io</code> — це зручно для портфоліо. Обмеження: розмір опублікованого сайту — до 1 ГБ, рекомендований «м’який» ліміт трафіку — 100 ГБ на місяць, а серверні мови (PHP, Python) не підтримуються. За замовчуванням GitHub обробляє сайт генератором Jekyll; якщо він вам не потрібен, додайте в корінь порожній файл <code>.nojekyll</code>. Важливо для майбутніх юристів і маркетологів: GitHub Pages <b>не можна</b> використовувати як безкоштовний хостинг для інтернет-магазину чи комерційного онлайн-бізнесу, а також для сторінок, що приймають паролі чи дані банківських карток.</p>
+
+    <p><b>Netlify</b> пропонує два шляхи. <b>Netlify Drop</b> (app.netlify.com/drop) — найшвидший: перетягніть папку з сайтом у вікно браузера, і за кілька секунд він отримає адресу на домені <code>netlify.app</code>. Документація радить спершу увійти в обліковий запис: тоді сайт закріпиться за вами, і його можна буде оновлювати. Другий шлях — підключити репозиторій Git: після кожного <code>git push</code> Netlify сам збирає й публікує сайт, а для змін створює <b>попередній перегляд (Deploy Preview)</b>, щоб перевірити їх до публікації. Безкоштовний план працює на <b>кредитах</b>: 300 кредитів на місяць із жорстким лімітом. За документацією, кожна публікація в робочу версію (production deploy) коштує 15 кредитів, 1 ГБ трафіку — 20 кредитів, 10 000 запитів — 2 кредити. Коли кредити закінчуються, сайт <b>призупиняється</b> до початку наступного місяця.</p>
+
+    <p>Порахуймо: 300 ÷ 15 = 20. Лише двадцять публікацій — і місячний ліміт вичерпано, навіть якщо сайт ніхто не відвідував. Тому на безкоштовному Netlify не варто «перезаливати» сайт після кожної дрібної правки: збирайте зміни й публікуйте рідше, а щоденні експерименти перевіряйте локально чи на GitHub Pages.</p>
+
+    <p><b>Vercel</b> працює схоже: імпорт репозиторію з GitHub, GitLab чи Bitbucket — і кожен коміт або pull request автоматично створює окреме розгортання з унікальною адресою; є <b>Vercel Drop</b> (vercel.com/drop) для перетягування папки і консольна утиліта. Безкоштовний план <b>Hobby</b> розрахований на <b>особисті некомерційні</b> проєкти; серед лімітів — до 100 розгортань на день, 100 ГБ трафіку (Fast Data Transfer) на місяць і до 200 проєктів. Якщо ліміт перевищено, здебільшого доводиться чекати 30 днів, доки функція знову стане доступною. Vercel створила фреймворк Next.js і особливо зручна для сайтів на ньому, але статичні HTML-сторінки публікує так само просто.</p>
+
+    <pre class="codeblock"><code><span class="tk-cm"># публікація з терміналу (після входу в обліковий запис)</span>
+npm install -g netlify-cli
+netlify deploy --prod
+
+npm install -g vercel
+vercel --prod</code></pre>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 450" role="img" aria-label="Схема публікації: папка проєкту lecture8-site потрапляє або в публічний репозиторій GitHub (Upload files чи git push), або перетягується в Netlify Drop чи Vercel Drop. З репозиторію сайт публікують GitHub Pages (Settings → Pages), Netlify і Vercel (імпорт репозиторію); адреси: логін.github.io/репозиторій, назва.netlify.app, назва.vercel.app." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ДВА ШЛЯХИ ДО ПУБЛІКАЦІЇ</text><rect x="24" y="140" width="176" height="150" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="40" y="166" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">lecture8-site/</text><text x="48" y="194" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">index.html</text><text x="48" y="216" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">css/style.css</text><text x="48" y="238" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">scss/…</text><text x="48" y="260" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">img/…</text><line x1="202" y1="180" x2="232" y2="180" stroke="var(--accent)" stroke-width="2"/><line x1="232" y1="180" x2="232" y2="112" stroke="var(--accent)" stroke-width="2"/><line x1="232" y1="112" x2="319.7" y2="112.0" stroke="var(--accent)" stroke-width="2"/><polygon points="326.0,112.0 317.8,115.7 317.8,108.3" fill="var(--accent)"/><text x="242" y="84" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">Upload files</text><text x="242" y="100" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">або git push</text><rect x="328" y="70" width="182" height="84" rx="12" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.6"/><text x="419" y="104" font-size="13.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Репозиторій GitHub</text><text x="419" y="126" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">публічний, гілка main</text><text x="328" y="178" font-size="11.5" font-weight="400" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Netlify і Vercel імпортують</text><text x="328" y="194" font-size="11.5" font-weight="400" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">репозиторій (пунктир) і</text><text x="328" y="210" font-size="11.5" font-weight="400" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">публікують кожне</text><text x="328" y="226" font-size="11.5" font-weight="400" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">оновлення.</text><line x1="202" y1="260" x2="232" y2="260" stroke="var(--test)" stroke-width="2"/><line x1="232" y1="260" x2="232" y2="328" stroke="var(--test)" stroke-width="2"/><line x1="232" y1="328" x2="319.7" y2="328.0" stroke="var(--test)" stroke-width="2"/><polygon points="326.0,328.0 317.8,331.7 317.8,324.3" fill="var(--test)"/><text x="242" y="352" font-size="11.5" font-weight="700" fill="var(--test-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">перетягнути</text><text x="242" y="368" font-size="11.5" font-weight="700" fill="var(--test-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">папку</text><rect x="328" y="286" width="182" height="84" rx="12" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.6"/><text x="419" y="320" font-size="13.5" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Netlify Drop /</text><text x="419" y="342" font-size="13.5" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Vercel Drop</text><rect x="620" y="60" width="260" height="76" rx="12" fill="var(--surface)" stroke="var(--task)" stroke-width="1.6"/><text x="636" y="90" font-size="14" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">GitHub Pages</text><text x="636" y="114" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">логін.github.io/репозиторій</text><rect x="620" y="176" width="260" height="76" rx="12" fill="var(--surface)" stroke="var(--task)" stroke-width="1.6"/><text x="636" y="206" font-size="14" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Netlify</text><text x="636" y="230" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">назва.netlify.app</text><rect x="620" y="292" width="260" height="76" rx="12" fill="var(--surface)" stroke="var(--task)" stroke-width="1.6"/><text x="636" y="322" font-size="14" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Vercel</text><text x="636" y="346" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">назва.vercel.app</text><line x1="512" y1="98" x2="611.7" y2="98.0" stroke="var(--accent)" stroke-width="1.8"/><polygon points="618.0,98.0 609.8,101.7 609.8,94.3" fill="var(--accent)"/><text x="565" y="88" font-size="10" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Settings → Pages</text><line x1="512" y1="130" x2="612.7428729585641" y2="196.52831233112724" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="6 4"/><polygon points="618.0,200.0 609.1,198.5 613.2,192.4" fill="var(--accent)"/><line x1="512" y1="146" x2="614.6094095911963" y2="306.6902074730054" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="6 4"/><polygon points="618.0,312.0 610.5,307.0 616.7,303.1" fill="var(--accent)"/><line x1="512" y1="304" x2="612.8800145393899" y2="231.67093297175816" stroke="var(--test)" stroke-width="1.8"/><polygon points="618.0,228.0 613.5,235.8 609.2,229.8" fill="var(--test)"/><line x1="512" y1="344" x2="611.7044807971529" y2="340.2375667623716" stroke="var(--test)" stroke-width="1.8"/><polygon points="618.0,340.0 609.9,344.0 609.6,336.6" fill="var(--test)"/><text x="24" y="414" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Через Git кожне оновлення репозиторію публікується автоматично; Drop зручний для швидкого показу. HTTPS і CDN сервіси</text><text x="24" y="431" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">вмикають самі.</text></svg>
+      <figcaption>Рис. 5. Шляхи публікації статичного сайту на GitHub Pages, Netlify і Vercel.</figcaption>
+    </figure>
+
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Порівняльна таблиця"><table class="cmp">
+      <thead><tr><th scope="col">Критерій</th><th scope="col">GitHub Pages</th><th scope="col">Netlify (Free)</th><th scope="col">Vercel (Hobby)</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Як опублікувати</th><td>гілка репозиторію або GitHub Actions</td><td>Netlify Drop, Git, CLI</td><td>Vercel Drop, Git, CLI</td></tr>
+        <tr><th scope="row">Адреса</th><td><code>логін.github.io/репозиторій</code></td><td><code>назва.netlify.app</code></td><td><code>назва.vercel.app</code></td></tr>
+        <tr><th scope="row">Безкоштовні межі</th><td>сайт до 1 ГБ; ≈100 ГБ трафіку на місяць</td><td>300 кредитів на місяць; публікація = 15 кредитів</td><td>100 ГБ трафіку; 100 розгортань на день</td></tr>
+        <tr><th scope="row">Попередній перегляд змін</th><td>немає вбудованого</td><td>так, Deploy Preview</td><td>так, Preview Deployments</td></tr>
+        <tr><th scope="row">Комерційне використання</th><td>заборонено для онлайн-бізнесу й магазинів</td><td>дивіться умови сервісу</td><td>Hobby — лише особисте некомерційне</td></tr>
+        <tr><th scope="row">Для навчання</th><td>найкраще: часті публікації, портфоліо</td><td>швидкий показ без Git</td><td>проєкти з Git і фреймворками</td></tr>
+      </tbody>
+    </table></div>
+
+    <p>Ліміти й ціни безкоштовних планів змінюються — наведені дані звірено з документацією сервісів станом на жовтень 2026 року. Перед тим як розміщувати сайт для реального замовника, завжди перечитуйте чинні умови: це вже не технічне, а юридичне питання.</p>
+
+    <div class="box test" id="test-3">
+      <div class="box-title"><span class="box-tag">ТЕСТ 3</span> Стилі зникли після публікації<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">На комп’ютері з Windows сайт виглядав правильно, але на GitHub Pages сторінка відкрилася без стилів. У коді — <code>&lt;link rel="stylesheet" href="CSS/Style.css"&gt;</code>, а в репозиторії лежить файл <code>css/style.css</code>. У чому причина?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>GitHub Pages не підтримує зовнішні CSS-файли — стилі треба вставити в <code>&lt;style&gt;</code></span></button>
+        <button class="test-opt" type="button"><span>сервер розрізняє великі й малі літери: шляхи <code>CSS/Style.css</code> і <code>css/style.css</code> для нього різні</span></button>
+        <button class="test-opt" type="button"><span>потрібно зачекати добу, поки CSS-файл пройде перевірку</span></button>
+        <button class="test-opt" type="button"><span>GitHub Pages працює лише з SCSS, тому CSS-файл ігнорується</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <p><b>Де це знадобиться.</b> Посилання на живий сайт — найкраща частина резюме: роботодавець відкриває його з телефона за секунду, на відміну від архіву з файлами. Фахівцю з інформаційних систем Sass, фреймворки й автоматична публікація з Git — щоденні робочі інструменти командної розробки. Юристу знання про те, що публічний репозиторій бачать усі, а безкоштовні плани мають обмеження щодо комерційного використання, допоможе оцінити ризики для клієнта ще до того, як сайт запрацює. Маркетологу Bootstrap чи Tailwind дають змогу за вечір зібрати й опублікувати посадкову сторінку для тестування гіпотези, не чекаючи на розробника.</p>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> Від SCSS до живого сайту<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Встановіть Sass (<code>npm install -g sass</code> або окрема програма з релізів Dart Sass) і перевірте командою <code>sass --version</code>. Скопіюйте проєкт <code>lecture7</code> у нову папку <code>lecture8-site</code>.</li>
+        <li>Створіть папку <code>scss</code> з файлами <code>_variables.scss</code> (кольори, радіус, точки перелому в <code>rem</code>), <code>_mixins.scss</code> (міксин <code>from($bp)</code> з <code>@content</code>) і <code>main.scss</code>. Перенесіть стилі з <code>css/style.css</code> у <code>main.scss</code>: використайте змінні, вкладеність не глибше трьох рівнів, міксин для медіазапитів і <code>@each</code>, що генерує бейджі для трьох спеціальностей. Підключайте частини лише через <code>@use</code>.</li>
+        <li>Запустіть <code>sass --watch scss/main.scss css/style.css</code>. Переконайтеся, що сторінка виглядає так само, як до переходу на Sass, а в терміналі немає помилок і попереджень. Відкрийте <code>css/style.css</code> і знайдіть, на що перетворилися міксин і цикл.</li>
+        <li>Підготуйте сайт за чек-листом: <code>index.html</code> у корені, відносні шляхи, назви файлів малими латинськими літерами без пробілів, заповнені <code>&lt;title&gt;</code> і <code>&lt;meta name="description"&gt;</code>. Перевірте HTML у валідаторі W3C (ПР 13).</li>
+        <li>Створіть на GitHub публічний репозиторій <code>webdesign-lecture8</code> і завантажте в нього вміст папки (<code>index.html</code>, <code>css</code>, <code>scss</code>, зображення). У <b>Settings → Pages</b> оберіть <b>Deploy from a branch</b>, гілку <code>main</code>, папку <code>/(root)</code> і натисніть <b>Save</b>. Через кілька хвилин відкрийте сайт за посиланням <b>Visit site</b>.</li>
+        <li>Відкрийте опублікований сайт на своєму телефоні та в DevTools на ширині 320 пікселів. Додатково (за бажанням) опублікуйте ту саму папку через Netlify Drop і порівняйте адреси та швидкість публікації.</li>
+      </ol>
+      <div class="box-close">Надішліть у Classroom два посилання — на опублікований сайт і на репозиторій GitHub.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Лекція 8 · Тема 8 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 15.10.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture8-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState();
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId]);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
 </body>
 </html>
