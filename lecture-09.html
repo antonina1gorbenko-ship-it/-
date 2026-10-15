@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>No-code / Low-code платформи для вебдизайну — Вебдизайн</title>
-<meta name="description" content="Лекція 9. No-code / Low-code платформи для вебдизайну. Конспект готується.">
+<title>No-code / Low-code платформи для вебдизайну</title>
+<meta name="description" content="Лекція 9 курсу «Вебдизайн»: no-code і low-code платформи Webflow, Framer, Tilda, Weblium, WordPress з Elementor; блокові конструктори й шаблони; основи CMS і публікація сайту">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +26,59 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --fail:#C0392B;
+    --fail-tint:#FBE3E0;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --fail:#E8746A;
+      --fail-tint:#3A1512;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --fail:#E8746A;
+    --fail-tint:#3A1512;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,123 +91,620 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{max-width:1000px;margin:28px auto 0;padding:0 24px;}
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
-    padding:12px 16px;
-    background:var(--surface-2);
-    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:12px 16px;
+    background:var(--surface-2);border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
   .addr{
-    flex:1;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;
-    color:var(--ink-muted);
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:6px 12px;
+    flex:1;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
-  }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
+  .hero{padding:56px 40px 48px;}
   .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent-tint);display:inline-block;padding:5px 11px;
+    border-radius:99px;margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.14;font-weight:800;}
+  .hero .theme{margin-top:14px;font-size:clamp(16px,2vw,19px);color:var(--ink-soft);font-weight:500;max-width:34em;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .meta-chip{
+    font-size:13px;color:var(--ink-muted);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:99px;padding:6px 13px;display:flex;align-items:center;gap:6px;
   }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- sticky toc ---------- */
+  .toc-bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    text-decoration:none;padding:13px 12px;border-bottom:2px solid transparent;white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{flex:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);padding:13px 0 13px 14px;white-space:nowrap;}
+  .toc-progress b{color:var(--accent);}
+  .progress-track{max-width:1000px;margin:0 auto;padding:0 24px;height:3px;}
+  .progress-track .fill{height:100%;width:0%;background:linear-gradient(90deg, var(--task), var(--accent));transition:width .3s ease;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
 
-  footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
-  }
+  .lit{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin:36px 0 0;box-shadow:var(--shadow);}
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
 
+  section.topic{margin-top:64px;padding-top:8px;}
+  .topic-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .topic-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);background:var(--accent-tint);border-radius:8px;padding:4px 10px;flex:none;}
+  .topic h2{font-size:clamp(21px,2.6vw,27px);font-weight:700;}
+  .topic p{color:var(--ink-soft);font-size:16px;margin:0 0 16px;}
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{margin:0 0 18px;padding-left:22px;color:var(--ink-soft);font-size:15.5px;}
+  .topic ul li{margin-bottom:9px;}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);}
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px 16px;margin:26px 0 30px;box-shadow:var(--shadow);}
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{margin-top:14px;font-size:13px;color:var(--ink-muted);text-align:center;}
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+  .zone-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.02em;}
+
+  /* ---------- task / test boxes ---------- */
+  .box{border-radius:var(--radius);padding:24px 26px 20px;margin:24px 0 30px;box-shadow:var(--shadow);border:1px solid;}
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:6px;color:#fff;}
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  .box-close{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-style:italic;font-size:14px;color:var(--ink-muted);}
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.02em;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--ink-muted);border:1px solid var(--line);white-space:nowrap;}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
+
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{display:flex;gap:12px;align-items:flex-start;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .step .num{
+    flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);
+    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num, .step:has(.chk:checked) .num, .step.checked .num{background:var(--task);border-color:var(--task);color:#fff;}
+  .step:has(.chk:checked) .step-text, .step.checked .step-text{color:var(--ink-muted);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1.5px;}
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;width:100%;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink-soft);
+    padding:9px 12px;margin:0 0 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);
+    font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{content:"";width:15px;height:15px;border:1.5px solid var(--test);border-radius:50%;flex:none;margin-top:2px;}
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:var(--fail);background:color-mix(in srgb, var(--fail) 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:var(--fail);border-color:var(--fail);}
+  .test-feedback{margin-top:10px;font-size:13.5px;font-weight:600;display:none;}
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:var(--fail);}
+
+  .reset-btn{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{max-width:1000px;margin:0 auto;padding:40px 24px 60px;border-top:1px solid var(--line);color:var(--ink-muted);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
+
+  /* ---------- доповнення для лекції 6: код, довгі посилання, пропуск до змісту ---------- */
+  .skip-link{position:absolute;left:-9999px;top:8px;background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;z-index:50;font-weight:700;text-decoration:none;}
+  .skip-link:focus{left:12px;}
+  .topic code, .box code, .lit code, .hero code{
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--ink);overflow-wrap:anywhere;
+  }
+  .topic b code{font-weight:700;}
+  .box.test .test-opt code{background:var(--surface-2);}
+  pre.codeblock{
+    background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:16px 20px;margin:0 0 20px;
+    overflow-x:auto;font-size:13px;line-height:1.65;box-shadow:var(--shadow);tab-size:2;
+  }
+  pre.codeblock code{background:none;border:0;padding:0;font-size:inherit;color:inherit;overflow-wrap:normal;}
+  .tk-tag{color:#8FA3FF;} .tk-str{color:#58D3B0;} .tk-attr{color:#F0B45A;} .tk-cm{color:#8A90A6;}
+  .test-opt > span{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .box-title{flex-wrap:wrap;}
+  .step-text{min-width:0;overflow-wrap:anywhere;}
+  .lit li{overflow-wrap:anywhere;}
+  .lit a{word-break:break-all;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .tbl-wrap{overflow-x:auto;margin:6px 0 24px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);}
+  table.cmp{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;line-height:1.5;}
+  table.cmp th, table.cmp td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);}
+  table.cmp thead th{background:var(--accent-tint);color:var(--accent-ink);font-weight:700;}
+  table.cmp tbody th{font-weight:700;color:var(--ink);background:var(--surface-2);}
+  table.cmp tr:last-child > *{border-bottom:0;}
+  table.cmp code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;}
+  .tk-sh{color:#E9ECF5;}
+  @media (prefers-reduced-motion: reduce){ .progress-track .fill{transition:none;} html{scroll-behavior:auto;} }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Перейти до основного вмісту</a>
 
-
-<div class="chrome">
+<header class="chrome">
   <div class="browser">
     <div class="browser-bar">
-      <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-09</div>
+      <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="addr">вебдизайн-курс.ua/лекція-9/no-code-low-code-platformy</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль IV · Лекція 9</div>
-      <span class="eyebrow">Дисципліна · Лекція 9</span>
+      <span class="eyebrow">Лекція 9 · Тема 9</span>
       <h1>No-code / Low-code платформи для вебдизайну</h1>
-      <p class="sub">Модуль IV «Сучасні технології та інструменти вебдизайну»</p>
+      <p class="theme">Сайт можна зібрати мишею — але рішення, як він влаштований, ким керується й де житиме, все одно ухвалюєте ви. Порівнюємо Webflow, Framer, блокові конструктори та WordPress з Elementor, розбираємо, як CMS зберігає вміст, і публікуємо результат.</p>
 
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
-      </div>
     </div>
   </div>
-</div>
+</header>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar" aria-label="Зміст лекції">
+  <div class="toc-inner">
+    <a href="#platforms" data-toc="platforms">1. Платформи</a>
+    <a href="#builders" data-toc="builders">2. Блоки й шаблони</a>
+    <a href="#cms" data-toc="cms">3. CMS і публікація</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
 
+<main id="main">
+
+  <section class="lit" id="literature" aria-labelledby="lit-h">
+    <h2 id="lit-h">Література до теми</h2>
+    <ol>
+      <li>W3Techs. Usage statistics of content management systems (дані на 14.10.2026). URL: <a href="https://w3techs.com/technologies/overview/content_management" target="_blank" rel="noopener">w3techs.com/technologies/overview/content_management</a> (дата звернення: 15.10.2026).</li>
+      <li>Webflow. Pricing. URL: <a href="https://webflow.com/pricing" target="_blank" rel="noopener">webflow.com/pricing</a> (дата звернення: 15.10.2026).</li>
+      <li>Webflow Help Center. Intro to the Webflow CMS. URL: <a href="https://help.webflow.com/hc/en-us/articles/33961307099027-Intro-to-the-Webflow-CMS" target="_blank" rel="noopener">help.webflow.com/hc/en-us/articles/33961307099027-Intro-to-the-Webflow-CMS</a> (дата звернення: 15.10.2026).</li>
+      <li>Webflow Help Center. Breakpoints overview. URL: <a href="https://help.webflow.com/hc/en-us/articles/33961300305811" target="_blank" rel="noopener">help.webflow.com/hc/en-us/articles/33961300305811</a> (дата звернення: 15.10.2026).</li>
+      <li>Webflow Help Center. How do I export my Webflow site code? URL: <a href="https://help.webflow.com/hc/en-us/articles/33961386739347" target="_blank" rel="noopener">help.webflow.com/hc/en-us/articles/33961386739347</a> (дата звернення: 15.10.2026).</li>
+      <li>Framer. Pricing. URL: <a href="https://www.framer.com/pricing" target="_blank" rel="noopener">www.framer.com/pricing</a> (дата звернення: 15.10.2026).</li>
+      <li>Tech.eu. Framer raises $27M in Series C funding round, 28.09.2023. URL: <a href="https://tech.eu/2023/09/28/framer-raises-27m-in-series-c-funding-round-to-scale-no-code-website-builder/" target="_blank" rel="noopener">tech.eu/2023/09/28/framer-raises-27m-in-series-c-funding-round-to-scale-no-code-website-builder</a> (дата звернення: 15.10.2026).</li>
+      <li>Framer Help. Can I export my website to HTML and self-host it? URL: <a href="https://www.framer.com/help/articles/can-i-export-my-website-to-html-and-self-host-it/" target="_blank" rel="noopener">www.framer.com/help/articles/can-i-export-my-website-to-html-and-self-host-it</a> (дата звернення: 15.10.2026).</li>
+      <li>Tilda. Media kit. URL: <a href="https://tilda.cc/mediakit/" target="_blank" rel="noopener">tilda.cc/mediakit</a> (дата звернення: 15.10.2026).</li>
+      <li>Юрасов С. Сайти багатьох українських брендів і навіть ВНЗ досі висять на Tilda… Розслідування dev.ua, 01.11.2023. URL: <a href="https://dev.ua/news/tilda-1698839548" target="_blank" rel="noopener">dev.ua/news/tilda-1698839548</a> (дата звернення: 15.10.2026).</li>
+      <li>dev.ua. monobank не надає послуги бізнесам, які використовують сайти на російській Tilda, 23.02.2024. URL: <a href="https://dev.ua/news/monobank-proponuie-analoh-tilda-1708683334" target="_blank" rel="noopener">dev.ua/news/monobank-proponuie-analoh-tilda-1708683334</a> (дата звернення: 15.10.2026).</li>
+      <li>Weblium Help. Free and paid plans (Billing). URL: <a href="https://help.weblium.com/en-us/article/wpab24/" target="_blank" rel="noopener">help.weblium.com/en-us/article/wpab24</a> (дата звернення: 15.10.2026).</li>
+      <li>WordPress.org. Releases. URL: <a href="https://wordpress.org/download/releases/" target="_blank" rel="noopener">wordpress.org/download/releases</a> (дата звернення: 15.10.2026).</li>
+      <li>WordPress.org. Server requirements. URL: <a href="https://wordpress.org/about/requirements/" target="_blank" rel="noopener">wordpress.org/about/requirements</a> (дата звернення: 15.10.2026).</li>
+      <li>WordPress.org Documentation. Roles and Capabilities. URL: <a href="https://wordpress.org/documentation/article/roles-and-capabilities/" target="_blank" rel="noopener">wordpress.org/documentation/article/roles-and-capabilities</a> (дата звернення: 15.10.2026).</li>
+      <li>WordPress.org Plugins. Elementor Website Builder. URL: <a href="https://wordpress.org/plugins/elementor/" target="_blank" rel="noopener">wordpress.org/plugins/elementor</a> (дата звернення: 15.10.2026).</li>
+      <li>WordPress Playground Handbook. Quick start guide. URL: <a href="https://developer.wordpress.org/playground/handbook/quick-start-guide/" target="_blank" rel="noopener">developer.wordpress.org/playground/handbook/quick-start-guide</a> (дата звернення: 15.10.2026).</li>
+      <li>WordPress Playground Handbook. Web instance. URL: <a href="https://developer.wordpress.org/playground/handbook/web-instance/" target="_blank" rel="noopener">developer.wordpress.org/playground/handbook/web-instance</a> (дата звернення: 15.10.2026).</li>
+    </ol>
+  </section>
+
+  <!-- ================= 01. Огляд no-code/low-code рішень: Webflow, Tilda, Framer, WordPress + Elementor ================= -->
+  <section class="topic" id="platforms" aria-labelledby="platforms-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">01</span>
+      <h2 id="platforms-h">Огляд no-code/low-code рішень: Webflow, Tilda, Framer, WordPress + Elementor</h2>
+    </div>
+
+    <p>У темах 6–8 ми писали HTML і CSS власноруч, підключали фреймворки й публікували сайт через GitHub. Тепер подивимося на інший шлях: сайт збирають <b>у візуальному редакторі</b>, а код замість вас генерує платформа. Такі інструменти називають <b>no-code</b> (без коду) і <b>low-code</b> (з мінімумом коду).</p>
+
+    <p><b>No-code</b> — платформи, у яких увесь сайт створюють мишею: перетягують блоки, змінюють тексти й кольори в панелях налаштувань, а програмувати не потрібно взагалі. <b>Low-code</b> — платформи, де більшу частину роботи теж виконують візуально, але за потреби можна додати власний код: CSS-правило, скрипт, вбудований HTML-фрагмент чи інтеграцію з іншим сервісом. Межа між ними розмита: той самий інструмент для одного користувача — no-code, а для іншого, який дописує код, — low-code. Тому зручніше уявляти не дві скриньки, а <b>шкалу</b> — від ручного коду до повністю візуального збирання (рис. 1).</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 400" role="img" aria-label="Шкала від ручного коду до no-code. Ліворуч — ручний код: HTML/CSS (теми 6–7), Bootstrap і Sass (тема 8). Посередині — low-code: Webflow, де стилі відповідають властивостям CSS, і WordPress з Elementor. Праворуч — no-code: Framer і блокові конструктори Weblium та Tilda. Що лівіше, то більше свободи й контролю, але потрібно більше знань; що правіше, то швидший старт, але менше свободи й більша залежність від платформи." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ВІД РУЧНОГО КОДУ ДО ВІЗУАЛЬНОГО ЗБИРАННЯ</text><rect x="40" y="164" width="820" height="12" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/><rect x="40" y="164" width="260" height="12" rx="6" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><rect x="320" y="164" width="280" height="12" rx="6" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><rect x="620" y="164" width="240" height="12" rx="6" fill="var(--task-tint)" stroke="none" stroke-width="1.4"/><text x="170" y="148" font-size="15" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">ручний код</text><text x="460" y="148" font-size="15" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">low-code</text><text x="740" y="148" font-size="15" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">no-code</text><line x1="76" y1="176" x2="76" y2="200" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/><rect x="70" y="200" width="94.8046875" height="30" rx="15" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="117.40234375" y="220" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">HTML/CSS</text><text x="74" y="248" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">теми 6–7</text><line x1="196" y1="176" x2="196" y2="252" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/><rect x="190" y="252" width="135.0625" height="30" rx="15" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="257.53125" y="272" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Bootstrap, Sass</text><text x="194" y="300" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">тема 8</text><line x1="346" y1="176" x2="346" y2="200" stroke="var(--test)" stroke-width="1.2" stroke-dasharray="3 3"/><rect x="340" y="200" width="84.16796875" height="30" rx="15" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.4"/><text x="382.083984375" y="220" font-size="12.5" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Webflow</text><text x="344" y="248" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">стилі = CSS</text><line x1="476" y1="176" x2="476" y2="252" stroke="var(--test)" stroke-width="1.2" stroke-dasharray="3 3"/><rect x="470" y="252" width="191.328125" height="30" rx="15" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.4"/><text x="565.6640625" y="272" font-size="12.5" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">WordPress + Elementor</text><text x="474" y="300" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">CMS + конструктор</text><line x1="656" y1="176" x2="656" y2="200" stroke="var(--task)" stroke-width="1.2" stroke-dasharray="3 3"/><rect x="650" y="200" width="74.0" height="30" rx="15" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="687.0" y="220" font-size="12.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Framer</text><text x="654" y="248" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">як у Figma</text><line x1="751" y1="176" x2="751" y2="252" stroke="var(--task)" stroke-width="1.2" stroke-dasharray="3 3"/><rect x="745" y="252" width="128.84375" height="30" rx="15" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="809.421875" y="272" font-size="12.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Weblium, Tilda</text><text x="749" y="300" font-size="11.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">готові блоки</text><line x1="440" y1="330" x2="66.3" y2="330.0" stroke="var(--accent)" stroke-width="2"/><polygon points="60.0,330.0 68.2,326.3 68.2,333.7" fill="var(--accent)"/><text x="60" y="356" font-size="12.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">більше свободи, але й більше знань</text><line x1="460" y1="330" x2="833.7" y2="330.0" stroke="var(--task)" stroke-width="2"/><polygon points="840.0,330.0 831.8,333.7 831.8,326.3" fill="var(--task)"/><text x="840" y="356" font-size="12.5" font-weight="700" fill="var(--task-ink)" text-anchor="end" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">швидший старт, але залежність від платформи</text><text x="40" y="72" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Межа між low-code і no-code розмита: той самий інструмент стає low-code, щойно ви додаєте власний CSS, скрипт чи</text><text x="40" y="89" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">вбудований HTML. Положення платформ на шкалі — орієнтовне.</text></svg>
+      <figcaption>Рис. 1. Шкала інструментів: від ручного коду через low-code до no-code.</figcaption>
+    </figure>
+
+    <p><b>Скільки сайтів працює на таких платформах.</b> Незалежний сервіс W3Techs щодня аналізує мільйони сайтів і визначає, на чому вони побудовані. Станом на 14 жовтня 2026 року: <b>WordPress</b> використовують <b>40,0 %</b> усіх сайтів; Shopify — 5,4 %; Wix — 4,2 %; Squarespace — 2,4 %; Tilda і Webflow — по 0,8 %; Framer — 0,2 %. А <b>31,6 %</b> сайтів не використовують жодної системи керування вмістом, тобто зроблені «руками» або на власних рішеннях. Зверніть увагу: на офіційному сайті WordPress.org наведено іншу цифру — «понад 43 %». Різниця пояснюється методикою підрахунку, тому в навчальних матеріалах завжди вказуйте джерело й дату статистики.</p>
+
+    <p><b>Webflow</b> — американська компанія із Сан-Франциско, заснована 2013 року (засновники — Влад Магдалін, Сергій Магдалін і Браянт Чоу). Webflow найближчий до «справжньої» верстки: панель стилів повторює властивості CSS — блокову модель, Flexbox, Grid, класи, — і з неї генерується HTML, CSS і JavaScript. Тому Webflow часто відносять до <b>low-code</b>: щоб працювати в ньому впевнено, треба розуміти теми 6–7. Вбудована <b>CMS</b> дає змогу вести блог, каталог чи список новин (розділ 3). Безкоштовний план <b>Starter</b> дозволяє 2 статичні сторінки, 50 записів CMS у 20 колекціях і 1 ГБ трафіку на місяць; сайт публікується лише на піддомені <code>webflow.io</code> зі значком «Made in Webflow», а для власного домену потрібен платний план сайту (Basic — від 15 доларів на місяць за річної оплати).</p>
+
+    <p><b>Framer</b> — нідерландська компанія з Амстердама. Її засновники Коен Бок (Koen Bok) і Йорн ван Дейк (Jorn van Dijk) у 2015 році запустили Framer як інструмент для дизайну й прототипування, а у травні 2022 року — конструктор сайтів. Framer подобається дизайнерам: робота в ньому нагадує Figma (тема 4), а анімації й переходи налаштовуються візуально. Безкоштовний план дає безкоштовний домен Framer і 1 ГБ трафіку; щоб підключити власний домен, потрібен платний план (Basic — 10 доларів на місяць, Pro — 30).</p>
+
+    <p><b>Tilda</b> — блоковий конструктор, заснований 2014 року дизайнером Нікітою Обуховим. На офіційній сторінці для преси вказано бібліотеку з <b>550 готових блоків у 29 категоріях</b>: сторінку складають, як конструктор, з готових секцій «шапка», «перший екран», «переваги», «відгуки», «форма». Окремий інструмент для вільного дизайну блоку теж є. <b>Важливий контекст для України.</b> Розслідування dev.ua (листопад 2023 року) показало, що засновник Tilda зареєстрований у росії як підприємець, а платежі українських користувачів приймає компанія в ОАЕ. За даними того ж видання (лютий 2024 року), monobank з 2023 року не підключає послугу еквайрингу (приймання карткових платежів) новим бізнесам, сайти яких працюють на Tilda, і пропонує перейти на український конструктор <b>Weblium</b>. Тому в цьому курсі ми розглядаємо Tilda як <b>приклад підходу</b> — блокового конструктора, — а практикуємося на інших платформах.</p>
+
+    <p><b>Weblium</b> — український блоковий конструктор, побудований за тим самим принципом готових секцій. Безкоштовний план дає змогу зібрати сайт із понад 350 шаблонів галереї та опублікувати його на адресі <code>назва.weblium.site</code>, але без форм, блогу, підключення домену й індексації пошуковими системами — ці функції доступні на платних планах Starter і Business.</p>
+
+    <p><b>WordPress + Elementor.</b> <b>WordPress</b> — найпоширеніша у світі система керування вмістом (CMS) з відкритим кодом: розробку почали у 2003 році Метт Малленвег (Matt Mullenweg) і Майк Літтл (Mike Little), а програма поширюється за ліцензією GPL. Актуальна версія — <b>7.1.3</b> (6 жовтня 2026 року). Розрізняйте <b>WordPress.org</b> — безкоштовна програма, яку встановлюють на власний хостинг, — і <b>WordPress.com</b> — сервіс компанії Automattic з безкоштовним і платними планами, де хостинг уже включено, але на безкоштовному плані не можна встановлювати плагіни й власні теми. Сам WordPress має вбудований <b>редактор блоків</b> (Gutenberg), а <b>Elementor</b> — найпопулярніший <b>плагін-конструктор сторінок</b> від однойменної ізраїльської компанії (заснована 2016 року). Безкоштовна версія Elementor має понад 10 мільйонів активних встановлень і понад 40 віджетів; поточна версія 4.3.5 потребує WordPress 6.8 або новішого й PHP 7.4 або новішого. Платна версія Elementor Pro додає конструктор шаблонів теми, форми, спливні вікна тощо.</p>
+
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Порівняльна таблиця"><table class="cmp">
+      <thead><tr><th scope="col">Платформа</th><th scope="col">Тип</th><th scope="col">Безкоштовно</th><th scope="col">Сильні сторони</th><th scope="col">Обмеження</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Webflow</th><td>low-code, хмарний</td><td>Starter: 2 сторінки, 50 записів CMS, піддомен <code>webflow.io</code></td><td>стилі = властивості CSS, потужна CMS</td><td>складніший старт; власний домен — платно</td></tr>
+        <tr><th scope="row">Framer</th><td>no-code, хмарний</td><td>безкоштовний домен Framer, 1 ГБ трафіку</td><td>робота «як у Figma», анімації</td><td>власний домен — платно; експорту в HTML немає</td></tr>
+        <tr><th scope="row">Tilda</th><td>no-code, блоковий</td><td>обмежений безкоштовний план</td><td>550 готових блоків</td><td>російське походження; ризики для українського бізнесу</td></tr>
+        <tr><th scope="row">Weblium</th><td>no-code, блоковий (Україна)</td><td>піддомен <code>weblium.site</code>, понад 350 шаблонів</td><td>швидкий старт, українська команда</td><td>без форм, блогу й індексації на Free</td></tr>
+        <tr><th scope="row">WordPress + Elementor</th><td>CMS + конструктор</td><td>програма й базовий Elementor безкоштовні; потрібен хостинг</td><td>повний контроль, тисячі плагінів, експорт даних</td><td>оновлення, безпека й резервні копії — на вас</td></tr>
+      </tbody>
+    </table></div>
+
+    <p><b>Залежність від платформи (vendor lock-in).</b> Сайт у хмарному конструкторі «живе» лише там. Webflow, наприклад, дозволяє експортувати код тільки на платних планах робочого простору (Workspace), і після експорту не працюють CMS (списки колекцій показують порожній стан), обробка форм, пошук сайтом, захист паролем, інтернет-магазин. Framer у своїй довідці прямо зазначає, що експорту в HTML для розміщення на власному хостингу не пропонує взагалі. Тож, обираючи платформу для замовника, ставте три запитання: <b>хто володіє контентом і чи можна його вивантажити</b> (наприклад, у CSV), <b>скільки коштуватиме сайт через рік</b>, коли знадобиться власний домен і більше сторінок, і <b>що буде, якщо сервіс змінить ціни чи умови</b>.</p>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Експорт із Webflow<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Студент зробив у Webflow сайт із блогом на CMS і хоче експортувати код, щоб розмістити його на GitHub Pages (тема 8). Що станеться?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>сайт перенесеться повністю, разом із записами блогу та формами</span></button>
+        <button class="test-opt" type="button"><span>експорт доступний лише на платному плані робочого простору, а після експорту списки колекцій CMS будуть порожні й форми не оброблятимуться</span></button>
+        <button class="test-opt" type="button"><span>GitHub Pages сам підключиться до бази даних Webflow і покаже записи</span></button>
+        <button class="test-opt" type="button"><span>Webflow експортує сайт у форматі WordPress, тож його доведеться публікувати на хостингу з PHP</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+  <!-- ================= 02. Створення сайту без коду: конструктори блоків, шаблони ================= -->
+  <section class="topic" id="builders" aria-labelledby="builders-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">02</span>
+      <h2 id="builders-h">Створення сайту без коду: конструктори блоків, шаблони</h2>
+    </div>
+
+    <p>Усі no-code платформи вирішують одну задачу — дати змогу зібрати сторінку без ручного коду, — але роблять це за однією з трьох моделей редагування (рис. 2).</p>
+
+    <ul>
+      <li><b>Блоковий конструктор</b> (Tilda, Weblium): сторінка — це <b>стовпчик готових секцій</b>, які додають із бібліотеки й міняють місцями. Найшвидший старт і найменше помилок, але й найменше свободи: розмістити елемент «між» блоками чи змінити структуру всередині блоку часто неможливо.</li>
+      <li><b>Візуальне полотно</b> (Webflow, Framer): ви працюєте з окремими елементами — контейнерами, текстами, зображеннями — і задаєте їм відступи, розкладку Flexbox/Grid і розміри, як у CSS чи Figma. Свобода майже як у коді, але й відповідальність та сама.</li>
+      <li><b>Конструктор сторінок у CMS</b> (WordPress + Elementor): сторінку складають з <b>контейнерів і віджетів</b> (заголовок, зображення, кнопка, форма), а вміст на зразок записів блогу зберігає сама CMS.</li>
+    </ul>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 470" role="img" aria-label="Три моделі редагування. Блоковий конструктор (Weblium, Tilda): сторінка — стовпчик готових секцій із бібліотеки: шапка, перший екран, переваги, відгуки, форма, підвал. Візуальне полотно (Webflow, Framer): виділений елемент і панель стилів із властивостями display, gap, padding, font. CMS із конструктором (WordPress + Elementor): контейнер із віджетами заголовка, тексту, кнопки, зображення та блоком останніх записів, вміст якого береться з бази даних." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">БЛОКОВИЙ КОНСТРУКТОР</text><text x="24" y="50" font-size="12.5" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Weblium, Tilda</text><rect x="20" y="62" width="272" height="330" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="320" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ВІЗУАЛЬНЕ ПОЛОТНО</text><text x="320" y="50" font-size="12.5" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Webflow, Framer</text><rect x="316" y="62" width="272" height="330" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="616" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">CMS + КОНСТРУКТОР</text><text x="616" y="50" font-size="12.5" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">WordPress + Elementor</text><rect x="612" y="62" width="272" height="330" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="32" y="76" width="70" height="300" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><text x="67" y="96" font-size="10.5" font-weight="700" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">блоки</text><rect x="42" y="108" width="50" height="40" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><rect x="42" y="160" width="50" height="40" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><rect x="42" y="212" width="50" height="40" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><rect x="42" y="264" width="50" height="40" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><rect x="42" y="316" width="50" height="40" rx="4" fill="var(--accent-tint)" stroke="none" stroke-width="1.4"/><rect x="116" y="76" width="162" height="42" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="197" y="102" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">шапка</text><rect x="116" y="126" width="162" height="42" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="197" y="152" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">перший екран</text><rect x="116" y="176" width="162" height="42" rx="6" fill="var(--accent)" stroke="var(--accent)" stroke-width="1.2"/><text x="197" y="202" font-size="12" font-weight="700" fill="var(--surface)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">переваги</text><rect x="116" y="226" width="162" height="42" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="197" y="252" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">відгуки</text><rect x="116" y="276" width="162" height="42" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="197" y="302" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">форма</text><rect x="116" y="326" width="162" height="42" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="197" y="352" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">підвал</text><line x1="96" y1="200" x2="109.1" y2="200.0" stroke="var(--accent)" stroke-width="1.8"/><polygon points="114.0,200.0 107.6,202.9 107.6,197.1" fill="var(--accent)"/><text x="280" y="400" font-size="10" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif"></text><rect x="328" y="76" width="160" height="300" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><rect x="340" y="92" width="136" height="22" rx="4" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><rect x="340" y="126" width="136" height="90" rx="4" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><rect x="338" y="124" width="140" height="94" rx="4" fill="none" stroke="var(--test)" stroke-width="2"/><rect x="335" y="121" width="6" height="6" rx="1" fill="var(--surface)" stroke="var(--test)" stroke-width="1.4"/><rect x="475" y="121" width="6" height="6" rx="1" fill="var(--surface)" stroke="var(--test)" stroke-width="1.4"/><rect x="335" y="215" width="6" height="6" rx="1" fill="var(--surface)" stroke="var(--test)" stroke-width="1.4"/><rect x="475" y="215" width="6" height="6" rx="1" fill="var(--surface)" stroke="var(--test)" stroke-width="1.4"/><rect x="340" y="232" width="42" height="60" rx="4" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><rect x="387" y="232" width="42" height="60" rx="4" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><rect x="434" y="232" width="42" height="60" rx="4" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><rect x="340" y="304" width="136" height="22" rx="4" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><rect x="496" y="76" width="84" height="300" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><text x="504" y="96" font-size="10.5" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">стилі</text><text x="504" y="122" font-size="10.5" font-weight="700" fill="var(--test-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">display</text><rect x="504" y="128" width="68" height="18" rx="3" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/><text x="508" y="141" font-size="10" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">flex</text><text x="504" y="162" font-size="10.5" font-weight="700" fill="var(--test-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">gap</text><rect x="504" y="168" width="68" height="18" rx="3" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/><text x="508" y="181" font-size="10" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">24px</text><text x="504" y="202" font-size="10.5" font-weight="700" fill="var(--test-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">padding</text><rect x="504" y="208" width="68" height="18" rx="3" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/><text x="508" y="221" font-size="10" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">32px</text><text x="504" y="242" font-size="10.5" font-weight="700" fill="var(--test-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">font</text><rect x="504" y="248" width="68" height="18" rx="3" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/><text x="508" y="261" font-size="10" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">20px</text><rect x="624" y="76" width="248" height="196" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><text x="634" y="94" font-size="10.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">контейнер</text><rect x="632" y="100" width="232" height="164" rx="6" fill="none" stroke="var(--task)" stroke-width="1.4" stroke-dasharray="5 4"/><rect x="642" y="108" width="100" height="26" rx="4" fill="var(--task-tint)" stroke="none" stroke-width="1.4"/><text x="652" y="126" font-size="11" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Заголовок</text><rect x="642" y="140" width="100" height="26" rx="4" fill="var(--task-tint)" stroke="none" stroke-width="1.4"/><text x="652" y="158" font-size="11" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Текст</text><rect x="642" y="172" width="100" height="26" rx="4" fill="var(--task-tint)" stroke="none" stroke-width="1.4"/><text x="652" y="190" font-size="11" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Кнопка</text><rect x="752" y="108" width="104" height="90" rx="4" fill="var(--task-tint)" stroke="none" stroke-width="1.4"/><text x="804" y="158" font-size="11" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Зображення</text><rect x="642" y="206" width="214" height="50" rx="4" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="652" y="226" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Останні записи</text><text x="652" y="244" font-size="10.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">вміст береться з бази</text><rect x="682" y="300" width="132" height="64" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="748" y="326" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">база даних</text><text x="748" y="346" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">записи, сторінки</text><line x1="748" y1="298" x2="748.0" y2="264.9" stroke="var(--accent)" stroke-width="1.8"/><polygon points="748.0,260.0 750.9,266.4 745.1,266.4" fill="var(--accent)"/><text x="20" y="420" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Що лівіше, то менше рішень ухвалюєте ви й тим швидше результат; що правіше, то більше гнучкості — і тим більше потрібно</text><text x="20" y="437" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">розуміти будову сторінки та вмісту.</text></svg>
+      <figcaption>Рис. 2. Три моделі редагування: блоковий конструктор, візуальне полотно, CMS із конструктором сторінок.</figcaption>
+    </figure>
+
+    <p><b>Шаблони.</b> Майже кожна платформа пропонує <b>шаблони (templates)</b> — готові сайти, які лишається наповнити своїм вмістом. Шаблон заощаджує години, але має ціну: тисячі людей обирають ті самі популярні варіанти, і сайт виглядає «як у всіх». Обираючи шаблон, оцінюйте не картинку, а <b>структуру</b>: чи є потрібні сторінки й секції, чи коректно він виглядає на телефоні, чи передбачені форма, блог, мультимовність. Окремо з’ясуйте <b>ліцензію</b>: чи можна використати шаблон для комерційного сайту і чи входять у нього права на фотографії та шрифти, — це особливо важливо для майбутніх юристів.</p>
+
+    <p><b>Порядок роботи</b> однаковий на будь-якій платформі й повторює те, що ви робили в темах 3–4:</p>
+
+    <ul>
+      <li><b>бриф і структура</b>: мета сайту, цільова аудиторія, перелік сторінок і секцій (карта сайту);</li>
+      <li><b>шаблон або порожня сторінка</b>: беремо найближчий за структурою шаблон, а не найгарніший;</li>
+      <li><b>глобальні стилі</b>: кольори, шрифти, розміри заголовків задаємо <b>один раз</b> у налаштуваннях сайту (Webflow — змінні й класи, Elementor — глобальні кольори й шрифти). Це ті самі дизайн-токени, що й <code>@theme</code> у Tailwind чи змінні Sass (тема 8): змінили колір бренду — і він оновився всюди;</li>
+      <li><b>вміст</b>: реальні тексти, оптимізовані зображення з альтернативним текстом;</li>
+      <li><b>адаптивність</b>: перевіряємо й правимо кожну точку перелому;</li>
+      <li><b>SEO-налаштування сторінки</b>: заголовок <code>&lt;title&gt;</code>, опис <code>description</code>, зрозуміла адреса (slug), зображення для соцмереж;</li>
+      <li><b>форми та інтеграції</b>: куди надходять заявки, хто їх отримує;</li>
+      <li><b>попередній перегляд і публікація</b> (розділ 3).</li>
+    </ul>
+
+    <p><b>Адаптивність у конструкторах.</b> Важливо знати, у якому напрямку «стікають» стилі. У <b>Webflow</b> базова точка перелому — <b>Desktop</b>: за документацією, стилі поширюються від неї в обидва боки — на більші екрани (1280, 1440, 1920 пікселів) і на менші (Tablet — до 991px, Mobile landscape — до 767px, Mobile portrait — до 479px). Зміна на планшеті впливає на обидва мобільні режими, але <b>не</b> на десктоп. Тобто Webflow за замовчуванням працює за принципом <b>desktop-first</b> — протилежним до mobile-first із теми 7. Elementor також пропонує режими Desktop, Tablet і Mobile та власні точки перелому. Практичний висновок: після кожної суттєвої зміни на десктопі перевіряйте мобільні режими, бо вони успадковують зміни, яких ви там не очікували.</p>
+
+    <p><b>Що no-code не скасовує.</b> Конструктор генерує HTML, але <b>семантику</b> визначаєте ви: один <code>&lt;h1&gt;</code> на сторінці й правильна ієрархія заголовків (у налаштуваннях текстового елемента обирається рівень H1–H6), альтернативний текст для зображень, достатній контраст тексту, зрозумілі підписи полів форми. Згенерований код можна й треба перевіряти тими самими інструментами: DevTools (тема 7) і валідатором W3C (ПР 13). Якщо сайт збирає через форму імена, телефони чи e-mail, це обробка персональних даних: власник сайту має повідомити людей, хто і з якою метою обробляє їхні дані, відповідно до Закону України «Про захист персональних даних».</p>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Точки перелому у Webflow<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">У Webflow ви зменшили розмір заголовка в режимі Tablet (до 991px). На яких екранах зміниться заголовок?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button"><span>на всіх, бо стилі в конструкторі завжди глобальні</span></button>
+        <button class="test-opt" type="button"><span>лише на планшеті</span></button>
+        <button class="test-opt" type="button"><span>на планшеті й в обох мобільних режимах; десктоп і більші екрани залишаться без змін</span></button>
+        <button class="test-opt" type="button"><span>на десктопі й планшеті, бо Webflow працює за принципом mobile-first</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Лендинг у візуальному конструкторі<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Оберіть платформу з безкоштовною публікацією: Webflow (план Starter), Framer (безкоштовний план) або Weblium (Free). Зареєструйтеся з навчальною поштою.</li>
+        <li>Оберіть тему за спеціальністю: «Інформаційні системи» — сторінка вебсервісу чи мобільного застосунку; «Право» — сторінка юридичної консультації для студентів; «Маркетинг» — сторінка рекламної кампанії чи івенту. Запишіть мету сторінки й цільову аудиторію (2–3 речення).</li>
+        <li>Зберіть лендинг із 5–6 секцій: шапка з меню, перший екран із закликом до дії, переваги, відгуки чи кейси, відповіді на часті запитання, підвал із контактами. Можна взяти шаблон, але замініть <b>усі</b> тексти й зображення на власні.</li>
+        <li>Задайте глобальні кольори й шрифти в налаштуваннях сайту (не на окремих елементах) і змініть основний колір один раз — переконайтеся, що він оновився на всій сторінці.</li>
+        <li>Перевірте семантику: один заголовок H1, далі H2 для секцій; альтернативний текст для кожного змістовного зображення; заповнені <code>&lt;title&gt;</code> і опис сторінки в SEO-налаштуваннях.</li>
+        <li>Перегляньте сторінку в усіх режимах (десктоп, планшет, телефон) і виправте те, що «попливло». Опублікуйте сайт на безкоштовному піддомені й відкрийте його з телефона.</li>
+      </ol>
+      <div class="box-close">Надішліть у Classroom посилання на опублікований сайт і три скриншоти: десктоп, планшет, телефон.</div>
+    </div>
+  </section>
+  <!-- ================= 03. Основи роботи з CMS та публікація сайту ================= -->
+  <section class="topic" id="cms" aria-labelledby="cms-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">03</span>
+      <h2 id="cms-h">Основи роботи з CMS та публікація сайту</h2>
+    </div>
+
+    <p><b>CMS (Content Management System, система керування вмістом)</b> — програма, яка <b>відокремлює вміст від оформлення</b>. Тексти, зображення й налаштування зберігаються в базі даних, а вигляд задають шаблони. Редактор додає новину через зручну форму в адмінпанелі, не торкаючись дизайну, і новина автоматично з’являється в усіх потрібних місцях: на головній, у списку новин, на власній сторінці. Саме тому сайти новин, блоги, каталоги й сайти навчальних закладів майже завжди працюють на CMS.</p>
+
+    <p><b>Як влаштовано вміст</b> (рис. 3). У Webflow вміст одного типу зберігається в <b>колекції (Collection)</b> — фактично таблиці бази даних. Колекція має <b>поля</b> (текст, форматований текст, зображення, дата, посилання, перемикач, вибір зі списку, посилання на іншу колекцію тощо), а кожен <b>запис (item)</b> — це один рядок: одна стаття, одна послуга, один викладач. Для кожної колекції створюється <b>сторінка-шаблон</b>: ви оформлюєте її один раз, і Webflow генерує окрему сторінку для кожного запису. <b>Список колекції (Collection list)</b> виводить записи на будь-якій сторінці — наприклад, три останні новини на головній — з фільтрами й сортуванням. У WordPress та сама ідея реалізована через <b>записи (posts)</b>, рубрики й шаблони теми.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 470" role="img" aria-label="Модель вмісту CMS на прикладі колекції «Новини»: таблиця з полями Назва, Slug, Дата, Фото і трьома записами. Один шаблон сторінки з підстановками {Назва}, {Фото}, {Дата}, {Текст} створює окремі сторінки /novyny/den-vidkrytykh, /novyny/khakaton, /novyny/laboratoriia. Список колекції на головній показує три останні новини. У WordPress та сама ідея реалізована записами, рубриками й шаблонами теми." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">КОЛЕКЦІЯ «НОВИНИ» — ЦЕ ТАБЛИЦЯ</text><rect x="24" y="48" width="420" height="34" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="34" y="70" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Назва</text><text x="206" y="70" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Slug</text><text x="322" y="70" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Дата</text><text x="398" y="70" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Фото</text><text x="454" y="70" font-size="12" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">← поля</text><rect x="24" y="82" width="420" height="34" rx="0" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/><text x="34" y="104" font-size="11.5" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">День відкритих дверей</text><text x="206" y="104" font-size="11.5" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">den-vidkrytykh</text><text x="322" y="104" font-size="11.5" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">10.10</text><rect x="402" y="89" width="28" height="20" rx="3" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1"/><rect x="24" y="116" width="420" height="34" rx="0" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1"/><text x="34" y="138" font-size="11.5" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Хакатон коледжу</text><text x="206" y="138" font-size="11.5" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">khakaton</text><text x="322" y="138" font-size="11.5" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">03.10</text><rect x="402" y="123" width="28" height="20" rx="3" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1"/><rect x="24" y="150" width="420" height="34" rx="0" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/><text x="34" y="172" font-size="11.5" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Нова лабораторія</text><text x="206" y="172" font-size="11.5" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">laboratoriia</text><text x="322" y="172" font-size="11.5" font-weight="400" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">25.09</text><rect x="402" y="157" width="28" height="20" rx="3" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1"/><text x="454" y="138" font-size="12" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">← записи</text><text x="24" y="226" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ОДИН ШАБЛОН → СТОРІНКА ДЛЯ КОЖНОГО ЗАПИСУ</text><rect x="24" y="236" width="200" height="190" rx="10" fill="var(--surface)" stroke="var(--task)" stroke-width="1.6"/><rect x="38" y="250" width="172" height="22" rx="4" fill="var(--task-tint)" stroke="none" stroke-width="1.4"/><text x="46" y="266" font-size="12" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">{Назва}</text><rect x="38" y="280" width="172" height="70" rx="4" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><text x="124" y="320" font-size="12" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">{Фото}</text><rect x="38" y="358" width="172" height="16" rx="3" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><rect x="38" y="380" width="140" height="16" rx="3" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><text x="38" y="416" font-size="11" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">{Дата} · {Текст}</text><line x1="230" y1="331" x2="279.7" y2="331.0" stroke="var(--task)" stroke-width="2"/><polygon points="286.0,331.0 277.8,334.7 277.8,327.3" fill="var(--task)"/><rect x="294" y="256" width="214" height="44" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="306" y="283" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">/novyny/den-vidkrytykh</text><rect x="294" y="314" width="214" height="44" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="306" y="341" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">/novyny/khakaton</text><rect x="294" y="372" width="214" height="44" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="306" y="399" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">/novyny/laboratoriia</text><text x="560" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">СПИСОК КОЛЕКЦІЇ НА ГОЛОВНІЙ</text><rect x="560" y="48" width="320" height="196" rx="12" fill="var(--surface)" stroke="var(--ink-muted)" stroke-width="1.6"/><rect x="574" y="62" width="292" height="26" rx="4" fill="var(--surface-2)" stroke="none" stroke-width="1.4"/><text x="584" y="80" font-size="12" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Головна</text><rect x="574" y="100" width="92" height="128" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><rect x="582" y="108" width="76" height="46" rx="3" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><text x="582" y="174" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">День</text><text x="582" y="192" font-size="10.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">10.10</text><rect x="674" y="100" width="92" height="128" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><rect x="682" y="108" width="76" height="46" rx="3" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><text x="682" y="174" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Хакатон</text><text x="682" y="192" font-size="10.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">03.10</text><rect x="774" y="100" width="92" height="128" rx="6" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><rect x="782" y="108" width="76" height="46" rx="3" fill="var(--test-tint)" stroke="none" stroke-width="1.4"/><text x="782" y="174" font-size="11" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Нова</text><text x="782" y="192" font-size="10.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">25.09</text><text x="560" y="270" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Фільтр і сортування: «3 останні за датою».</text><text x="560" y="287" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Додали новий запис — він сам з’явиться тут і</text><text x="560" y="304" font-size="12.5" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">отримає власну сторінку.</text><rect x="560" y="352" width="320" height="74" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="574" y="376" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">У WordPress та сама ідея:</text><text x="574" y="398" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">записи (posts) + рубрики + шаблони теми</text></svg>
+      <figcaption>Рис. 3. Як CMS зберігає вміст: колекція з полями й записами, шаблон сторінки та список колекції.</figcaption>
+    </figure>
+
+    <p><b>WordPress: записи й сторінки.</b> У WordPress два основні типи вмісту. <b>Записи (Posts)</b> — новини, статті блогу: мають дату, автора, рубрики й мітки й автоматично з’являються у стрічці. <b>Сторінки (Pages)</b> — постійний вміст без дати: «Про нас», «Контакти», «Послуги». Адмінпанель (<code>/wp-admin</code>) містить розділи: <b>Записи</b>, <b>Медіафайли</b>, <b>Сторінки</b>, <b>Коментарі</b>, <b>Зовнішній вигляд</b> (теми, меню), <b>Плагіни</b>, <b>Користувачі</b>, <b>Налаштування</b> (зокрема <b>Постійні посилання</b> — формат адрес сторінок).</p>
+
+    <p><b>Ролі користувачів.</b> За документацією WordPress, стандартних ролей шість: <b>Super Admin</b> — керує мережею сайтів (лише в режимі Multisite); <b>Administrator</b> — повний доступ до одного сайту; <b>Editor</b> — публікує й редагує записи, зокрема чужі; <b>Author</b> — публікує й редагує лише власні записи; <b>Contributor</b> — пише й редагує власні записи, але <b>не може їх публікувати</b>; <b>Subscriber</b> — керує лише своїм профілем. У локалізованому інтерфейсі назви ролей перекладено. Принцип для практики — <b>найменші потрібні права</b>: стажер-копірайтер отримує роль Contributor, а не Administrator.</p>
+
+    <p><b>Безпека й оновлення.</b> Відкрита CMS вимагає догляду. Сторінка релізів WordPress.org прямо зазначає, що безпечною й підтримуваною є лише остання версія гілки (зараз — 7.1.3). Тому регулярно оновлюйте ядро, теми й плагіни; встановлюйте плагіни лише з офіційного каталогу чи від перевірених розробників і видаляйте ті, якими не користуєтеся; використовуйте складні паролі й двофакторну автентифікацію; налаштуйте <b>резервні копії</b> файлів і бази даних. Хмарні конструктори (Webflow, Framer, Weblium) беруть ці турботи на себе — це одна з головних причин, чому їх обирають малі бізнеси.</p>
+
+    <p><b>Де тренуватися без хостингу.</b> <b>WordPress Playground</b> (<code>playground.wordpress.net</code>) запускає повноцінний WordPress просто в браузері: за документацією, він працює локально у вкладці й не завантажує сайт на сервер. Плагін із каталогу WordPress.org можна встановити одразу через параметр адреси, наприклад <code>?plugin=elementor</code>, або звичайним способом в адмінпанелі. Нові «пісочниці» автоматично зберігаються в браузері (до п’яти останніх), але документація попереджає, що браузер може видалити ці дані, — тому для надійної копії використовуйте <b>Export → Download as .zip</b> і пізніше <b>Import zip</b>. Playground — інструмент для навчання й тестування, а не хостинг: відвідувачі з інтернету такого сайту не побачать.</p>
+
+    <pre class="codeblock"><code>https://playground.wordpress.net/?plugin=elementor</code></pre>
+
+    <p><b>Публікація: два сценарії</b> (рис. 4). <b>Хмарна платформа</b> (Webflow, Framer, Weblium): натискаєте <b>Publish</b> — і сайт одразу доступний на безкоштовному піддомені; хостинг, HTTPS і оновлення платформа бере на себе. Щоб сайт відкривався за власною адресою (наприклад, <code>pravo-consult.com.ua</code>), купують платний план, реєструють домен у реєстратора й додають у його налаштуваннях <b>DNS-записи</b> (зазвичай типів A або CNAME), які показує платформа. <b>WordPress на власному хостингу</b>: потрібні хостинг із PHP і базою даних, домен і SSL-сертифікат для HTTPS. WordPress.org рекомендує PHP 8.3 або новіший, MySQL 8.0+ або MariaDB 10.11+ і підтримку HTTPS. Багато хостингів встановлюють WordPress в один клік; після встановлення ви ставите тему, Elementor і наповнюєте сайт уже на «живому» сервері.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 446" role="img" aria-label="Два сценарії публікації. Хмарний конструктор: редактор, кнопка Publish, безкоштовний піддомен (webflow.io, домен Framer, weblium.site), далі платний план і DNS-записи A або CNAME у реєстратора для власного домену; хостинг і HTTPS бере на себе платформа. WordPress на власному хостингу: хостинг із PHP 8.3+, MySQL 8.0+ або MariaDB 10.11+ і HTTPS, домен, встановлення WordPress, теми й Elementor, сайт онлайн, а оновлення й резервні копії — відповідальність власника. WordPress Playground працює лише в браузері й не публікує сайт." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ХМАРНИЙ КОНСТРУКТОР (WEBFLOW, FRAMER, WEBLIUM)</text><rect x="24" y="46" width="160" height="84" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.5"/><text x="104.0" y="72" font-size="13" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Редактор</text><text x="36" y="92" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">збираєте сторінку</text><line x1="186" y1="88" x2="239.7" y2="88.0" stroke="var(--accent)" stroke-width="2"/><polygon points="246.0,88.0 237.8,91.7 237.8,84.3" fill="var(--accent)"/><text x="216" y="78" font-size="10.5" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">Publish</text><rect x="248" y="46" width="180" height="84" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.5"/><text x="338.0" y="72" font-size="13" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Безкоштовно</text><text x="260" y="92" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">назва.webflow.io, домен</text><text x="260" y="107" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Framer, назва.weblium.site</text><line x1="430" y1="88" x2="463.7" y2="88.0" stroke="var(--test)" stroke-width="2" stroke-dasharray="6 4"/><polygon points="470.0,88.0 461.8,91.7 461.8,84.3" fill="var(--test)"/><rect x="472" y="46" width="190" height="84" rx="10" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.5"/><text x="567.0" y="72" font-size="13" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Платний план</text><text x="484" y="92" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">дозволяє підключити</text><text x="484" y="107" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">власний домен</text><line x1="664" y1="88" x2="697.7" y2="88.0" stroke="var(--test)" stroke-width="2"/><polygon points="704.0,88.0 695.8,91.7 695.8,84.3" fill="var(--test)"/><rect x="706" y="46" width="174" height="84" rx="10" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.5"/><text x="793.0" y="72" font-size="13" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">DNS у реєстратора</text><text x="718" y="92" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">записи A або CNAME, які</text><text x="718" y="107" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">показує платформа</text><text x="24" y="156" font-size="12.5" font-weight="400" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Хостинг, HTTPS-сертифікат і оновлення платформа бере на себе.</text><text x="24" y="206" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">WORDPRESS НА ВЛАСНОМУ ХОСТИНГУ</text><rect x="24" y="222" width="200" height="104" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.5"/><text x="124.0" y="248" font-size="13" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Хостинг</text><text x="36" y="268" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">PHP 8.3+, MySQL 8.0+ або</text><text x="36" y="283" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">MariaDB 10.11+, HTTPS</text><text x="36" y="298" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">(рекомендації WordPress.org)</text><line x1="226" y1="274" x2="255.7" y2="274.0" stroke="var(--accent)" stroke-width="2"/><polygon points="262.0,274.0 253.8,277.7 253.8,270.3" fill="var(--accent)"/><rect x="264" y="222" width="180" height="104" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.5"/><text x="354.0" y="248" font-size="13" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Домен</text><text x="276" y="268" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">DNS спрямовує адресу на</text><text x="276" y="283" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">сервер хостингу</text><line x1="446" y1="274" x2="475.7" y2="274.0" stroke="var(--accent)" stroke-width="2"/><polygon points="482.0,274.0 473.8,277.7 473.8,270.3" fill="var(--accent)"/><rect x="484" y="222" width="190" height="104" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.5"/><text x="579.0" y="248" font-size="13" font-weight="700" fill="var(--accent-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">WordPress</text><text x="496" y="268" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">встановлення (часто в один</text><text x="496" y="283" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">клік), тема, Elementor, вміст</text><line x1="676" y1="274" x2="705.7" y2="274.0" stroke="var(--accent)" stroke-width="2"/><polygon points="712.0,274.0 703.8,277.7 703.8,270.3" fill="var(--accent)"/><rect x="714" y="222" width="166" height="104" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.5"/><text x="797.0" y="248" font-size="13" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">Сайт онлайн</text><text x="726" y="268" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">оновлення, резервні</text><text x="726" y="283" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">копії й безпека — ваша</text><text x="726" y="298" font-size="11" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">зона</text><rect x="24" y="352" width="856" height="76" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="40" y="376" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">WordPress Playground</text><text x="40" y="396" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">запускає WordPress лише у вашому браузері: для навчання й тестування, але не для публікації — відвідувачі такого сайту не</text><text x="40" y="413" font-size="12" font-weight="400" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif">побачать.</text></svg>
+      <figcaption>Рис. 4. Два сценарії публікації: хмарний конструктор і WordPress на власному хостингу.</figcaption>
+    </figure>
+
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Порівняльна таблиця"><table class="cmp">
+      <thead><tr><th scope="col">Критерій</th><th scope="col">Хмарний конструктор</th><th scope="col">WordPress на хостингу</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Старт</th><td>реєстрація — і можна збирати</td><td>хостинг, домен, встановлення</td></tr>
+        <tr><th scope="row">Публікація</th><td>кнопка Publish, піддомен безкоштовно</td><td>сайт одразу на вашому домені</td></tr>
+        <tr><th scope="row">Власний домен</th><td>на платному плані + DNS-записи</td><td>входить у налаштування хостингу</td></tr>
+        <tr><th scope="row">Оновлення й безпека</th><td>відповідає платформа</td><td>відповідаєте ви: оновлення, паролі, резервні копії</td></tr>
+        <tr><th scope="row">Розширення</th><td>лише те, що дозволяє платформа</td><td>тисячі плагінів, власний код</td></tr>
+        <tr><th scope="row">Перенесення</th><td>обмежене (див. експорт Webflow)</td><td>повне: файли + база даних</td></tr>
+        <tr><th scope="row">Кому підходить</th><td>лендинги, портфоліо, малий бізнес</td><td>блоги, новини, сайти закладів, складні проєкти</td></tr>
+      </tbody>
+    </table></div>
+
+    <p><b>Перед публікацією</b> пройдіть знайомий чек-лист з теми 8 і доповніть його пунктами для CMS: видаліть демонстраційний вміст шаблону («Hello world!», сторінку-зразок); налаштуйте зрозумілі постійні посилання (<code>/novyny/nazva-statti/</code> замість <code>/?p=123</code>); перевірте, що в WordPress у розділі <b>Налаштування → Читання</b> вимкнено параметр, який просить пошукові системи не індексувати сайт (його вмикають на час розробки); створіть сторінку з повідомленням про обробку персональних даних, якщо на сайті є форма.</p>
+
+    <div class="box test" id="test-3">
+      <div class="box-title"><span class="box-tag">ТЕСТ 3</span> Ролі WordPress<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Редакція сайту коледжу запрошує студента-стажера: він має писати новини, але публікувати їх може лише після перевірки редактором. Яку роль йому призначити?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button"><span>Administrator — щоб не виникало проблем із доступом</span></button>
+        <button class="test-opt" type="button"><span>Editor — він зможе редагувати й чужі записи</span></button>
+        <button class="test-opt" type="button"><span>Contributor — пише й редагує власні записи, але не публікує їх</span></button>
+        <button class="test-opt" type="button"><span>Subscriber — це найбезпечніша роль</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <p><b>Де це знадобиться.</b> На ринку праці no-code — не «несправжня» розробка, а окремий напрям: веб-студії збирають сайти на Webflow і Framer, а WordPress-розробники досі потрібні в кожному місті. Фахівцю з інформаційних систем знання CMS потрібне, щоб інтегрувати сайт з іншими системами й оцінювати, коли конструктора досить, а коли потрібна розробка. Майбутній юрист на сайті юридичної фірми сам публікуватиме статті через CMS і зможе оцінити ліцензії шаблонів, умови платформи та вимоги до обробки персональних даних. Маркетолог за день збере посадкову сторінку для кампанії й змінюватиме її без програміста. А розуміння ризиків — залежності від платформи, походження сервісу, вартості через рік — відрізняє фахівця від користувача, що просто «натискає кнопки».</p>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> Міні-сайт на WordPress + Elementor<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Відкрийте WordPress Playground з Elementor: <code>https://playground.wordpress.net/?plugin=elementor</code>. Одразу перевірте, що «пісочниця» збережена (позначка біля адресного рядка), і пам’ятайте про експорт у ZIP наприкінці кожного заняття.</li>
+        <li>Playground за замовчуванням відкривається англійською, тому нижче подано назви меню англійською та українською. У <b>Settings → General</b> (Налаштування → Загальні) задайте назву й опис сайту за спеціальністю: «Інформаційні системи» — блог про ІТ-новинки; «Право» — сайт юридичної клініки; «Маркетинг» — блог про рекламні кейси. У <b>Settings → Permalinks</b> (Постійні посилання) оберіть <b>Post name</b> (Назва запису).</li>
+        <li>Створіть сторінки (<b>Pages</b>) «Головна», «Про нас», «Контакти», а також три записи (<b>Posts</b>) з рубрикою «Новини», кожен із зображенням-мініатюрою (Featured image). У <b>Settings → Reading</b> (Налаштування → Читання) зробіть «Головну» статичною головною сторінкою.</li>
+        <li>Відредагуйте «Головну» в Elementor: перший екран із заголовком H1 і кнопкою, блок переваг із трьох колонок і блок з останніми записами (у безкоштовному Elementor для цього підійде віджет WordPress <b>Recent Posts</b> з розділу WordPress на панелі віджетів). Задайте глобальні кольори й шрифти й перевірте режими Tablet і Mobile.</li>
+        <li>Зберіть меню з усіх сторінок: залежно від теми це <b>Appearance → Menus</b> (Зовнішній вигляд → Меню) або блок навігації в <b>Appearance → Editor</b>. У <b>Users → Add New</b> (Користувачі → Додати) створіть користувача з роллю <b>Contributor</b> і запишіть його пароль. Вийдіть з облікового запису (<b>Log Out</b>), увійдіть під новим користувачем і переконайтеся, що замість кнопки <b>Publish</b> є лише <b>Submit for Review</b> (Надіслати на перевірку).</li>
+        <li>Видаліть демонстраційний запис і сторінку-зразок. Експортуйте сайт: <b>Export → Download as .zip</b>. Напишіть 3–4 речення: що зручніше — хмарний конструктор із завдання 1 чи WordPress, і чому.</li>
+      </ol>
+      <div class="box-close">Прикріпіть у Classroom ZIP-архів сайту, скриншоти головної сторінки (десктоп і телефон) і висновки.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Лекція 9 · Тема 9 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 15.10.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture9-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState();
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId]);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
 </body>
 </html>
