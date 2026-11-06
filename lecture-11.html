@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Мікровзаємодії, анімація та моушн-дизайн — Вебдизайн</title>
-<meta name="description" content="Лекція 11. Мікровзаємодії, анімація та моушн-дизайн. Конспект готується.">
+<title>Мікровзаємодії, анімація та моушн-дизайн</title>
+<meta name="description" content="Лекція 11 курсу «Вебдизайн»: мікровзаємодії, CSS-переходи й анімації, Lottie, Principle, моушн-дизайн в UX, доступність руху, glassmorphism, neumorphism, 3D-елементи, темна тема">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +26,59 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --fail:#C0392B;
+    --fail-tint:#FBE3E0;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --fail:#E8746A;
+      --fail-tint:#3A1512;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --fail:#E8746A;
+    --fail-tint:#3A1512;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,123 +91,845 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{max-width:1000px;margin:28px auto 0;padding:0 24px;}
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
-    padding:12px 16px;
-    background:var(--surface-2);
-    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:12px 16px;
+    background:var(--surface-2);border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
   .addr{
-    flex:1;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;
-    color:var(--ink-muted);
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:6px 12px;
+    flex:1;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
-  }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
+  .hero{padding:56px 40px 48px;}
   .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent-tint);display:inline-block;padding:5px 11px;
+    border-radius:99px;margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.14;font-weight:800;}
+  .hero .theme{margin-top:14px;font-size:clamp(16px,2vw,19px);color:var(--ink-soft);font-weight:500;max-width:34em;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .meta-chip{
+    font-size:13px;color:var(--ink-muted);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:99px;padding:6px 13px;display:flex;align-items:center;gap:6px;
   }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- sticky toc ---------- */
+  .toc-bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    text-decoration:none;padding:13px 12px;border-bottom:2px solid transparent;white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{flex:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);padding:13px 0 13px 14px;white-space:nowrap;}
+  .toc-progress b{color:var(--accent);}
+  .progress-track{max-width:1000px;margin:0 auto;padding:0 24px;height:3px;}
+  .progress-track .fill{height:100%;width:0%;background:linear-gradient(90deg, var(--task), var(--accent));transition:width .3s ease;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
 
-  footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
-  }
+  .lit{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin:36px 0 0;box-shadow:var(--shadow);}
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
 
+  section.topic{margin-top:64px;padding-top:8px;}
+  .topic-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .topic-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);background:var(--accent-tint);border-radius:8px;padding:4px 10px;flex:none;}
+  .topic h2{font-size:clamp(21px,2.6vw,27px);font-weight:700;}
+  .topic p{color:var(--ink-soft);font-size:16px;margin:0 0 16px;}
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{margin:0 0 18px;padding-left:22px;color:var(--ink-soft);font-size:15.5px;}
+  .topic ul li{margin-bottom:9px;}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);}
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px 16px;margin:26px 0 30px;box-shadow:var(--shadow);}
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{margin-top:14px;font-size:13px;color:var(--ink-muted);text-align:center;}
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+  .zone-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.02em;}
+
+  /* ---------- task / test boxes ---------- */
+  .box{border-radius:var(--radius);padding:24px 26px 20px;margin:24px 0 30px;box-shadow:var(--shadow);border:1px solid;}
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:6px;color:#fff;}
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  .box-close{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-style:italic;font-size:14px;color:var(--ink-muted);}
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.02em;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--ink-muted);border:1px solid var(--line);white-space:nowrap;}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
+
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{display:flex;gap:12px;align-items:flex-start;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .step .num{
+    flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);
+    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num, .step:has(.chk:checked) .num, .step.checked .num{background:var(--task);border-color:var(--task);color:#fff;}
+  .step:has(.chk:checked) .step-text, .step.checked .step-text{color:var(--ink-muted);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1.5px;}
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;width:100%;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink-soft);
+    padding:9px 12px;margin:0 0 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);
+    font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{content:"";width:15px;height:15px;border:1.5px solid var(--test);border-radius:50%;flex:none;margin-top:2px;}
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:var(--fail);background:color-mix(in srgb, var(--fail) 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:var(--fail);border-color:var(--fail);}
+  .test-feedback{margin-top:10px;font-size:13.5px;font-weight:600;display:none;}
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:var(--fail);}
+
+  .reset-btn{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{max-width:1000px;margin:0 auto;padding:40px 24px 60px;border-top:1px solid var(--line);color:var(--ink-muted);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
+
+  /* ---------- доповнення для лекції 6: код, довгі посилання, пропуск до змісту ---------- */
+  .skip-link{position:absolute;left:-9999px;top:8px;background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;z-index:50;font-weight:700;text-decoration:none;}
+  .skip-link:focus{left:12px;}
+  .topic code, .box code, .lit code, .hero code{
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--ink);overflow-wrap:anywhere;
+  }
+  .topic b code{font-weight:700;}
+  .box.test .test-opt code{background:var(--surface-2);}
+  pre.codeblock{
+    background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:16px 20px;margin:0 0 20px;
+    overflow-x:auto;font-size:13px;line-height:1.65;box-shadow:var(--shadow);tab-size:2;
+  }
+  pre.codeblock code{background:none;border:0;padding:0;font-size:inherit;color:inherit;overflow-wrap:normal;}
+  .tk-tag{color:#8FA3FF;} .tk-str{color:#58D3B0;} .tk-attr{color:#F0B45A;} .tk-cm{color:#8A90A6;}
+  .test-opt > span{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .box-title{flex-wrap:wrap;}
+  .step-text{min-width:0;overflow-wrap:anywhere;}
+  .lit li{overflow-wrap:anywhere;}
+  .lit a{word-break:break-all;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .tbl-wrap{overflow-x:auto;margin:6px 0 24px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);}
+  table.cmp{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;line-height:1.5;}
+  table.cmp th, table.cmp td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);}
+  table.cmp thead th{background:var(--accent-tint);color:var(--accent-ink);font-weight:700;}
+  table.cmp tbody th{font-weight:700;color:var(--ink);background:var(--surface-2);}
+  table.cmp tr:last-child > *{border-bottom:0;}
+  table.cmp code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;}
+  .tk-sh{color:#E9ECF5;}
+  @media (prefers-reduced-motion: reduce){ .progress-track .fill{transition:none;} html{scroll-behavior:auto;} }
 </style>
 </head>
 <body>
-
-
-<div class="chrome">
+<a class="skip-link" href="#main">Перейти до основного вмісту</a>
+<header class="chrome">
   <div class="browser">
     <div class="browser-bar">
-      <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-11</div>
+      <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="addr">вебдизайн-курс.ua/лекція-11/mikrovzaiemodii-animatsiia-moushn</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль IV · Лекція 11</div>
-      <span class="eyebrow">Дисципліна · Лекція 11</span>
+      <span class="eyebrow">Лекція 11 · Тема 11</span>
       <h1>Мікровзаємодії, анімація та моушн-дизайн</h1>
-      <p class="sub">Модуль IV «Сучасні технології та інструменти вебдизайну»</p>
-
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
+      <p class="theme">Рух в інтерфейсі — не прикраса, а мова: він підтверджує дію, показує стан, пояснює, звідки з’явився елемент і куди зник. Розбираємо мікровзаємодії, CSS-анімації, Lottie й прототипування руху, з’ясовуємо, коли анімація допомагає, а коли шкодить, і тверезо дивимося на модні візуальні тренди.</p>
+      <div class="meta-row">
+        <span class="meta-chip">📚 <b>4</b> розділи</span>
+        <span class="meta-chip">🧩 <b>2</b> практичні завдання</span>
+        <span class="meta-chip">✅ <b>4</b> тести на розуміння</span>
+        <span class="meta-chip">🎓 Курс «Вебдизайн», коледж</span>
       </div>
     </div>
   </div>
-</div>
+</header>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar" aria-label="Зміст лекції">
+  <div class="toc-inner">
+    <a href="#micro" data-toc="micro">1. Мікровзаємодії</a>
+    <a href="#anim" data-toc="anim">2. Анімація</a>
+    <a href="#motion" data-toc="motion">3. Моушн в UX</a>
+    <a href="#trends" data-toc="trends">4. Тренди</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
 
+<main id="main">
+
+  <section class="lit" id="literature" aria-labelledby="lit-h">
+    <h2 id="lit-h">Література до теми</h2>
+    <ol>
+      <li>Saffer D. Microinteractions: Designing with Details. O’Reilly Media, 2013. URL: <a href="https://www.oreilly.com/library/view/microinteractions/9781449342760/" target="_blank" rel="noopener">www.oreilly.com/library/view/microinteractions/9781449342760</a> (дата звернення: 06.11.2026).</li>
+      <li>Kendrick A. Microinteractions in User Experience. Nielsen Norman Group, 21.10.2018. URL: <a href="https://www.nngroup.com/articles/microinteractions/" target="_blank" rel="noopener">www.nngroup.com/articles/microinteractions</a> (дата звернення: 06.11.2026).</li>
+      <li>Nielsen J. Response Times: The 3 Important Limits. Nielsen Norman Group. URL: <a href="https://www.nngroup.com/articles/response-times-3-important-limits/" target="_blank" rel="noopener">www.nngroup.com/articles/response-times-3-important-limits</a> (дата звернення: 06.11.2026).</li>
+      <li>Tankala S. Skeleton Screens 101. Nielsen Norman Group, 04.06.2023. URL: <a href="https://www.nngroup.com/articles/skeleton-screens/" target="_blank" rel="noopener">www.nngroup.com/articles/skeleton-screens</a> (дата звернення: 06.11.2026).</li>
+      <li>MDN Web Docs. Using CSS transforms. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Transforms/Using" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Guides/Transforms/Using</a> (дата звернення: 06.11.2026).</li>
+      <li>web.dev. How to create high-performance CSS animations. URL: <a href="https://web.dev/articles/animations-guide" target="_blank" rel="noopener">web.dev/articles/animations-guide</a> (дата звернення: 06.11.2026).</li>
+      <li>web.dev. Same-document view transitions are now Baseline Newly available, 16.10.2025. URL: <a href="https://web.dev/blog/same-document-view-transitions-are-now-baseline-newly-available" target="_blank" rel="noopener">web.dev/blog/same-document-view-transitions-are-now-baseline-newly-available</a> (дата звернення: 06.11.2026).</li>
+      <li>web.dev. New to the web platform in October (2026). URL: <a href="https://web.dev/blog/web-platform-10-2026" target="_blank" rel="noopener">web.dev/blog/web-platform-10-2026</a> (дата звернення: 06.11.2026).</li>
+      <li>Airbnb Design. Introducing Lottie. URL: <a href="https://airbnb.design/introducing-lottie" target="_blank" rel="noopener">airbnb.design/introducing-lottie</a> (дата звернення: 06.11.2026).</li>
+      <li>Phoronix. Linux Foundation Gets Involved With Lottie To Develop Formal File Format Specification, 31.01.2024. URL: <a href="https://Phoronix.com/news/Linux-Foundation-Lottie-Format" target="_blank" rel="noopener">Phoronix.com/news/Linux-Foundation-Lottie-Format</a> (дата звернення: 06.11.2026).</li>
+      <li>LottieFiles Docs. .lottie Format. URL: <a href="https://docs.lottiefiles.com/en/format/dotlottie" target="_blank" rel="noopener">docs.lottiefiles.com/en/format/dotlottie</a> (дата звернення: 06.11.2026).</li>
+      <li>LottieFiles. How to Add Lottie Animations to a Website with HTML. URL: <a href="https://lottiefiles.com/blog/working-with-lottie-animations/how-to-add-lottie-animation-in-web-page-html" target="_blank" rel="noopener">lottiefiles.com/blog/working-with-lottie-animations/how-to-add-lottie-animation-in-web-page-html</a> (дата звернення: 06.11.2026).</li>
+      <li>Principle. Principle for Mac. URL: <a href="https://principleformac.com/" target="_blank" rel="noopener">principleformac.com</a> (дата звернення: 06.11.2026).</li>
+      <li>Figma Learn. Smart animate layers between frames. URL: <a href="https://help.figma.com/hc/en-us/articles/360039818874-Smart-animate-layers-between-frames" target="_blank" rel="noopener">help.figma.com/hc/en-us/articles/360039818874-Smart-animate-layers-between-frames</a> (дата звернення: 06.11.2026).</li>
+      <li>Rive Docs. State Machine Overview. URL: <a href="https://rive.app/docs/editor/state-machine/state-machine" target="_blank" rel="noopener">rive.app/docs/editor/state-machine/state-machine</a> (дата звернення: 06.11.2026).</li>
+      <li>Laubheimer P. The Role of Animation and Motion in UX. Nielsen Norman Group, 12.01.2020. URL: <a href="https://www.nngroup.com/articles/animation-purpose-ux/" target="_blank" rel="noopener">www.nngroup.com/articles/animation-purpose-ux</a> (дата звернення: 06.11.2026).</li>
+      <li>Laubheimer P. Executing UX Animations: Duration and Motion Characteristics. Nielsen Norman Group, 09.02.2020. URL: <a href="https://www.nngroup.com/articles/animation-duration/" target="_blank" rel="noopener">www.nngroup.com/articles/animation-duration</a> (дата звернення: 06.11.2026).</li>
+      <li>Harley A. Scroll-Triggered Text Animations Delay Users. Nielsen Norman Group, 16.04.2017. URL: <a href="https://www.nngroup.com/articles/scroll-animations/" target="_blank" rel="noopener">www.nngroup.com/articles/scroll-animations</a> (дата звернення: 06.11.2026).</li>
+      <li>MDN Web Docs. prefers-reduced-motion. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion</a> (дата звернення: 06.11.2026).</li>
+      <li>W3C WAI. Understanding Success Criterion 2.3.3: Animation from Interactions. URL: <a href="https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html" target="_blank" rel="noopener">www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html</a> (дата звернення: 06.11.2026).</li>
+      <li>W3C WAI. Understanding Success Criterion 2.2.2: Pause, Stop, Hide. URL: <a href="https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html" target="_blank" rel="noopener">www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html</a> (дата звернення: 06.11.2026).</li>
+      <li>W3C WAI. Understanding Success Criterion 2.3.1: Three Flashes or Below Threshold. URL: <a href="https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html" target="_blank" rel="noopener">www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html</a> (дата звернення: 06.11.2026).</li>
+      <li>Brown M. Glassmorphism: Definition and Best Practices. Nielsen Norman Group, 07.06.2024. URL: <a href="https://www.nngroup.com/articles/glassmorphism/" target="_blank" rel="noopener">www.nngroup.com/articles/glassmorphism</a> (дата звернення: 06.11.2026).</li>
+      <li>Apple Newsroom. Apple introduces a delightful and elegant new software design, 09.06.2025. URL: <a href="https://www.apple.com/newsroom/2025/06/apple-introduces-a-delightful-and-elegant-new-software-design/" target="_blank" rel="noopener">www.apple.com/newsroom/2025/06/apple-introduces-a-delightful-and-elegant-new-software-design</a> (дата звернення: 06.11.2026).</li>
+      <li>MDN Web Docs. backdrop-filter. URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/backdrop-filter" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/backdrop-filter</a> (дата звернення: 06.11.2026).</li>
+      <li>Chan M. Skeuomorphism. Nielsen Norman Group, 15.03.2024. URL: <a href="https://www.nngroup.com/articles/skeuomorphism/" target="_blank" rel="noopener">www.nngroup.com/articles/skeuomorphism</a> (дата звернення: 06.11.2026).</li>
+      <li>Wikipedia. Neumorphism. URL: <a href="https://en.wikipedia.org/wiki/Neumorphism" target="_blank" rel="noopener">en.wikipedia.org/wiki/Neumorphism</a> (дата звернення: 06.11.2026).</li>
+      <li>three.js. JavaScript 3D Library (GitHub). URL: <a href="https://github.com/mrdoob/three.js/" target="_blank" rel="noopener">github.com/mrdoob/three.js</a> (дата звернення: 06.11.2026).</li>
+      <li>Spline Docs. What is Spline? URL: <a href="https://docs.spline.design/basics/what-is-spline" target="_blank" rel="noopener">docs.spline.design/basics/what-is-spline</a> (дата звернення: 06.11.2026).</li>
+      <li>Budiu R. Dark Mode vs. Light Mode: Which Is Better? Nielsen Norman Group, 02.02.2020. URL: <a href="https://www.nngroup.com/articles/dark-mode/" target="_blank" rel="noopener">www.nngroup.com/articles/dark-mode</a> (дата звернення: 06.11.2026).</li>
+      <li>Steiner T. prefers-color-scheme: Hello darkness, my old friend. web.dev. URL: <a href="https://web.dev/articles/prefers-color-scheme" target="_blank" rel="noopener">web.dev/articles/prefers-color-scheme</a> (дата звернення: 06.11.2026).</li>
+      <li>MDN Web Docs. light-dark(). URL: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark" target="_blank" rel="noopener">developer.mozilla.org/en-US/docs/Web/CSS/color_value/light-dark</a> (дата звернення: 06.11.2026).</li>
+    </ol>
+  </section>
+  <!-- ================= 01. Принципи мікровзаємодій (microinteractions) в інтерфейсах ================= -->
+  <section class="topic" id="micro" aria-labelledby="micro-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">01</span>
+      <h2 id="micro-h">Принципи мікровзаємодій (microinteractions) в інтерфейсах</h2>
+    </div>
+
+    <p><b>Мікровзаємодія</b> (microinteraction) — маленький завершений епізод взаємодії з інтерфейсом, присвячений одній задачі: поставити «подобається», увімкнути перемикач, перевірити пароль, оновити стрічку, побачити, що файл завантажено. Термін популяризував дизайнер Ден Саффер у книзі «Microinteractions: Designing with Details» (O’Reilly, 2013), назвавши мікровзаємодії «дрібними деталями, що існують усередині функцій і навколо них». Nielsen Norman Group описує мікровзаємодію ще простіше — як пару «тригер — зворотний зв’язок»: дія користувача або зміна стану системи і коротка, доречна реакція інтерфейсу.</p>
+
+    <p><b>Будова мікровзаємодії.</b> За моделлю Саффера кожна мікровзаємодія має чотири частини (рис. 1):</p>
+
+    <ul>
+      <li><b>Тригер</b> (trigger) — що запускає мікровзаємодію. Тригер буває <b>ручним</b>, коли людина клацає, торкається, вводить текст, говорить, і <b>системним</b>, коли спрацьовує умова: надійшло повідомлення, закінчився час, зник інтернет.</li>
+      <li><b>Правила</b> (rules) — що саме відбувається і в якій послідовності: що можна, а чого не можна, які стани можливі. Наприклад, кнопка «Надіслати» неактивна, доки поле порожнє.</li>
+      <li><b>Зворотний зв’язок</b> (feedback) — як інтерфейс показує, що відбувається: зміна кольору, рух, текст, звук, вібрація. Зворотний зв’язок розташовують поруч із тригером, щоб людина побачила його там, куди дивиться.</li>
+      <li><b>Цикли й режими</b> (loops and modes) — що змінюється з часом і за повторення: чи «пам’ятає» мікровзаємодія попередній вибір, чи змінюється поведінка після кількох спроб, чи є окремий режим (наприклад, редагування).</li>
+    </ul>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 332" role="img" aria-label="Чотири частини мікровзаємодії на прикладі кнопки «Подобається»: тригер — натискання; правила — перше натискання ставить позначку, друге знімає; зворотний зв’язок — анімація, червоний колір, лічильник 24 → 25; цикли й режими — позначка зберігається. Межі часу реакції: 0,1 с — миттєво, 1 с — потік думки, 10 с — межа уваги." xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="200" height="150" rx="12" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.6"/><text x="34" y="46" font-size="13" font-weight="800" fill="var(--accent)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1</text><text x="54" y="46" font-size="11.5" font-weight="800" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.02em" style="white-space:pre" xml:space="preserve">ТРИГЕР</text><text x="34" y="80" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">натискання на</text><text x="34" y="102" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">сердечко</text><line x1="222" y1="95" x2="231.1" y2="95.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="236.0,95.0 229.6,97.9 229.6,92.1" fill="var(--ink-muted)"/><rect x="238" y="20" width="200" height="150" rx="12" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.6"/><text x="252" y="46" font-size="13" font-weight="800" fill="var(--test)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">2</text><text x="272" y="46" font-size="11.5" font-weight="800" fill="var(--test-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.02em" style="white-space:pre" xml:space="preserve">ПРАВИЛА</text><text x="252" y="80" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">1-ше натискання —</text><text x="252" y="102" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">позначити, 2-ге —</text><text x="252" y="124" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">зняти позначку</text><line x1="440" y1="95" x2="449.1" y2="95.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="454.0,95.0 447.6,97.9 447.6,92.1" fill="var(--ink-muted)"/><rect x="456" y="20" width="200" height="150" rx="12" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.6"/><text x="470" y="46" font-size="13" font-weight="800" fill="var(--task)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">3</text><text x="490" y="46" font-size="11.5" font-weight="800" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.02em" style="white-space:pre" xml:space="preserve">ЗВОРОТНИЙ ЗВ’ЯЗОК</text><text x="470" y="80" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">«підстрибує», стає</text><text x="470" y="102" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">червоним, 24 → 25</text><line x1="658" y1="95" x2="667.1" y2="95.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="672.0,95.0 665.6,97.9 665.6,92.1" fill="var(--ink-muted)"/><rect x="674" y="20" width="200" height="150" rx="12" fill="var(--surface-2)" stroke="var(--ink-muted)" stroke-width="1.6"/><text x="688" y="46" font-size="13" font-weight="800" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">4</text><text x="708" y="46" font-size="11.5" font-weight="800" fill="var(--ink-soft)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.02em" style="white-space:pre" xml:space="preserve">ЦИКЛИ Й РЕЖИМИ</text><text x="688" y="80" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">позначку видно і</text><text x="688" y="102" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">після повернення</text><text x="688" y="124" font-size="13" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">на сторінку</text><text x="20" y="212" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">ДО І ПІСЛЯ НАТИСКАННЯ</text><rect x="20" y="226" width="200" height="46" rx="23" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><g transform="translate(36,237) scale(1.05)"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="none" stroke="var(--ink-muted)" stroke-width="2"/></g><text x="70" y="255" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Подобається · 24</text><rect x="260" y="226" width="200" height="46" rx="23" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><g transform="translate(276,237) scale(1.05)"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" fill="var(--fail)" stroke="var(--fail)" stroke-width="2"/></g><text x="310" y="255" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Подобається · 25</text><line x1="224" y1="249" x2="251.1" y2="249.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="256.0,249.0 249.6,251.9 249.6,246.1" fill="var(--ink-muted)"/><text x="470" y="212" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">МЕЖІ ЧАСУ РЕАКЦІЇ (Я. НІЛЬСЕН)</text><line x1="470" y1="250" x2="880" y2="250" stroke="var(--line)" stroke-width="2"/><circle cx="519.2" cy="250" r="6" fill="var(--accent)"/><text x="519.2" y="238" font-size="12" font-weight="800" fill="var(--ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0,1 с</text><text x="519.2" y="274" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">миттєво</text><circle cx="683.2" cy="250" r="6" fill="var(--accent)"/><text x="683.2" y="238" font-size="12" font-weight="800" fill="var(--ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">1 с</text><text x="683.2" y="274" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">потік думки</text><circle cx="847.2" cy="250" r="6" fill="var(--accent)"/><text x="847.2" y="238" font-size="12" font-weight="800" fill="var(--ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">10 с</text><text x="847.2" y="274" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">межа уваги</text><text x="470" y="300" font-size="11.5" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">&lt; 1 с — індикатор не потрібен; 2–10 с — скелет або спінер;</text><text x="470" y="318" font-size="11.5" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">&gt; 10 с — індикатор прогресу з оцінкою часу (NN/g)</text></svg>
+      <figcaption>Рис. 1. Будова мікровзаємодії на прикладі кнопки «Подобається» і межі часу реакції.</figcaption>
+    </figure>
+
+    <p><b>Приклади з відомих інтерфейсів</b> (за оглядом NN/g): смуга прокручування показує, у якому місці сторінки ви перебуваєте; індикатор оновлення з’являється, коли тягнете стрічку вниз; іконки на iPhone починають тремтіти після довгого натискання — знак, що ввімкнено режим редагування; список вимог до пароля оновлюється в міру того, як ви його вводите; після завершення завдання в Asana з’являється можливість скасувати дію.</p>
+
+    <p><b>Час реакції.</b> Класичні межі, які Якоб Нільсен описав ще 1993 року, досі визначають, коли й який зворотний зв’язок потрібен: до <b>0,1 с</b> реакція сприймається як миттєва, тож досить самого результату; до <b>1 с</b> людина помічає затримку, але не втрачає потік думки; до <b>10 с</b> — межа, поки вона утримує увагу, а довші очікування потребують індикатора прогресу. NN/g також радить: якщо завантаження триває менше секунди, індикатор не потрібен; за 2–10 секунд підходять «скелетні» екрани (skeleton screens — сірі заготовки вмісту) для всієї сторінки або спінер для окремого блоку; понад 10 секунд — індикатор прогресу з оцінкою часу.</p>
+
+    <p><b>Принципи якісних мікровзаємодій:</b></p>
+
+    <ul>
+      <li><b>Мета понад усе.</b> Кожна мікровзаємодія відповідає на запитання «що сталося?», «що відбувається?» або «що далі?». Анімація заради анімації — шум.</li>
+      <li><b>Миттєвість і стислість.</b> Зворотний зв’язок з’являється одразу й не затримує людину: проста реакція триває близько 100 мс.</li>
+      <li><b>Помітність станів.</b> Увімкнено й вимкнено, обрано й не обрано мають відрізнятися не лише кольором, а й формою, позицією чи підписом — інакше люди з порушеннями кольоросприйняття їх не розрізнять.</li>
+      <li><b>Запобігання помилкам і скасування.</b> Перевірка поля під час введення, підказки, кнопка «Скасувати» після видалення — це теж мікровзаємодії.</li>
+      <li><b>Доступність.</b> Зворотний зв’язок має «звучати» й для зчитувача екрана: перемикач отримує роль <code>switch</code> і стан <code>aria-checked</code>, кнопка-позначка — <code>aria-pressed</code>, а повідомлення про успіх — область <code>aria-live</code>.</li>
+      <li><b>Характер бренду.</b> Мікровзаємодії можуть бути «живими» (Asana з єдинорогом) або стриманими, але завжди однаковими в межах продукту.</li>
+    </ul>
+
+    <figure class="diagram demo" aria-label="кнопка, «Подобається» і перемикач">
+      <style>
+        .dm-row{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:center;padding:8px 0 4px;}
+        .dm-btn{font:inherit;font-weight:700;border:0;border-radius:10px;padding:12px 22px;background:var(--accent);color:var(--surface);cursor:pointer;transition:transform 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out;}
+        .dm-btn:hover,.dm-btn:focus-visible{transform:translateY(-2px);box-shadow:0 6px 16px -6px var(--accent);}
+        .dm-btn:active{transform:translateY(0) scale(.97);}
+        .dm-like{font:inherit;display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:99px;padding:9px 16px;cursor:pointer;}
+        figure.diagram .dm-like svg{display:inline-block;width:20px;height:20px;fill:none;stroke:var(--ink-muted);stroke-width:2;transition:fill 150ms ease-out, stroke 150ms ease-out;}
+        figure.diagram .dm-like[aria-pressed="true"] svg{fill:var(--fail);stroke:var(--fail);animation:dm-pop 300ms ease-out;}
+        @keyframes dm-pop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+        .dm-switch{font:inherit;display:inline-flex;align-items:center;gap:10px;background:none;border:0;color:var(--ink);cursor:pointer;}
+        .dm-track{width:46px;height:26px;border-radius:99px;background:var(--line);position:relative;transition:background-color 150ms ease-out;}
+        .dm-track::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform 150ms ease-out;}
+        .dm-switch[aria-checked="true"] .dm-track{background:var(--task);}
+        .dm-switch[aria-checked="true"] .dm-track::after{transform:translateX(20px);}
+        @media (prefers-reduced-motion: reduce){.dm-btn,figure.diagram .dm-like svg,.dm-track,.dm-track::after{transition:none}figure.diagram .dm-like[aria-pressed="true"] svg{animation:none}.dm-btn:hover,.dm-btn:focus-visible{transform:none}}
+      </style>
+      <div class="dm-row">
+        <button class="dm-btn" type="button">Наведіть або натисніть</button>
+        <button class="dm-like" type="button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg><span>Подобається · <b class="dm-count">24</b></span></button>
+        <button class="dm-switch" type="button" role="switch" aria-checked="false"><span class="dm-track" aria-hidden="true"></span><span>Сповіщення</span></button>
+      </div>
+      <script>
+        (function(){
+          var like=document.querySelector('.dm-like'), c=like.querySelector('.dm-count');
+          like.addEventListener('click',function(){var on=like.getAttribute('aria-pressed')!=='true';like.setAttribute('aria-pressed',on);c.textContent=24+(on?1:0);});
+          var sw=document.querySelector('.dm-switch');
+          sw.addEventListener('click',function(){sw.setAttribute('aria-checked',sw.getAttribute('aria-checked')!=='true');});
+        })();
+      </script>
+      <figcaption>Жива демонстрація: кнопка, «Подобається» і перемикач</figcaption>
+    </figure>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Частини мікровзаємодії<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Користувач натискає на сердечко під фото: воно коротко «підстрибує», зафарбовується червоним, а лічильник збільшується з 24 до 25. Повторне натискання знімає позначку. Що в цьому прикладі є зворотним зв’язком?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>натискання на сердечко</span></button>
+        <button class="test-opt" type="button"><span>анімація, зміна кольору й нове число на лічильнику</span></button>
+        <button class="test-opt" type="button"><span>умова «одне натискання ставить позначку, друге — знімає»</span></button>
+        <button class="test-opt" type="button"><span>кількість позначок, збережена на сервері</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+  </section>
+  <!-- ================= 02. Анімація в інтерфейсах: CSS-анімації, Lottie, Principle ================= -->
+  <section class="topic" id="anim" aria-labelledby="anim-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">02</span>
+      <h2 id="anim-h">Анімація в інтерфейсах: CSS-анімації, Lottie, Principle</h2>
+    </div>
+
+    <p>Анімацію інтерфейсу створюють на двох етапах: <b>у прототипі</b>, щоб показати замовнику й команді, як рухатиметься інтерфейс, і <b>у робочому коді</b>, щоб рух побачили користувачі. Для першого етапу є Principle, Smart Animate у Figma, Rive; для другого — CSS, Lottie, Rive і JavaScript.</p>
+
+    <p><b>CSS-переходи</b> (<code>transition</code>) плавно змінюють властивість між двома станами, коли стан змінюється: наведення, фокус, натискання, додавання класу. Записують, <b>яку</b> властивість анімувати, <b>скільки</b> триває перехід, <b>з якою кривою</b> швидкості (easing) і з якою <b>затримкою</b>:</p>
+
+    <pre class="codeblock"><code>.btn {
+  background-color: #1636b0;
+  transition: transform 150ms ease-out, background-color 150ms ease-out;
+}
+.btn:hover,
+.btn:focus-visible {          /* фокус із клавіатури — так само, як наведення */
+  background-color: #102a8c;
+  transform: translateY(-2px);
+}
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}</code></pre>
+
+    <p><b>CSS-анімації</b> (<code>@keyframes</code> і <code>animation</code>) потрібні, коли рух має кілька кроків, повторюється або запускається сам: індикатор завантаження, «підстрибування» значка, поява блоку. Ключові властивості: <code>animation-name</code>, <code>animation-duration</code>, <code>animation-timing-function</code>, <code>animation-delay</code>, <code>animation-iteration-count</code> (кількість повторів, <code>infinite</code> — безкінечно), <code>animation-direction</code> і <code>animation-fill-mode</code> (чи зберігати кінцевий стан).</p>
+
+    <pre class="codeblock"><code>@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+.like[aria-pressed="true"] .icon {
+  animation: pop 300ms ease-out;
+}</code></pre>
+
+    <p><b>Криві швидкості</b> (easing) задають, як рух розподіляється в часі (рис. 2). <code>linear</code> — рівномірно, як у машини, тому виглядає неприродно; <code>ease-out</code> — швидкий старт і плавне гальмування, найкраще для появи елементів; <code>ease-in</code> — плавний старт і розгін, для елементів, що зникають; <code>ease-in-out</code> — для переміщень у межах екрана. Власну криву задає функція <code>cubic-bezier()</code>. Сповільнення на початку й наприкінці руху — один із класичних принципів анімації Disney, і саме воно робить рух у браузері «живим».</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 336" role="img" aria-label="П’ять кривих швидкості CSS: linear — рівномірно; ease — за замовчуванням; ease-in — розгін, для зникнення; ease-out — гальмування, для появи; ease-in-out — для переміщень. Шкала тривалості: перемикач близько 100 мс, модальне вікно 200–300 мс, великі переміщення до 400 мс, понад 500 мс анімація «тягне»." xmlns="http://www.w3.org/2000/svg"><rect x="20" y="30" width="150" height="190" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/><line x1="38" y1="136" x2="152" y2="136" stroke="var(--line)" stroke-width="1.2"/><line x1="38" y1="44" x2="38" y2="136" stroke="var(--line)" stroke-width="1.2"/><path d="M38.0 136.0 L38.2 135.8 L38.8 135.3 L39.8 134.5 L41.2 133.4 L42.9 132.0 L44.9 130.4 L47.3 128.5 L49.9 126.4 L52.7 124.1 L55.8 121.6 L59.1 119.0 L62.6 116.1 L66.3 113.2 L70.1 110.1 L74.1 106.9 L78.1 103.6 L82.3 100.3 L86.5 96.9 L90.7 93.4 L95.0 90.0 L99.3 86.6 L103.5 83.1 L107.7 79.7 L111.9 76.4 L115.9 73.1 L119.9 69.9 L123.7 66.8 L127.4 63.9 L130.9 61.0 L134.2 58.4 L137.3 55.9 L140.1 53.6 L142.7 51.5 L145.1 49.6 L147.1 48.0 L148.8 46.6 L150.2 45.5 L151.2 44.7 L151.8 44.2 L152.0 44.0" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/><text x="152" y="150" font-size="10" font-weight="600" fill="var(--ink-muted)" text-anchor="end" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">час →</text><text x="32" y="172" font-size="13" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">linear</text><text x="32" y="194" font-size="11" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">рівномірно</text><rect x="194" y="30" width="150" height="190" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/><line x1="212" y1="136" x2="326" y2="136" stroke="var(--line)" stroke-width="1.2"/><line x1="212" y1="44" x2="212" y2="136" stroke="var(--line)" stroke-width="1.2"/><path d="M212.0 136.0 L214.1 135.2 L216.1 134.1 L218.0 132.8 L219.8 131.2 L221.6 129.4 L223.3 127.4 L225.0 125.2 L226.6 122.9 L228.2 120.4 L229.8 117.7 L231.4 115.0 L233.0 112.1 L234.7 109.1 L236.3 106.0 L238.1 102.8 L239.8 99.6 L241.6 96.4 L243.5 93.1 L245.5 89.8 L247.6 86.6 L249.8 83.3 L252.1 80.0 L254.6 76.9 L257.1 73.7 L259.9 70.7 L262.8 67.7 L265.8 64.9 L269.1 62.1 L272.5 59.5 L276.1 57.1 L280.0 54.8 L284.0 52.7 L288.4 50.8 L292.9 49.1 L297.7 47.6 L302.8 46.3 L308.2 45.3 L313.8 44.6 L319.7 44.2 L326.0 44.0" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/><text x="326" y="150" font-size="10" font-weight="600" fill="var(--ink-muted)" text-anchor="end" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">час →</text><text x="206" y="172" font-size="13" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">ease</text><text x="206" y="194" font-size="11" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">за замовчуванням</text><rect x="368" y="30" width="150" height="190" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/><line x1="386" y1="136" x2="500" y2="136" stroke="var(--line)" stroke-width="1.2"/><line x1="386" y1="44" x2="386" y2="136" stroke="var(--line)" stroke-width="1.2"/><path d="M386.0 136.0 L389.6 135.8 L393.3 135.3 L397.0 134.5 L400.8 133.4 L404.6 132.0 L408.5 130.4 L412.4 128.5 L416.2 126.4 L420.1 124.1 L424.0 121.6 L427.9 119.0 L431.7 116.1 L435.6 113.2 L439.4 110.1 L443.1 106.9 L446.8 103.6 L450.5 100.3 L454.0 96.9 L457.5 93.4 L461.0 90.0 L464.3 86.6 L467.5 83.1 L470.6 79.7 L473.7 76.4 L476.6 73.1 L479.3 69.9 L481.9 66.8 L484.4 63.9 L486.8 61.0 L488.9 58.4 L490.9 55.9 L492.7 53.6 L494.4 51.5 L495.8 49.6 L497.1 48.0 L498.1 46.6 L498.9 45.5 L499.5 44.7 L499.9 44.2 L500.0 44.0" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/><text x="500" y="150" font-size="10" font-weight="600" fill="var(--ink-muted)" text-anchor="end" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">час →</text><text x="380" y="172" font-size="13" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">ease-in</text><text x="380" y="194" font-size="11" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">розгін: зникнення</text><rect x="542" y="30" width="150" height="190" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.6"/><line x1="560" y1="136" x2="674" y2="136" stroke="var(--line)" stroke-width="1.2"/><line x1="560" y1="44" x2="560" y2="136" stroke="var(--line)" stroke-width="1.2"/><path d="M560.0 136.0 L560.1 135.8 L560.5 135.3 L561.1 134.5 L561.9 133.4 L562.9 132.0 L564.2 130.4 L565.6 128.5 L567.3 126.4 L569.1 124.1 L571.1 121.6 L573.2 119.0 L575.6 116.1 L578.1 113.2 L580.7 110.1 L583.4 106.9 L586.3 103.6 L589.4 100.3 L592.5 96.9 L595.7 93.4 L599.0 90.0 L602.5 86.6 L606.0 83.1 L609.5 79.7 L613.2 76.4 L616.9 73.1 L620.6 69.9 L624.4 66.8 L628.3 63.9 L632.1 61.0 L636.0 58.4 L639.9 55.9 L643.8 53.6 L647.6 51.5 L651.5 49.6 L655.4 48.0 L659.2 46.6 L663.0 45.5 L666.7 44.7 L670.4 44.2 L674.0 44.0" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/><text x="674" y="150" font-size="10" font-weight="600" fill="var(--ink-muted)" text-anchor="end" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">час →</text><text x="554" y="172" font-size="13" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">ease-out</text><text x="554" y="194" font-size="11" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">гальмування: поява</text><rect x="716" y="30" width="150" height="190" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/><line x1="734" y1="136" x2="848" y2="136" stroke="var(--line)" stroke-width="1.2"/><line x1="734" y1="44" x2="734" y2="136" stroke="var(--line)" stroke-width="1.2"/><path d="M734.0 136.0 L737.5 135.8 L741.0 135.3 L744.3 134.5 L747.5 133.4 L750.7 132.0 L753.7 130.4 L756.7 128.5 L759.6 126.4 L762.5 124.1 L765.3 121.6 L768.0 119.0 L770.7 116.1 L773.3 113.2 L775.9 110.1 L778.5 106.9 L781.0 103.6 L783.5 100.3 L786.0 96.9 L788.5 93.4 L791.0 90.0 L793.5 86.6 L796.0 83.1 L798.5 79.7 L801.0 76.4 L803.5 73.1 L806.1 69.9 L808.7 66.8 L811.3 63.9 L814.0 61.0 L816.7 58.4 L819.5 55.9 L822.4 53.6 L825.3 51.5 L828.3 49.6 L831.3 48.0 L834.5 46.6 L837.7 45.5 L841.0 44.7 L844.5 44.2 L848.0 44.0" fill="none" stroke="var(--accent)" stroke-width="2.6" stroke-linecap="round"/><text x="848" y="150" font-size="10" font-weight="600" fill="var(--ink-muted)" text-anchor="end" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">час →</text><text x="728" y="172" font-size="13" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">ease-in-out</text><text x="728" y="194" font-size="11" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">переміщення</text><text x="20" y="250" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">ТРИВАЛІСТЬ (NN/g): БІЛЬШІСТЬ АНІМАЦІЙ 100–500 мс</text><rect x="163.3" y="266" width="573.3" height="14" rx="7" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><rect x="736.7" y="266" width="143.3" height="14" rx="7" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.2"/><line x1="163.33333333333334" y1="262" x2="163.33333333333334" y2="286" stroke="var(--ink-muted)" stroke-width="1.2"/><text x="163.33333333333334" y="302" font-size="11.5" font-weight="800" fill="var(--ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">100 мс</text><text x="163.33333333333334" y="320" font-size="11" font-weight="600" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">перемикач, прапорець</text><line x1="378.3333333333333" y1="262" x2="378.3333333333333" y2="286" stroke="var(--ink-muted)" stroke-width="1.2"/><text x="378.3333333333333" y="302" font-size="11.5" font-weight="800" fill="var(--ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">250 мс</text><text x="378.3333333333333" y="320" font-size="11" font-weight="600" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">модальне вікно (200–300)</text><line x1="593.3333333333334" y1="262" x2="593.3333333333334" y2="286" stroke="var(--ink-muted)" stroke-width="1.2"/><text x="593.3333333333334" y="302" font-size="11.5" font-weight="800" fill="var(--ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">400 мс</text><text x="593.3333333333334" y="320" font-size="11" font-weight="600" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">великі переміщення</text><line x1="736.6666666666666" y1="262" x2="736.6666666666666" y2="286" stroke="var(--ink-muted)" stroke-width="1.2"/><text x="736.6666666666666" y="302" font-size="11.5" font-weight="800" fill="var(--ink)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">500 мс</text><text x="736.6666666666666" y="320" font-size="11" font-weight="600" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">далі — «тягне»</text></svg>
+      <figcaption>Рис. 2. Криві швидкості й рекомендована тривалість анімацій.</figcaption>
+    </figure>
+
+    <figure class="diagram demo" aria-label="порівняння кривих швидкості">
+      <style>
+        .de-lanes{display:grid;gap:8px;padding:6px 0;}
+        .de-lane{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:center;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-soft);}
+        .de-track{position:relative;height:26px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);}
+        .de-dot{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--accent);transition-property:transform;transition-duration:800ms;}
+        .de-go .de-dot{transform:translateX(calc(var(--w) - 26px));}
+        .de-bar{display:flex;justify-content:center;margin-top:10px;}
+        @media (prefers-reduced-motion: reduce){.de-dot{transition-duration:0ms}}
+      </style>
+      <div class="de-lanes" id="deLanes">
+        <div class="de-lane"><span>linear</span><div class="de-track"><span class="de-dot" style="transition-timing-function:linear"></span></div></div>
+        <div class="de-lane"><span>ease</span><div class="de-track"><span class="de-dot" style="transition-timing-function:ease"></span></div></div>
+        <div class="de-lane"><span>ease-in</span><div class="de-track"><span class="de-dot" style="transition-timing-function:ease-in"></span></div></div>
+        <div class="de-lane"><span>ease-out</span><div class="de-track"><span class="de-dot" style="transition-timing-function:ease-out"></span></div></div>
+        <div class="de-lane"><span>ease-in-out</span><div class="de-track"><span class="de-dot" style="transition-timing-function:ease-in-out"></span></div></div>
+      </div>
+      <div class="de-bar"><button class="reset-btn" type="button" id="deGo">▶ запустити (800 мс, сповільнено для наочності)</button></div>
+      <script>
+        (function(){
+          var L=document.getElementById('deLanes'),b=document.getElementById('deGo');
+          function size(){L.querySelectorAll('.de-track').forEach(function(t){t.style.setProperty('--w',t.clientWidth+'px');});}
+          size(); window.addEventListener('resize',size);
+          b.addEventListener('click',function(){L.classList.toggle('de-go');});
+        })();
+      </script>
+      <figcaption>Жива демонстрація: порівняння кривих швидкості</figcaption>
+    </figure>
+
+    <p><b>Продуктивність.</b> Браузер малює сторінку в кілька етапів: стилі → розкладка (layout) → малювання (paint) → компонування шарів (composite). Анімація властивостей <code>width</code>, <code>height</code>, <code>top</code>, <code>left</code>, <code>margin</code> змушує щокадру перераховувати розкладку, і на слабких телефонах анімація «смикається». Тому web.dev радить, де можливо, анімувати лише <b>`transform`</b> (зсув, поворот, масштаб) і <b>`opacity`</b> — вони обробляються на етапі компонування (рис. 3). Властивість <code>will-change</code> використовують обережно й лише тоді, коли справді є проблема з продуктивністю. Перевірити, що відбувається, можна в Chrome DevTools на вкладці Performance (Продуктивність).</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 314" role="img" aria-label="Етапи рендерингу: стилі, розкладка, малювання, компонування. Анімація width, height, top, left, margin запускає всі етапи — дорого; color, background, box-shadow — малювання й компонування; transform і opacity — лише компонування, дешево." xmlns="http://www.w3.org/2000/svg"><text x="20" y="30" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">ЩО АНІМУЄМО</text><rect x="330" y="14" width="130" height="52" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.3"/><text x="342" y="36" font-size="13" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Стилі</text><text x="342" y="56" font-size="11" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">обчислення CSS</text><line x1="461" y1="40" x2="464.1" y2="40.0" stroke="var(--ink-muted)" stroke-width="1.2"/><polygon points="469.0,40.0 462.6,42.9 462.6,37.1" fill="var(--ink-muted)"/><rect x="470" y="14" width="130" height="52" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.3"/><text x="482" y="36" font-size="13" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Розкладка</text><text x="482" y="56" font-size="11" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">layout</text><line x1="601" y1="40" x2="604.1" y2="40.0" stroke="var(--ink-muted)" stroke-width="1.2"/><polygon points="609.0,40.0 602.6,42.9 602.6,37.1" fill="var(--ink-muted)"/><rect x="610" y="14" width="130" height="52" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.3"/><text x="622" y="36" font-size="13" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Малювання</text><text x="622" y="56" font-size="11" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">paint</text><line x1="741" y1="40" x2="744.1" y2="40.0" stroke="var(--ink-muted)" stroke-width="1.2"/><polygon points="749.0,40.0 742.6,42.9 742.6,37.1" fill="var(--ink-muted)"/><rect x="750" y="14" width="130" height="52" rx="10" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.3"/><text x="762" y="36" font-size="13" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Компонування</text><text x="762" y="56" font-size="11" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">composite</text><rect x="20" y="84" width="290" height="54" rx="10" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.4"/><text x="34" y="106" font-size="11.5" font-weight="800" fill="var(--fail)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">ДОРОГО</text><text x="34" y="126" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">width, height, top, left, margin</text><rect x="330" y="92" width="130" height="38" rx="8" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.4"/><text x="395.0" y="116" font-size="11.5" font-weight="700" fill="var(--fail)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">перерахунок</text><rect x="470" y="92" width="130" height="38" rx="8" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.4"/><text x="535.0" y="116" font-size="11.5" font-weight="700" fill="var(--fail)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">перерахунок</text><rect x="610" y="92" width="130" height="38" rx="8" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.4"/><text x="675.0" y="116" font-size="11.5" font-weight="700" fill="var(--fail)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">перерахунок</text><rect x="750" y="92" width="130" height="38" rx="8" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.4"/><text x="815.0" y="116" font-size="11.5" font-weight="700" fill="var(--fail)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">перерахунок</text><rect x="20" y="150" width="290" height="54" rx="10" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.4"/><text x="34" y="172" font-size="11.5" font-weight="800" fill="var(--test-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">СЕРЕДНЬО</text><text x="34" y="192" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">color, background, box-shadow</text><rect x="330" y="158" width="130" height="38" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 4"/><text x="395.0" y="182" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">—</text><rect x="470" y="158" width="130" height="38" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 4"/><text x="535.0" y="182" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">—</text><rect x="610" y="158" width="130" height="38" rx="8" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.4"/><text x="675.0" y="182" font-size="11.5" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">перерахунок</text><rect x="750" y="158" width="130" height="38" rx="8" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.4"/><text x="815.0" y="182" font-size="11.5" font-weight="700" fill="var(--test-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">перерахунок</text><rect x="20" y="216" width="290" height="54" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="34" y="238" font-size="11.5" font-weight="800" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">ДЕШЕВО</text><text x="34" y="258" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">transform, opacity</text><rect x="330" y="224" width="130" height="38" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 4"/><text x="395.0" y="248" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">—</text><rect x="470" y="224" width="130" height="38" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 4"/><text x="535.0" y="248" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">—</text><rect x="610" y="224" width="130" height="38" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 4"/><text x="675.0" y="248" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">—</text><rect x="750" y="224" width="130" height="38" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="815.0" y="248" font-size="11.5" font-weight="700" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">перерахунок</text><text x="20" y="300" font-size="12" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Що менше етапів браузер повторює щокадру, то плавніша анімація. transform і opacity — лише компонування.</text></svg>
+      <figcaption>Рис. 3. Етапи рендерингу: які властивості дешево анімувати, а які — дорого.</figcaption>
+    </figure>
+
+    <p><b>Нові можливості CSS.</b> <b>View Transitions API</b> анімує перехід між станами сторінки чи між сторінками: браузер сам робить «знімки» до й після зміни і плавно змінює одне іншим. Переходи в межах одного документа (<code>document.startViewTransition()</code>) стали Baseline — доступними в усіх основних браузерах — у жовтні 2025 року. <b>Анімації, керовані прокручуванням</b> (scroll-driven animations), прив’язують хід анімації не до часу, а до прокручування чи видимості елемента; з виходом Firefox 159 вони стали Baseline у жовтні 2026 року (Chrome 115, Safari 26, Firefox 159):</p>
+
+    <pre class="codeblock"><code>@keyframes fade-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+.reveal {
+  animation: fade-in linear both;
+  animation-timeline: view();            /* хід = видимість елемента */
+  animation-range: entry 0% cover 30%;
+}</code></pre>
+
+    <p><b>Lottie</b> — формат векторної анімації на основі JSON. Його відкрила для всіх компанія Airbnb на початку 2017 року: аніматор створює рух в Adobe After Effects, плагін Bodymovin (автор — Ернан Торрізі) експортує його в JSON, а бібліотеки Lottie відтворюють на iOS, Android, у React Native і вебі. Векторна анімація займає мало місця, масштабується без втрати якості, і її можна зупиняти, запускати й керувати нею з коду — на відміну від GIF чи відео. У січні 2024 року Linux Foundation створила Lottie Animation Community для формальної специфікації формату; серед засновників — Airbnb, Google і LottieFiles. Сучасний варіант — <b>dotLottie</b> (<code>.lottie</code>): ZIP-архів з однією чи кількома анімаціями, зображеннями, темами й станами для інтерактивності, менший за звичайний JSON. Готові анімації з умовами використання шукають на lottiefiles.com, а на сторінку вставляють вебкомпонентом:</p>
+
+    <pre class="codeblock"><code>&lt;script type="module"
+  src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.5.2/dist/dotlottie-wc.js"&gt;&lt;/script&gt;
+
+&lt;dotlottie-wc src="animations/success.lottie"
+  style="width: 160px; height: 160px" autoplay loop&gt;&lt;/dotlottie-wc&gt;</code></pre>
+
+    <p>Версію в адресі скрипта краще фіксувати (тут 0.5.2), а не писати <code>@latest</code>: тоді оновлення бібліотеки не зламає сайт несподівано. Безкінечну Lottie-анімацію, що триває понад 5 секунд, потрібно вміти зупинити (розділ 3).</p>
+
+    <p><b>Principle</b> — програма для macOS, у якій дизайнери створюють анімовані інтерактивні прототипи: імпортують екрани з Figma чи Sketch, налаштовують переходи між ними на шкалі часу (timeline), показують результат на телефоні чи як відео. За офіційним сайтом Principle купують разово за 129 доларів, а 14 днів можна користуватися безкоштовно; версія Principle 6 додала публікацію прототипу у вебі. Обмеження — лише macOS. Схожий результат без окремої програми дає <b>Smart Animate</b> у прототипах Figma: він знаходить шари з однаковими назвами на двох фреймах і плавно анімує всі зміни між ними; функція доступна на всіх тарифах. <b>Rive</b> йде далі: його <b>машини станів</b> (state machines) пов’язують анімації логікою — наприклад, стани кнопки «спокій», «наведення», «натискання» — і відтворюються в робочому застосунку чи на сайті.</p>
+
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Порівняння інструментів анімації"><table class="cmp">
+      <thead><tr><th scope="col">Інструмент</th><th scope="col">Що робить</th><th scope="col">Де працює</th><th scope="col">Коли обирати</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">CSS transition</th><td>плавний перехід між двома станами</td><td>усі браузери</td><td>наведення, фокус, перемикачі, кнопки</td></tr>
+        <tr><th scope="row">CSS @keyframes</th><td>анімація з кількох кроків, повтори</td><td>усі браузери</td><td>завантаження, «підстрибування», поява</td></tr>
+        <tr><th scope="row">View Transitions, scroll-driven</th><td>переходи між станами; рух за прокручуванням</td><td>сучасні браузери (Baseline)</td><td>зміна вигляду сторінки, ефекти прокручування</td></tr>
+        <tr><th scope="row">Lottie / dotLottie</th><td>векторна анімація з After Effects</td><td>веб, iOS, Android</td><td>ілюстрації, іконки успіху, онбординг</td></tr>
+        <tr><th scope="row">Rive</th><td>інтерактивна анімація з машиною станів</td><td>веб, мобільні, ігри</td><td>анімація, що реагує на дії користувача</td></tr>
+        <tr><th scope="row">Principle</th><td>анімовані прототипи на шкалі часу</td><td>macOS</td><td>показати рух замовнику й команді</td></tr>
+        <tr><th scope="row">Figma Smart Animate</th><td>анімація між фреймами прототипу</td><td>браузер і застосунок Figma</td><td>швидкий прототип переходів</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Що анімувати<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Картка товару на наведення має підніматися на 4 пікселі. Яке рішення найкраще для плавності на слабкому телефоні?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button"><span>анімувати <code>top</code> з <code>position: relative</code></span></button>
+        <button class="test-opt" type="button"><span>анімувати <code>margin-top</code></span></button>
+        <button class="test-opt" type="button"><span>анімувати <code>transform: translateY(-4px)</code></span></button>
+        <button class="test-opt" type="button"><span>анімувати <code>height</code> картки</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Мікровзаємодії для свого лендінгу<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Відкрийте свій лендінг у редакторі коду (або в конструкторі, якщо там можна задати переходи станів) і знайдіть головну кнопку, посилання меню та форму.</li>
+        <li>Додайте кнопці три стани з переходом 150 мс <code>ease-out</code>: <code>:hover</code> і <code>:focus-visible</code> — колір темніший і зсув <code>translateY(-2px)</code>; <code>:active</code> — <code>scale(0.98)</code>. Анімуйте лише <code>transform</code>, <code>opacity</code> і кольори.</li>
+        <li>Зробіть мікровзаємодію форми: поле з помилкою отримує рамку іншого кольору й текст підказки під полем (не лише колір!), а після успішного надсилання з’являється повідомлення в області <code>aria-live=&quot;polite&quot;</code>.</li>
+        <li>Додайте перемикач (наприклад, «Отримувати новини») з роллю <code>switch</code> і станом <code>aria-checked</code>, кружок якого переїжджає через <code>transform: translateX()</code>.</li>
+        <li>Додайте правило <code>@media (prefers-reduced-motion: reduce)</code>, яке вимикає зсуви й масштабування, але залишає зміну кольору.</li>
+        <li>Перевірте в Chrome: F12 (або меню ⋮ → Інші інструменти (More tools) → Інструменти розробника (Developer tools)) → ⋮ у DevTools → More tools → <b>Rendering</b> (Відтворення) → <b>Emulate CSS media feature prefers-reduced-motion</b> → <code>reduce</code>. Пройдіть сторінку клавіатурою (Tab) і переконайтеся, що фокус видно.</li>
+        <li>Запишіть для кожної мікровзаємодії чотири частини: тригер, правила, зворотний зв’язок, цикли й режими.</li>
+      </ol>
+      <div class="box-close">Надішліть у Classroom посилання на сайт або архів із кодом, короткий відеозапис екрана з мікровзаємодіями і таблицю з чотирма частинами кожної.</div>
+    </div>
+
+  </section>
+  <!-- ================= 03. Роль моушн-дизайну в сучасному UX ================= -->
+  <section class="topic" id="motion" aria-labelledby="motion-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">03</span>
+      <h2 id="motion-h">Роль моушн-дизайну в сучасному UX</h2>
+    </div>
+
+    <p><b>Моушн-дизайн</b> в інтерфейсі — проєктування руху: що рухається, куди, з якою швидкістю й навіщо. NN/g наголошує, що анімація в UX має бути «ненав’язливою, короткою й тонкою», і виділяє п’ять її ролей (рис. 4):</p>
+
+    <ul>
+      <li><b>Зворотний зв’язок</b> — підтверджує, що дію зафіксовано: меню виїхало після торкання, кнопка «натиснулася».</li>
+      <li><b>Зміна стану</b> — показує перехід у новий режим чи стан системи: завантаження, збереження, помилка.</li>
+      <li><b>Навігація</b> — підказує напрямок: новий екран заїжджає справа, коли йдемо вглиб, і виїжджає, коли повертаємося назад; так людина не губиться в структурі.</li>
+      <li><b>Підказка про використання</b> (signifier) — рух показує, як елементом користуватися: картка злегка зсувається, натякаючи, що її можна гортати.</li>
+      <li><b>Привертання уваги</b> — до важливої зміни, наприклад нового повідомлення. Цю роль найлегше перетворити на маніпуляцію: блимання й тиск «встигніть купити!» дратують і відволікають.</li>
+    </ul>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 278" role="img" aria-label="П’ять ролей анімації в UX: зворотний зв’язок, зміна стану, навігація, підказка, увага. Вимоги WCAG 2.2: 2.2.2 — вміст, що рухається понад 5 секунд, можна зупинити; 2.3.1 — не більше трьох спалахів за секунду; 2.3.3 — анімацію від взаємодії можна вимкнути." xmlns="http://www.w3.org/2000/svg"><text x="20" y="26" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">П’ЯТЬ РОЛЕЙ АНІМАЦІЇ В UX (NN/g)</text><rect x="20" y="40" width="160" height="82" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="32" y="66" font-size="12.5" font-weight="800" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Зворотний зв’язок</text><text x="32" y="90" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">дію зафіксовано</text><rect x="194" y="40" width="160" height="82" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="206" y="66" font-size="12.5" font-weight="800" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Зміна стану</text><text x="206" y="90" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">завантаження,</text><text x="206" y="107" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">успіх</text><rect x="368" y="40" width="160" height="82" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="380" y="66" font-size="12.5" font-weight="800" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Навігація</text><text x="380" y="90" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">вглиб — справа,</text><text x="380" y="107" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">назад — зліва</text><rect x="542" y="40" width="160" height="82" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="554" y="66" font-size="12.5" font-weight="800" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Підказка</text><text x="554" y="90" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">як користуватися</text><text x="554" y="107" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">елементом</text><rect x="716" y="40" width="160" height="82" rx="10" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.4"/><text x="728" y="66" font-size="12.5" font-weight="800" fill="var(--test-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Увага</text><text x="728" y="90" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">обережно: не</text><text x="728" y="107" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">тиснути</text><text x="20" y="158" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">ДОСТУПНІСТЬ РУХУ (WCAG 2.2)</text><rect x="20" y="172" width="274" height="90" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="34" y="196" font-size="11.5" font-weight="800" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">2.2.2 · A</text><text x="34" y="220" font-size="12.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Пауза, зупинка, приховування</text><text x="34" y="244" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">автозапуск і &gt; 5 с → зупинка</text><rect x="310" y="172" width="274" height="90" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="324" y="196" font-size="11.5" font-weight="800" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">2.3.1 · A</text><text x="324" y="220" font-size="12.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Не більше 3 спалахів за секунду</text><text x="324" y="244" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">безпека: ризик нападу епілепсії</text><rect x="600" y="172" width="274" height="90" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="614" y="196" font-size="11.5" font-weight="800" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">2.3.3 · AAA</text><text x="614" y="220" font-size="12.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Рух від дій можна вимкнути</text><text x="614" y="244" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">prefers-reduced-motion: reduce</text></svg>
+      <figcaption>Рис. 4. П’ять ролей анімації в UX і вимоги доступності до руху.</figcaption>
+    </figure>
+
+    <p><b>Тривалість і криві.</b> За рекомендаціями NN/g більшість анімацій інтерфейсу триває <b>100–500 мс</b>: проста реакція (прапорець, перемикач) — близько 100 мс; помітна зміна екрана, наприклад поява модального вікна, — 200–300 мс; великі переміщення на широкому екрані — до 400 мс. Довші за 500 мс анімації вже «тягнуть». Елементи, що з’являються, анімують трохи довше й з <code>ease-out</code>, а ті, що зникають, — коротше (наприклад, 300 мс на появу й 200–250 мс на зникнення). Ці ж значення варто оформити як <b>токени руху</b> в дизайн-системі (<code>--duration-short: 100ms</code> тощо), так само як кольори й відступи.</p>
+
+    <p><b>Неперервність і хореографія.</b> Добрий рух пояснює, звідки взявся елемент і куди зник: картка товару розгортається в повну сторінку, кошик «приймає» товар. Коли рухаються кілька елементів, їх запускають з невеликими затримками й в одному напрямку, а не всі разом і хаотично.</p>
+
+    <p><b>Коли анімація шкодить.</b> Дослідження NN/g (2017) показало, що текст, який плавно з’являється лише після прокручування до нього, сповільнює людей і дратує: доводиться чекати. Тому такі ефекти застосовують до другорядного вмісту й показують лише під час першого прокручування. Ще одна пастка — маскувати анімацією повільну роботу: рух не замінює швидкості, а довгі «красиві» переходи лише додають очікування.</p>
+
+    <p><b>Доступність руху.</b> Для людей із вестибулярними порушеннями (внутрішнього вуха) рух на екрані може спричиняти запаморочення, нудоту й головний біль. WCAG 2.2 містить три вимоги щодо руху:</p>
+
+    <ul>
+      <li><b>2.2.2 Пауза, зупинка, приховування</b> (рівень A): якщо рухомий, блимаючий чи прокручуваний вміст запускається сам, триває понад <b>5 секунд</b> і показується поряд з іншим вмістом, людина має змогу його призупинити, зупинити або приховати. Це стосується каруселей, біжучих рядків, безкінечних Lottie-анімацій.</li>
+      <li><b>2.3.1 Три спалахи або нижче порога</b> (рівень A): на сторінці немає нічого, що спалахує понад <b>три рази за секунду</b> (з винятками для дуже малих і неяскравих спалахів). Це питання безпеки: спалахи можуть спричинити епілептичний напад.</li>
+      <li><b>2.3.3 Анімація від взаємодії</b> (рівень AAA): рух, запущений діями користувача, можна вимкнути, якщо він не є суттєвим для функції.</li>
+    </ul>
+
+    <p>Операційні системи мають налаштування «зменшити рух», і сайт дізнається про нього через медіазапит <b>`prefers-reduced-motion`</b> (доступний в усіх браузерах із січня 2020 року). Де його вмикають (за MDN): Windows 11 — Settings → Accessibility → Visual effects → Animation effects (Параметри → Спеціальні можливості → Візуальні ефекти → Ефекти анімації, вимкнути); macOS — System Settings → Accessibility → Display → Reduce motion (Системні параметри → Доступність → Дисплей → Зменшити рух), у macOS Tahoe 26 — розділ Motion (Рух); iOS — Settings → Accessibility → Motion (Параметри → Доступність → Рух); Android 9 і новіші — Settings → Accessibility → Remove animations (Налаштування → Спеціальні можливості → Вимкнути анімацію). Поширений прийом — вимкнути або скоротити рухи для всієї сторінки:</p>
+
+    <pre class="codeblock"><code>@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}</code></pre>
+
+    <p>«Зменшити» не означає «прибрати все»: зміну кольору чи прозорості зазвичай можна залишити, а замінити варто саме зсуви, масштабування, обертання й паралакс.</p>
+
+    <div class="box test" id="test-3">
+      <div class="box-title"><span class="box-tag">ТЕСТ 3</span> Тривалість анімації<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Яке налаштування найкраще підходить для появи модального вікна за рекомендаціями NN/g?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>50 мс, <code>linear</code> — щоб було якомога швидше</span></button>
+        <button class="test-opt" type="button"><span>250 мс, <code>ease-out</code></span></button>
+        <button class="test-opt" type="button"><span>1200 мс, <code>ease-in-out</code> — щоб користувач точно помітив</span></button>
+        <button class="test-opt" type="button"><span>3 с з ефектом «пружини»</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+  </section>
+  <!-- ================= 04. Актуальні візуальні тренди: glassmorphism, neumorphism, 3D-елементи, dark mode ================= -->
+  <section class="topic" id="trends" aria-labelledby="trends-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">04</span>
+      <h2 id="trends-h">Актуальні візуальні тренди: glassmorphism, neumorphism, 3D-елементи, dark mode</h2>
+    </div>
+
+    <p>Візуальні тренди приходять і йдуть, часто повертаючись у новій формі. Завдання дизайнера — не «зробити модно», а зрозуміти, яку проблему стиль розв’язує і чим ризикує. Головне правило для будь-якого тренду: він не має погіршувати читабельність, контраст і зрозумілість кнопок (рис. 5).</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 296" role="img" aria-label="Чотири тренди. Glassmorphism: напівпрозора картка з розмиттям тла, backdrop-filter, ризик — контраст на фото. Neumorphism: кнопка кольору тла з двома тінями, ризик — незрозуміло, що клікабельне. 3D-елементи: perspective і rotateY, ризик — вага й рух. Dark mode: prefers-color-scheme, ризик — контраст, потрібно щонайменше 4,5:1 в обох темах." xmlns="http://www.w3.org/2000/svg"><defs><filter id="blur5" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="9"/></filter><filter id="neuD" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="7" dy="7" stdDeviation="7" flood-color="#b9bcc4"/></filter><filter id="neuL" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="-7" dy="-7" stdDeviation="7" flood-color="#ffffff"/></filter><clipPath id="gclip"><rect x="54" y="66" width="140" height="84" rx="14"/></clipPath></defs><rect x="20" y="20" width="205" height="190" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/><text x="32" y="236" font-size="14" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Glassmorphism</text><text x="32" y="258" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">backdrop-filter: blur()</text><text x="32" y="278" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">ризик: контраст на фото</text><rect x="239" y="20" width="205" height="190" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/><text x="251" y="236" font-size="14" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Neumorphism</text><text x="251" y="258" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">box-shadow ×2</text><text x="251" y="278" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">ризик: що клікабельне?</text><rect x="458" y="20" width="205" height="190" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/><text x="470" y="236" font-size="14" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">3D-елементи</text><text x="470" y="258" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">perspective, rotateY</text><text x="470" y="278" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">ризик: вага, рух</text><rect x="677" y="20" width="205" height="190" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/><text x="689" y="236" font-size="14" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Dark mode</text><text x="689" y="258" font-size="11.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">prefers-color-scheme</text><text x="689" y="278" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">ризик: контраст у темі</text><rect x="21" y="21" width="203" height="188" rx="12" fill="#0E9C7E"/><circle cx="80" cy="70" r="38" fill="#FF8A5B"/><circle cx="170" cy="150" r="46" fill="#2B4FE0"/><g clip-path="url(#gclip)"><rect x="20" y="20" width="205" height="190" fill="#0E9C7E"/><g filter="url(#blur5)"><circle cx="80" cy="70" r="38" fill="#FF8A5B"/><circle cx="170" cy="150" r="46" fill="#2B4FE0"/></g></g><rect x="54" y="66" width="140" height="84" rx="14" fill="#FFFFFF" fill-opacity="0.28" stroke="#FFFFFF" stroke-opacity="0.6"/><text x="124" y="113" font-size="13" font-weight="800" fill="#14161D" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Скляна картка</text><rect x="240" y="21" width="203" height="188" rx="12" fill="#E6E9EF"/><g filter="url(#neuL)"><g filter="url(#neuD)"><rect x="281" y="86" width="120" height="56" rx="16" fill="#E6E9EF"/></g></g><text x="341" y="119" font-size="13" font-weight="800" fill="#5B5E70" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Кнопка?</text><polygon points="560,60 612,86 560,112 508,86" fill="var(--accent-tint)"/><polygon points="508,86 560,112 560,168 508,142" fill="var(--accent)"/><polygon points="560,112 612,86 612,142 560,168" fill="var(--accent-ink)"/><rect x="678" y="21" width="101.5" height="188" rx="12" fill="#FFFFFF"/><rect x="779.5" y="21" width="101.5" height="188" rx="0" fill="#121418"/><rect x="868.0" y="21" width="13" height="188" rx="12" fill="#121418"/><text x="728.25" y="104" font-size="26" font-weight="800" fill="#1B1D24" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Aa</text><text x="830.75" y="104" font-size="26" font-weight="800" fill="#E8E9EE" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Aa</text><text x="728.25" y="132" font-size="11.5" font-weight="700" fill="#5B5E70" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">світла</text><text x="830.75" y="132" font-size="11.5" font-weight="700" fill="#A9ADBD" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">темна</text><rect x="717.5" y="168" width="124" height="26" rx="13" fill="var(--surface)" stroke="var(--task)" stroke-width="1.4"/><text x="779.5" y="186" font-size="11.5" font-weight="800" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">≥ 4,5:1 в обох</text></svg>
+      <figcaption>Рис. 5. Чотири візуальні тренди: суть, CSS-основа і головний ризик.</figcaption>
+    </figure>
+
+    <figure class="diagram demo" aria-label="чотири тренди (наведіть на 3D-картку)">
+      <style>
+        .dt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;}
+        .dt-cell{border-radius:12px;min-height:170px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:18px;}
+        .dt-glass-bg{background:radial-gradient(circle at 25% 30%, #ff8a5b 0 22%, transparent 23%), radial-gradient(circle at 75% 70%, #2b4fe0 0 26%, transparent 27%), #0e9c7e;}
+        .dt-glass{background:rgb(255 255 255 / 25%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgb(255 255 255 / 45%);border-radius:14px;padding:16px 18px;color:#14161d;font-weight:700;}
+        .dt-neu-bg{background:#e6e9ef;}
+        .dt-neu{width:120px;height:56px;border-radius:16px;background:#e6e9ef;box-shadow:8px 8px 16px #c3c6cc, -8px -8px 16px #ffffff;display:flex;align-items:center;justify-content:center;color:#3a3d4c;font-weight:700;}
+        .dt-3d-bg{background:var(--surface-2);perspective:600px;}
+        .dt-card{width:130px;height:84px;border-radius:12px;background:var(--accent);color:var(--surface);display:flex;align-items:center;justify-content:center;font-weight:700;transform:rotateX(18deg) rotateY(-24deg);box-shadow:-12px 16px 24px -10px rgba(0,0,0,.45);transition:transform 300ms ease-out;}
+        .dt-3d-bg:hover .dt-card{transform:rotateX(0) rotateY(0);}
+        .dt-dark-bg{background:#121418;color:#e8e9ee;flex-direction:column;gap:6px;text-align:center;}
+        .dt-dark-bg small{color:#a9adbd;}
+        .dt-label{position:absolute;left:10px;bottom:8px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;background:rgb(0 0 0 / 55%);color:#fff;}
+        @media (prefers-reduced-motion: reduce){.dt-card{transition:none}}
+      </style>
+      <div class="dt-grid">
+        <div class="dt-cell dt-glass-bg"><div class="dt-glass">Скляна картка</div><span class="dt-label">glassmorphism</span></div>
+        <div class="dt-cell dt-neu-bg"><div class="dt-neu">Кнопка?</div><span class="dt-label">neumorphism</span></div>
+        <div class="dt-cell dt-3d-bg"><div class="dt-card">Наведіть</div><span class="dt-label">3D: perspective</span></div>
+        <div class="dt-cell dt-dark-bg"><b>Темна тема</b><small>не чисто чорний фон</small><span class="dt-label">dark mode</span></div>
+      </div>
+      <figcaption>Жива демонстрація: чотири тренди (наведіть на 3D-картку)</figcaption>
+    </figure>
+
+    <p><b>Glassmorphism</b> («скляний» стиль) — за визначенням NN/g, стиль, що використовує різні рівні прозорості для створення глибини й контрасту: напівпрозорі панелі, наче з матового скла, крізь які розмито видно тло. Популярність стилю зростає з 2020 року; подібні матеріали є в дизайн-системах Microsoft (Acrylic) та Apple. 9 червня 2025 року Apple представила <b>Liquid Glass</b> — напівпрозорий матеріал, що «відбиває й заломлює оточення», — для iOS 26, iPadOS 26, macOS Tahoe 26, watchOS 26 і tvOS 26. У CSS ефект будують на властивості <code>backdrop-filter</code>, яка розмиває все позаду елемента; вона доступна в усіх основних браузерах із вересня 2024 року:</p>
+
+    <pre class="codeblock"><code>.glass {
+  background: rgb(255 255 255 / 25%);   /* напівпрозоре тло */
+  backdrop-filter: blur(12px);           /* розмиття того, що позаду */
+  border: 1px solid rgb(255 255 255 / 45%);
+  border-radius: 16px;
+}</code></pre>
+
+    <p>Ризик — контраст: текст на напівпрозорій панелі лежить на тлі, що змінюється (фото, відео), тож може стати нечитабельним. NN/g радить сильніше розмиття, особливо над «строкатим» тлом, просте тло там, де ви ним керуєте, тонку напівпрозору рамку для відчуття товщини й перевірку контрасту тексту в найгіршому місці.</p>
+
+    <p><b>Neumorphism</b> (нейморфізм, від neo- і skeuomorphism) з’явився 2019 року після концепту банківського застосунку дизайнера Олександра Плюто на Dribbble. Елементи мають той самий колір, що й тло, і «виступають» або «вдавлені» лише завдяки двом м’яким тіням — світлій і темній:</p>
+
+    <pre class="codeblock"><code>.neu {
+  background: #e6e9ef;
+  box-shadow: 8px 8px 16px #c3c6cc, -8px -8px 16px #ffffff;
+  border-radius: 16px;
+}</code></pre>
+
+    <p>Стиль швидко зазнав критики: NN/g зазначає, що низький контраст не дає елементам достатньої візуальної ваги, тож інтерфейс стає недоступним, а через непослідовне застосування важко зрозуміти, що можна натиснути. Тому нейморфізм використовують хіба що як акцент, додаючи кнопкам підписи, іконки й контрастні рамки фокусу.</p>
+
+    <p><b>3D-елементи.</b> Об’ємні ілюстрації, моделі товарів, які можна покрутити, легкий нахил карток. Простий 3D-ефект дають CSS-трансформації: <code>perspective</code> задає глибину сцени, <code>rotateX()</code>, <code>rotateY()</code> нахиляють елемент, <code>transform-style: preserve-3d</code> зберігає тривимірність вкладених елементів. Для справжніх 3D-сцен використовують бібліотеку <b>three.js</b> (відкритий код, ліцензія MIT, рендеринг через WebGL і WebGPU) або <b>Spline</b> — браузерний редактор інтерактивних 3D-сцен, які публікують посиланням, вбудованим переглядачем чи експортом коду, зокрема в Webflow і Framer. Ризики: вага сторінки й навантаження на слабкі телефони, рух, що заважає людям із вестибулярними порушеннями, і вміст, недоступний для зчитувачів екрана, — тож важлива інформація не повинна жити лише в 3D-сцені.</p>
+
+    <p><b>Dark mode</b> (темна тема) стала стандартною функцією операційних систем і застосунків. Сайт дізнається про вибір людини через медіазапит <code>prefers-color-scheme</code> (<code>light</code> або <code>dark</code>), а функція <code>light-dark()</code> (доступна в усіх основних браузерах із травня 2024 року) дає змогу записати обидва кольори поряд — за умови, що для сторінки задано <code>color-scheme: light dark</code>:</p>
+
+    <pre class="codeblock"><code>:root {
+  color-scheme: light dark;
+  --bg:   light-dark(#ffffff, #121418);
+  --text: light-dark(#1b1d24, #e8e9ee);
+}
+body { background: var(--bg); color: var(--text); }</code></pre>
+
+    <p>Що важливо знати. За дослідженням NN/g (2020), у людей із нормальним зором світла тема здебільшого дає кращу продуктивність читання, а темна може допомагати людям з деякими порушеннями зору (наприклад, катарактою), тому найкраще — поважати системне налаштування й дати змогу перемкнути тему. Поради web.dev: називати змінні за роллю (<code>--accent</code>, <code>--surface</code>), а не за кольором; не використовувати чисто білий текст на чорному тлі, бо він «світиться»; приглушувати яскраві фото фільтром. І обов’язково перевіряти контраст <b>в обох темах</b>: колір, що добре читається на білому, на темному тлі часто «провалюється».</p>
+
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Візуальні тренди: суть і ризики"><table class="cmp">
+      <thead><tr><th scope="col">Тренд</th><th scope="col">Суть</th><th scope="col">CSS-основа</th><th scope="col">Ризик і перевірка</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Glassmorphism</th><td>напівпрозорі «скляні» панелі з розмиттям</td><td><code>backdrop-filter</code>, напівпрозоре тло, рамка</td><td>контраст тексту на змінному тлі; перевіряти в найгіршому місці</td></tr>
+        <tr><th scope="row">Neumorphism</th><td>елементи кольору тла з двома м’якими тінями</td><td><code>box-shadow</code> (світла й темна тінь)</td><td>низький контраст, незрозуміло, що клікабельне</td></tr>
+        <tr><th scope="row">3D-елементи</th><td>об’єм, нахил, інтерактивні моделі</td><td><code>perspective</code>, <code>rotateX/Y</code>; three.js, Spline</td><td>вага й продуктивність, рух, доступність</td></tr>
+        <tr><th scope="row">Dark mode</th><td>темна палітра за вибором користувача</td><td><code>prefers-color-scheme</code>, <code>light-dark()</code></td><td>контраст в обох темах, яскраві фото, чисто білий текст</td></tr>
+      </tbody>
+    </table></div>
+
+    <div class="box test" id="test-4">
+      <div class="box-title"><span class="box-tag">ТЕСТ 4</span> Скляна панель<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">На головному екрані — фото міста, а поверх нього скляна панель із текстом і кнопкою. Що перевірити насамперед?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>чи панель має ефект «вдавленості», як у нейморфізмі</span></button>
+        <button class="test-opt" type="button"><span>контраст тексту й кнопки там, де під панеллю найсвітліша чи найстрокатіша ділянка фото; за потреби — сильніше розмиття або щільніше тло</span></button>
+        <button class="test-opt" type="button"><span>чи розмиття працює в Internet Explorer</span></button>
+        <button class="test-opt" type="button"><span>нічого: скляний стиль рекомендує Apple, тож він доступний автоматично</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> Темна тема і один тренд<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Перенесіть усі кольори свого лендінгу в CSS-змінні з назвами за роллю: <code>--bg</code>, <code>--surface</code>, <code>--text</code>, <code>--muted</code>, <code>--accent</code>.</li>
+        <li>Додайте темну тему: <code>color-scheme: light dark</code> і значення змінних через <code>light-dark()</code> (або через медіазапит <code>prefers-color-scheme: dark</code>). Не використовуйте чисто чорне тло й чисто білий текст.</li>
+        <li>Перевірте контраст основного тексту, другорядного тексту й кнопок <b>в обох темах</b> у WebAIM Contrast Checker: щонайменше 4,5:1 для звичайного тексту.</li>
+        <li>Оберіть один тренд і застосуйте його до одного блоку: скляну картку (<code>backdrop-filter</code>) на першому екрані, 3D-нахил карток послуг (<code>perspective</code> і <code>rotateY</code>) або Lottie-ілюстрацію (вебкомпонент <code>dotlottie-wc</code>, анімація з дозволеною ліцензією на lottiefiles.com).</li>
+        <li>Якщо анімація триває понад 5 секунд, додайте кнопку «Пауза» або зупиняйте її; у режимі <code>prefers-reduced-motion: reduce</code> прибирайте нахили й рух.</li>
+        <li>Перевірте обидві теми в Chrome: DevTools → ⋮ → More tools → <b>Rendering</b> → <b>Emulate CSS media feature prefers-color-scheme</b> → <code>dark</code>, а потім <code>light</code>. Подивіться сторінку й на телефоні.</li>
+        <li>Напишіть 3–4 речення: який тренд обрали, яку проблему він розв’язує на вашому сайті і чим довелося пожертвувати заради доступності.</li>
+      </ol>
+      <div class="box-close">Надішліть у Classroom посилання на сайт, скриншоти світлої й темної теми та результати перевірки контрасту.</div>
+    </div>
+
+    <p><b>Де це знадобиться.</b> Мікровзаємодії й рух — те, за що користувачі називають інтерфейс «приємним» або «незручним», навіть не розуміючи чому. Фахівець з інформаційних систем вирішує, як реалізувати анімацію без втрати продуктивності, і закладає в інтерфейс стани завантаження, помилки й успіху. Майбутній юрист оцінить, чи не перетворилася анімація на маніпуляцію (тиск таймером, блимаючі «встигніть купити»), і знатиме вимоги доступності, зокрема щодо спалахів, які стосуються безпеки людей. Маркетолог використовує моушн, щоб привернути увагу до головного й підкреслити характер бренду, а тренди — щоб сайт виглядав сучасно, але не ціною того, що клієнт не зможе прочитати ціну чи знайти кнопку.</p>
+
+  </section>
+</main>
+
+<footer>
+  <span>Лекція 11 · Тема 11 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 06.11.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture11-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState();
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId]);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
 </body>
 </html>
