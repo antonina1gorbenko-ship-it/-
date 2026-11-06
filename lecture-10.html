@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Штучний інтелект у вебдизайні — Вебдизайн</title>
-<meta name="description" content="Лекція 10. Штучний інтелект у вебдизайні. Конспект готується.">
+<title>Штучний інтелект у вебдизайні</title>
+<meta name="description" content="Лекція 10 курсу «Вебдизайн»: AI-інструменти для макетів, текстів, зображень і коду; промпт-інжиніринг; авторське право, маркування AI-контенту, персональні дані й безпека; AI для доступності та UX">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -26,25 +26,59 @@
     --test:#C2660A;
     --test-ink:#9C5108;
     --test-tint:#FBEBD8;
+    --fail:#C0392B;
+    --fail-tint:#FBE3E0;
+    --code-bg:#151822;
+    --code-ink:#DCE1F0;
     --shadow: 0 1px 2px rgba(20,22,35,.04), 0 8px 24px -12px rgba(20,22,35,.18);
     --radius: 14px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-      --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-      --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-      --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-      --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+      --ink:#E7E8F0;
+      --ink-soft:#C7CADA;
+      --ink-muted:#9AA0B4;
+      --paper:#0B0D12;
+      --surface:#151822;
+      --surface-2:#1B1F2C;
+      --line:#262B3A;
+      --accent:#7C93F5;
+      --accent-ink:#AEBCFA;
+      --accent-tint:#1B2340;
+      --task:#4CC5A5;
+      --task-ink:#7CDABE;
+      --task-tint:#123028;
+      --test:#E3A438;
+      --test-ink:#F0C070;
+      --test-tint:#332409;
+      --fail:#E8746A;
+      --fail-tint:#3A1512;
+      --code-bg:#05060A;
+      --code-ink:#D6DBEC;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
     }
   }
   :root[data-theme="dark"]{
-    --ink:#E7E8F0; --ink-soft:#C7CADA; --ink-muted:#9AA0B4;
-    --paper:#0B0D12; --surface:#151822; --surface-2:#1B1F2C; --line:#262B3A;
-    --accent:#7C93F5; --accent-ink:#AEBCFA; --accent-tint:#1B2340;
-    --task:#4CC5A5; --task-ink:#7CDABE; --task-tint:#123028;
-    --test:#E3A438; --test-ink:#F0C070; --test-tint:#332409;
+    --ink:#E7E8F0;
+    --ink-soft:#C7CADA;
+    --ink-muted:#9AA0B4;
+    --paper:#0B0D12;
+    --surface:#151822;
+    --surface-2:#1B1F2C;
+    --line:#262B3A;
+    --accent:#7C93F5;
+    --accent-ink:#AEBCFA;
+    --accent-tint:#1B2340;
+    --task:#4CC5A5;
+    --task-ink:#7CDABE;
+    --task-tint:#123028;
+    --test:#E3A438;
+    --test-ink:#F0C070;
+    --test-tint:#332409;
+    --fail:#E8746A;
+    --fail-tint:#3A1512;
+    --code-bg:#05060A;
+    --code-ink:#D6DBEC;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
   }
 
@@ -57,123 +91,783 @@
     line-height:1.62;
     -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{font-family:'Unbounded',system-ui,sans-serif;text-wrap:balance;margin:0;}
+  h1,h2,h3{
+    font-family:'Unbounded',system-ui,sans-serif;
+    text-wrap:balance;
+    margin:0;
+  }
   .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
   a{color:var(--accent);}
+  img{max-width:100%;}
 
-  .chrome{max-width:820px;margin:28px auto 0;padding:0 24px;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- browser-chrome hero ---------- */
+  .chrome{max-width:1000px;margin:28px auto 0;padding:0 24px;}
   .browser{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:16px 16px 0 0;
     box-shadow:var(--shadow);
     overflow:hidden;
   }
   .browser-bar{
-    display:flex;align-items:center;gap:14px;
-    padding:12px 16px;
-    background:var(--surface-2);
-    border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:14px;padding:12px 16px;
+    background:var(--surface-2);border-bottom:1px solid var(--line);
   }
   .dots{display:flex;gap:7px;flex:none;}
-  .dots span{width:10px;height:10px;border-radius:50%;display:block;}
+  .dots span{width:10px;height:10px;border-radius:50%;display:block;background:var(--line);}
   .dots span:nth-child(1){background:#E5695A;}
   .dots span:nth-child(2){background:#E3B341;}
   .dots span:nth-child(3){background:#57B975;}
   .addr{
-    flex:1;
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;
-    color:var(--ink-muted);
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:6px 12px;
+    flex:1;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px 12px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
   }
-  .hero{padding:56px 44px 48px;}
-  .crumb{
-    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
-    margin-bottom:18px;
-  }
-  .crumb a{color:var(--ink-muted);text-decoration:underline;text-underline-offset:2px;}
-  .crumb a:hover{color:var(--accent-ink);}
+  .hero{padding:56px 40px 48px;}
   .eyebrow{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-tint);
-    display:inline-block;padding:5px 11px;border-radius:99px;margin-bottom:20px;
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent-ink);background:var(--accent-tint);display:inline-block;padding:5px 11px;
+    border-radius:99px;margin-bottom:18px;
   }
-  .hero h1{font-size:clamp(26px,4.4vw,38px);line-height:1.14;font-weight:800;letter-spacing:-.01em;}
-  .hero .sub{
-    margin-top:14px;font-size:14.5px;
-    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;
+  .hero h1{font-size:clamp(30px,4.4vw,46px);line-height:1.14;font-weight:800;}
+  .hero .theme{margin-top:14px;font-size:clamp(16px,2vw,19px);color:var(--ink-soft);font-weight:500;max-width:34em;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .meta-chip{
+    font-size:13px;color:var(--ink-muted);background:var(--surface-2);border:1px solid var(--line);
+    border-radius:99px;padding:6px 13px;display:flex;align-items:center;gap:6px;
   }
+  .meta-chip b{color:var(--ink-soft);font-weight:700;}
 
-  .status{
-    margin-top:32px;
-    display:flex;gap:14px;align-items:flex-start;
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius);padding:18px 20px;
+  /* ---------- sticky toc ---------- */
+  .toc-bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .toc-inner{max-width:1000px;margin:0 auto;padding:0 24px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+  .toc-inner::-webkit-scrollbar{display:none;}
+  .toc-inner a{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink-muted);
+    text-decoration:none;padding:13px 12px;border-bottom:2px solid transparent;white-space:nowrap;
   }
-  .status .dot{
-    flex:none;width:10px;height:10px;border-radius:50%;
-    background:var(--test);margin-top:6px;
-    box-shadow:0 0 0 4px var(--test-tint);
-  }
-  .status p{margin:0;color:var(--ink-soft);font-size:14.5px;}
-  .status p b{color:var(--ink);}
+  .toc-inner a:hover{color:var(--accent);border-bottom-color:var(--line);}
+  .toc-inner a.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .toc-progress{flex:none;margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-muted);padding:13px 0 13px 14px;white-space:nowrap;}
+  .toc-progress b{color:var(--accent);}
+  .progress-track{max-width:1000px;margin:0 auto;padding:0 24px;height:3px;}
+  .progress-track .fill{height:100%;width:0%;background:linear-gradient(90deg, var(--task), var(--accent));transition:width .3s ease;}
 
-  .actions{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;}
-  .btn{
-    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;
-    text-decoration:none;padding:11px 18px;border-radius:10px;
-    display:inline-flex;align-items:center;gap:8px;
-  }
-  .btn.primary{background:var(--accent);color:#fff;}
-  .btn.primary:hover{background:var(--accent-ink);}
-  .btn.ghost{background:var(--surface);color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  /* ---------- content shell ---------- */
+  main{max-width:1000px;margin:0 auto;padding:0 24px 90px;}
 
-  footer{
-    max-width:820px;margin:0 auto;padding:40px 24px 60px;
-    color:var(--ink-muted);font-size:13px;font-family:'JetBrains Mono',monospace;
-  }
+  .lit{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin:36px 0 0;box-shadow:var(--shadow);}
+  .lit h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);font-family:'JetBrains Mono',monospace;margin-bottom:14px;}
+  .lit ol{margin:0;padding-left:20px;color:var(--ink-soft);font-size:14.5px;}
+  .lit li{margin-bottom:8px;}
+  .lit li:last-child{margin-bottom:0;}
 
+  section.topic{margin-top:64px;padding-top:8px;}
+  .topic-head{display:flex;align-items:baseline;gap:14px;margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--line);}
+  .topic-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;color:var(--accent);background:var(--accent-tint);border-radius:8px;padding:4px 10px;flex:none;}
+  .topic h2{font-size:clamp(21px,2.6vw,27px);font-weight:700;}
+  .topic p{color:var(--ink-soft);font-size:16px;margin:0 0 16px;}
+  .topic p b, .topic li b{color:var(--ink);font-weight:700;}
+  .topic ul{margin:0 0 18px;padding-left:22px;color:var(--ink-soft);font-size:15.5px;}
+  .topic ul li{margin-bottom:9px;}
+  .callout{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 18px;margin:0 0 18px;font-size:14.5px;color:var(--ink-soft);}
+  .callout b{color:var(--accent-ink);}
+
+  /* ---------- figure / infographics ---------- */
+  figure.diagram{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px 16px;margin:26px 0 30px;box-shadow:var(--shadow);}
+  figure.diagram svg{display:block;width:100%;height:auto;}
+  figure.diagram figcaption{margin-top:14px;font-size:13px;color:var(--ink-muted);text-align:center;}
+  .svg-ink{fill:var(--ink);}
+  .svg-muted{fill:var(--ink-muted);}
+  .svg-line{stroke:var(--line);}
+  .zone-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.02em;}
+
+  /* ---------- task / test boxes ---------- */
+  .box{border-radius:var(--radius);padding:24px 26px 20px;margin:24px 0 30px;box-shadow:var(--shadow);border:1px solid;}
+  .box.task{background:var(--task-tint);border-color:var(--task);}
+  .box.test{background:var(--test-tint);border-color:var(--test);}
+  .box-title{font-family:'Unbounded',sans-serif;font-weight:700;font-size:16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .box.task .box-title{color:var(--task-ink);}
+  .box.test .box-title{color:var(--test-ink);}
+  .box-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:6px;color:#fff;}
+  .box.task .box-tag{background:var(--task);}
+  .box.test .box-tag{background:var(--test);}
+  .box ol{margin:0;padding-left:22px;}
+  .box ol li{margin-bottom:13px;font-size:15px;color:var(--ink-soft);line-height:1.6;}
+  .box ol li:last-child{margin-bottom:0;}
+  .box ol li b{color:var(--ink);}
+  .box ol li .kbd{font-family:'JetBrains Mono',monospace;font-size:12.5px;background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+  .box-close{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);font-style:italic;font-size:14px;color:var(--ink-muted);}
+  .box.task .box-close{color:var(--task-ink);}
+  .box.test .box-close{color:var(--test-ink);}
+  .test-q{font-weight:600;color:var(--ink);margin-bottom:12px;font-size:15px;}
+
+  /* ---------- interactivity: progress pill, checklist, quiz ---------- */
+  .box-progress{margin-left:auto;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11.5px;letter-spacing:.02em;padding:3px 9px;border-radius:99px;background:var(--surface);color:var(--ink-muted);border:1px solid var(--line);white-space:nowrap;}
+  .box.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--task) 30%, transparent);}
+  .box.test.done{box-shadow:var(--shadow), 0 0 0 3px color-mix(in srgb, var(--test) 30%, transparent);}
+  .box.done .box-progress{background:var(--task);color:#fff;border-color:var(--task);}
+  .box-check{display:none;font-size:13px;}
+  .box.done .box-check{display:inline;}
+
+  .box ol{list-style:none;counter-reset:step;}
+  .box ol li{position:relative;padding-left:0;}
+  .step{display:flex;gap:12px;align-items:flex-start;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+  .step .num{
+    flex:none;width:24px;height:24px;border-radius:50%;background:var(--surface);border:1.5px solid var(--line);
+    color:var(--ink-muted);font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .15s,border-color .15s,color .15s;
+  }
+  .chk{position:absolute;opacity:0;width:1px;height:1px;}
+  .chk:checked ~ .num, .step:has(.chk:checked) .num, .step.checked .num{background:var(--task);border-color:var(--task);color:#fff;}
+  .step:has(.chk:checked) .step-text, .step.checked .step-text{color:var(--ink-muted);text-decoration:line-through;text-decoration-color:var(--line);text-decoration-thickness:1.5px;}
+  .chk:focus-visible ~ .num{outline:2px solid var(--accent);outline-offset:2px;}
+  .step-text{flex:1;}
+
+  .box.test .test-q-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;}
+  .test-opt{
+    display:flex;width:100%;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--ink-soft);
+    padding:9px 12px;margin:0 0 6px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);
+    font-family:inherit;text-align:left;cursor:pointer;transition:border-color .15s, background .15s;
+  }
+  .test-opt:hover:not(:disabled){border-color:var(--test);}
+  .test-opt::before{content:"";width:15px;height:15px;border:1.5px solid var(--test);border-radius:50%;flex:none;margin-top:2px;}
+  .test-opt:disabled{cursor:default;}
+  .test-opt.is-correct{border-color:var(--task);background:var(--task-tint);color:var(--task-ink);font-weight:700;}
+  .test-opt.is-correct::before{background:var(--task);border-color:var(--task);}
+  .test-opt.is-wrong{border-color:var(--fail);background:color-mix(in srgb, var(--fail) 12%, var(--surface));}
+  .test-opt.is-wrong::before{background:var(--fail);border-color:var(--fail);}
+  .test-feedback{margin-top:10px;font-size:13.5px;font-weight:600;display:none;}
+  .test-feedback.show{display:block;}
+  .test-feedback.correct{color:var(--task-ink);}
+  .test-feedback.wrong{color:var(--fail);}
+
+  .reset-btn{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-muted);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+  footer{max-width:1000px;margin:0 auto;padding:40px 24px 60px;border-top:1px solid var(--line);color:var(--ink-muted);font-size:13.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  footer .mono{color:var(--ink-muted);}
   @media (max-width:640px){
-    .hero{padding:40px 24px 36px;}
+    .hero{padding:40px 22px 34px;}
+    .box{padding:20px 18px 16px;}
+    .lit{padding:18px 20px;}
   }
+
+  /* ---------- доповнення для лекції 6: код, довгі посилання, пропуск до змісту ---------- */
+  .skip-link{position:absolute;left:-9999px;top:8px;background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;z-index:50;font-weight:700;text-decoration:none;}
+  .skip-link:focus{left:12px;}
+  .topic code, .box code, .lit code, .hero code{
+    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);
+    border:1px solid var(--line);border-radius:5px;padding:1px 5px;color:var(--ink);overflow-wrap:anywhere;
+  }
+  .topic b code{font-weight:700;}
+  .box.test .test-opt code{background:var(--surface-2);}
+  pre.codeblock{
+    background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:16px 20px;margin:0 0 20px;
+    overflow-x:auto;font-size:13px;line-height:1.65;box-shadow:var(--shadow);tab-size:2;
+  }
+  pre.codeblock code{background:none;border:0;padding:0;font-size:inherit;color:inherit;overflow-wrap:normal;}
+  .tk-tag{color:#8FA3FF;} .tk-str{color:#58D3B0;} .tk-attr{color:#F0B45A;} .tk-cm{color:#8A90A6;}
+  .test-opt > span{flex:1;min-width:0;overflow-wrap:anywhere;}
+  .box-title{flex-wrap:wrap;}
+  .step-text{min-width:0;overflow-wrap:anywhere;}
+  .lit li{overflow-wrap:anywhere;}
+  .lit a{word-break:break-all;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .tbl-wrap{overflow-x:auto;margin:6px 0 24px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow);}
+  table.cmp{border-collapse:collapse;width:100%;min-width:560px;font-size:14px;line-height:1.5;}
+  table.cmp th, table.cmp td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line);}
+  table.cmp thead th{background:var(--accent-tint);color:var(--accent-ink);font-weight:700;}
+  table.cmp tbody th{font-weight:700;color:var(--ink);background:var(--surface-2);}
+  table.cmp tr:last-child > *{border-bottom:0;}
+  table.cmp code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.84em;background:var(--surface-2);border:1px solid var(--line);border-radius:5px;padding:1px 5px;}
+  .tk-sh{color:#E9ECF5;}
+  @media (prefers-reduced-motion: reduce){ .progress-track .fill{transition:none;} html{scroll-behavior:auto;} }
 </style>
 </head>
 <body>
-
-
-<div class="chrome">
+<a class="skip-link" href="#main">Перейти до основного вмісту</a>
+<header class="chrome">
   <div class="browser">
     <div class="browser-bar">
-      <div class="dots"><span></span><span></span><span></span></div>
-      <div class="addr">вебдизайн-курс.ua/lecture-10</div>
+      <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="addr">вебдизайн-курс.ua/лекція-10/shtuchnyi-intelekt-u-vebdyzaini</div>
     </div>
     <div class="hero">
-      <div class="crumb"><a href="index.html">Вебдизайн</a> · Модуль IV · Лекція 10</div>
-      <span class="eyebrow">Дисципліна · Лекція 10</span>
+      <span class="eyebrow">Лекція 10 · Тема 10</span>
       <h1>Штучний інтелект у вебдизайні</h1>
-      <p class="sub">Модуль IV «Сучасні технології та інструменти вебдизайну»</p>
-
-      <div class="status">
-        <span class="dot"></span>
-        <p><b>Конспект цієї лекції готується.</b> Повний інтерактивний матеріал — з поясненнями, завданнями, інфографікою та самоперевіркою — з'явиться тут найближчим часом, за зразком Лекції 1.</p>
-      </div>
-
-      <div class="actions">
-        <a class="btn primary" href="lecture-01.html">Переглянути приклад: Лекція 1 →</a>
-        <a class="btn ghost" href="index.html">← До всіх лекцій курсу</a>
+      <p class="theme">AI швидко дає чернетки макетів, текстів, зображень і коду, але відповідальність за результат лишається на вас. Розбираємо інструменти, вчимося ставити завдання, з’ясовуємо, що каже закон про авторство, маркування й дані, і використовуємо AI, щоб сайт став доступнішим.</p>
+      <div class="meta-row">
+        <span class="meta-chip">📚 <b>4</b> розділи</span>
+        <span class="meta-chip">🧩 <b>2</b> практичні завдання</span>
+        <span class="meta-chip">✅ <b>4</b> тести на розуміння</span>
+        <span class="meta-chip">🎓 Курс «Вебдизайн», коледж</span>
       </div>
     </div>
   </div>
-</div>
+</header>
 
-<footer>Вебдизайн · спеціальність 126 «Інформаційні системи і технології» / F6 «Інформаційні системи і технології»</footer>
+<nav class="toc-bar" aria-label="Зміст лекції">
+  <div class="toc-inner">
+    <a href="#tools" data-toc="tools">1. AI-інструменти</a>
+    <a href="#prompts" data-toc="prompts">2. Промпти</a>
+    <a href="#law" data-toc="law">3. Етика й право</a>
+    <a href="#a11y" data-toc="a11y">4. Доступність і UX</a>
+    <span class="toc-progress" id="tocProgress">прогрес: <b>0%</b></span>
+  </div>
+  <div class="progress-track"><div class="fill" id="progressFill"></div></div>
+</nav>
 
+<main id="main">
+
+  <section class="lit" id="literature" aria-labelledby="lit-h">
+    <h2 id="lit-h">Література до теми</h2>
+    <ol>
+      <li>Stack Overflow. 2026 Developer Survey Reveals Positive Sentiment Towards AI — but Trust Remains Conditional, 06.10.2026. URL: <a href="https://stackoverflow.co/company/press/archive/stack-overflow-annual-developer-survey-ai-trust-conditional" target="_blank" rel="noopener">stackoverflow.co/company/press/archive/stack-overflow-annual-developer-survey-ai-trust-conditional</a> (дата звернення: 06.11.2026).</li>
+      <li>WebAIM. The WebAIM Million: The 2026 report on the accessibility of the top 1,000,000 home pages. URL: <a href="https://webaim.org/projects/million/" target="_blank" rel="noopener">webaim.org/projects/million</a> (дата звернення: 06.11.2026).</li>
+      <li>Figma Learn. Work with the Figma agent in design files. URL: <a href="https://help.figma.com/hc/en-us/articles/37998629035799-Work-with-the-Figma-agent-in-design-files" target="_blank" rel="noopener">help.figma.com/hc/en-us/articles/37998629035799-Work-with-the-Figma-agent-in-design-files</a> (дата звернення: 06.11.2026).</li>
+      <li>Figma Learn. How AI credits work. URL: <a href="https://help.figma.com/hc/en-us/articles/33459875669015" target="_blank" rel="noopener">help.figma.com/hc/en-us/articles/33459875669015</a> (дата звернення: 06.11.2026).</li>
+      <li>Webflow Help Center. Build a site with Webflow’s AI site builder. URL: <a href="https://help.webflow.com/hc/en-us/articles/38840145286035" target="_blank" rel="noopener">help.webflow.com/hc/en-us/articles/38840145286035</a> (дата звернення: 06.11.2026).</li>
+      <li>Framer. AI website builder. URL: <a href="https://framer.com/solutions/ai-website-builder/" target="_blank" rel="noopener">framer.com/solutions/ai-website-builder</a> (дата звернення: 06.11.2026).</li>
+      <li>Adobe. Adobe Firefly. URL: <a href="https://www.adobe.com/uk/products/firefly/" target="_blank" rel="noopener">www.adobe.com/uk/products/firefly</a> (дата звернення: 06.11.2026).</li>
+      <li>Figma Learn. Use First Draft with Figma AI. URL: <a href="https://help.figma.com/hc/en-us/articles/23955143044247" target="_blank" rel="noopener">help.figma.com/hc/en-us/articles/23955143044247</a> (дата звернення: 06.11.2026).</li>
+      <li>Figma Learn. Explore Figma Make. URL: <a href="https://help.figma.com/hc/en-us/articles/31304412302231-Explore-Figma-Make" target="_blank" rel="noopener">help.figma.com/hc/en-us/articles/31304412302231-Explore-Figma-Make</a> (дата звернення: 06.11.2026).</li>
+      <li>Google for Developers Blog. From idea to app: Introducing Stitch, a new way to design UIs, 20.05.2025. URL: <a href="https://developers.googleblog.com/en/stitch-a-new-way-to-design-uis/" target="_blank" rel="noopener">developers.googleblog.com/en/stitch-a-new-way-to-design-uis</a> (дата звернення: 06.11.2026).</li>
+      <li>Zapier. What is Google Stitch? URL: <a href="https://zapier.com/blog/google-stitch/" target="_blank" rel="noopener">zapier.com/blog/google-stitch</a> (дата звернення: 06.11.2026).</li>
+      <li>Uizard. Pricing. URL: <a href="https://uizard.io/pricing/" target="_blank" rel="noopener">uizard.io/pricing</a> (дата звернення: 06.11.2026).</li>
+      <li>Wix Help Center. Wix Harmony Editor: Creating a Site with AI. URL: <a href="https://support.wix.com/en/article/wix-harmony-editor-creating-a-site-with-ai" target="_blank" rel="noopener">support.wix.com/en/article/wix-harmony-editor-creating-a-site-with-ai</a> (дата звернення: 06.11.2026).</li>
+      <li>Mind.ua. Конструктор сайтів Weblium з вбудованим AI-помічником, 07.11.2023. URL: <a href="https://mind.ua/news/20264933-hochete-vlasnij-veb-sajt-vsogo-za-dekilka-hvilin-konstruktor-sajtiv-weblium-z-vbudovanim-ai-pomichn" target="_blank" rel="noopener">mind.ua/news/20264933-hochete-vlasnij-veb-sajt-vsogo-za-dekilka-hvilin-konstruktor-sajtiv-weblium-z-vbudovanim-ai-pomichn</a> (дата звернення: 06.11.2026).</li>
+      <li>v0 Docs. What is v0? URL: <a href="https://v0.app/docs" target="_blank" rel="noopener">v0.app/docs</a> (дата звернення: 06.11.2026).</li>
+      <li>StackBlitz. bolt.new (GitHub). URL: <a href="https://github.com/stackblitz/bolt.new" target="_blank" rel="noopener">github.com/stackblitz/bolt.new</a> (дата звернення: 06.11.2026).</li>
+      <li>Lovable Documentation. FAQ. URL: <a href="https://docs.lovable.dev/introduction/faq" target="_blank" rel="noopener">docs.lovable.dev/introduction/faq</a> (дата звернення: 06.11.2026).</li>
+      <li>DeepL. DeepL adds Ukrainian, 14.09.2022. URL: <a href="https://www.deepl.com/en/press-release/deepl-adds-ukrainian" target="_blank" rel="noopener">www.deepl.com/en/press-release/deepl-adds-ukrainian</a> (дата звернення: 06.11.2026).</li>
+      <li>Canva Newsroom. Introducing Magic Studio: the power of AI, all in one place. URL: <a href="https://www.canva.com/newsroom/news/magic-studio/" target="_blank" rel="noopener">www.canva.com/newsroom/news/magic-studio</a> (дата звернення: 06.11.2026).</li>
+      <li>Recraft. AI vector generator. URL: <a href="https://recraft.ai/vector-generator" target="_blank" rel="noopener">recraft.ai/vector-generator</a> (дата звернення: 06.11.2026).</li>
+      <li>Midjourney Docs. Free Trials. URL: <a href="https://docs.midjourney.com/hc/en-us/articles/27870399340173-Free-Trials" target="_blank" rel="noopener">docs.midjourney.com/hc/en-us/articles/27870399340173-Free-Trials</a> (дата звернення: 06.11.2026).</li>
+      <li>Cursor Help. Pricing and plans. URL: <a href="https://cursor.com/help/account-and-billing/pricing" target="_blank" rel="noopener">cursor.com/help/account-and-billing/pricing</a> (дата звернення: 06.11.2026).</li>
+      <li>WordPress.org Plugins. Microsoft Clarity. URL: <a href="https://wordpress.org/plugins/microsoft-clarity/" target="_blank" rel="noopener">wordpress.org/plugins/microsoft-clarity</a> (дата звернення: 06.11.2026).</li>
+      <li>GitHub Docs. Setting up GitHub Copilot for yourself. URL: <a href="https://docs.github.com/en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-self" target="_blank" rel="noopener">docs.github.com/en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-self</a> (дата звернення: 06.11.2026).</li>
+      <li>Anthropic. Prompting best practices (Claude Docs). URL: <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener">platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices</a> (дата звернення: 06.11.2026).</li>
+      <li>Закон України «Про авторське право і суміжні права» від 01.12.2022 № 2811-IX. URL: <a href="https://zakon.rada.gov.ua/laws/show/2811-20" target="_blank" rel="noopener">zakon.rada.gov.ua/laws/show/2811-20</a> (дата звернення: 06.11.2026).</li>
+      <li>U.S. Copyright Office. Copyright Office Releases Part 2 of Artificial Intelligence Report, 29.01.2025. URL: <a href="https://www.copyright.gov/newsnet/2025/1060.html" target="_blank" rel="noopener">www.copyright.gov/newsnet/2025/1060.html</a> (дата звернення: 06.11.2026).</li>
+      <li>Reed Smith. Supreme Court denies certiorari in Thaler v. Perlmutter, 2026. URL: <a href="https://www.reedsmith.com/our-insights/blogs/viewpoints/102mlpl/supreme-court-denies-certiorari-in-thaler-v-perlmutter-human-only-rule-for-ai/" target="_blank" rel="noopener">www.reedsmith.com/our-insights/blogs/viewpoints/102mlpl/supreme-court-denies-certiorari-in-thaler-v-perlmutter-human-only-rule-for-ai</a> (дата звернення: 06.11.2026).</li>
+      <li>European Commission. Transparency obligations under Article 50 of the AI Act (FAQ). URL: <a href="https://digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act" target="_blank" rel="noopener">digital-strategy.ec.europa.eu/en/faqs/transparency-obligations-under-article-50-ai-act</a> (дата звернення: 06.11.2026).</li>
+      <li>Кабінет Міністрів України. Регулювання штучного інтелекту в Україні: Мінцифри презентує Білу книгу, 26.06.2024. URL: <a href="https://www.kmu.gov.ua/news/rehuliuvannia-shtuchnoho-intelektu-v-ukraini-mintsyfry-prezentuie-bilu-knyhu" target="_blank" rel="noopener">www.kmu.gov.ua/news/rehuliuvannia-shtuchnoho-intelektu-v-ukraini-mintsyfry-prezentuie-bilu-knyhu</a> (дата звернення: 06.11.2026).</li>
+      <li>Кабінет Міністрів України. Мінцифри разом з партнерами розробило рекомендації для медіа, як відповідально використовувати штучний інтелект, 24.01.2024. URL: <a href="https://www.kmu.gov.ua/news/mintsyfry-razom-z-partneramy-ta-profilnymy-ekspertamy-rozrobylo-rekomendatsii-dlia-media-iak-vidpovidalno-vykorystovuvaty-shtuchnyi-intelekt" target="_blank" rel="noopener">www.kmu.gov.ua/news/mintsyfry-razom-z-partneramy-ta-profilnymy-ekspertamy-rozrobylo-rekomendatsii-dlia-media-iak-vidpovidalno-vykorystovuvaty-shtuchnyi-intelekt</a> (дата звернення: 06.11.2026).</li>
+      <li>Кабінет Міністрів України. Мінцифри та МОН розробили рекомендації щодо відповідального використання ШІ у вузах, 01.05.2025. URL: <a href="https://www.kmu.gov.ua/news/mintsyfry-ta-mon-razom-z-ekspertamy-rozrobyly-rekomendatsii-shchodo-vidpovidalnoho-vykorystannia-shi-u-vuzakh" target="_blank" rel="noopener">www.kmu.gov.ua/news/mintsyfry-ta-mon-razom-z-ekspertamy-rozrobyly-rekomendatsii-shchodo-vidpovidalnoho-vykorystannia-shi-u-vuzakh</a> (дата звернення: 06.11.2026).</li>
+      <li>Закон України «Про захист персональних даних» від 01.06.2010 № 2297-VI. URL: <a href="https://zakon.rada.gov.ua/laws/show/2297-17" target="_blank" rel="noopener">zakon.rada.gov.ua/laws/show/2297-17</a> (дата звернення: 06.11.2026).</li>
+      <li>Європейська правда. Занедбана реформа: як у ЄС захищають персональні дані і чому Україна йде до цього так повільно, 23.10.2026. URL: <a href="https://www.eurointegration.com.ua/articles/2026/10/23/7248359/" target="_blank" rel="noopener">www.eurointegration.com.ua/articles/2026/10/23/7248359</a> (дата звернення: 06.11.2026).</li>
+      <li>OWASP Gen AI Security Project. OWASP Top 10 for LLM Applications 2025. URL: <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener">genai.owasp.org/llm-top-10</a> (дата звернення: 06.11.2026).</li>
+      <li>Spracklen J. та ін. We Have a Package for You! A Comprehensive Analysis of Package Hallucinations by Code Generating LLMs. arXiv:2406.10279. URL: <a href="https://arxiv.org/html/2406.10279v3" target="_blank" rel="noopener">arxiv.org/html/2406.10279v3</a> (дата звернення: 06.11.2026).</li>
+      <li>C2PA. Frequently Asked Questions. URL: <a href="https://c2pa.org/faq/" target="_blank" rel="noopener">c2pa.org/faq</a> (дата звернення: 06.11.2026).</li>
+      <li>Deque. Automated testing study identifies 57 percent of digital accessibility issues, 10.03.2021. URL: <a href="https://www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues" target="_blank" rel="noopener">www.deque.com/blog/automated-testing-study-identifies-57-percent-of-digital-accessibility-issues</a> (дата звернення: 06.11.2026).</li>
+      <li>Federal Trade Commission. FTC Approves Final Order Requiring accessiBe to pay $1 Million, 22.04.2025. URL: <a href="https://ftc.gov/news-events/news/press-releases/2025/04/ftc-approves-final-order-requiring-accessibe-pay-1-million" target="_blank" rel="noopener">ftc.gov/news-events/news/press-releases/2025/04/ftc-approves-final-order-requiring-accessibe-pay-1-million</a> (дата звернення: 06.11.2026).</li>
+      <li>AccessibleEU. The EAA comes into effect in June 2025. Are you ready? URL: <a href="https://accessible-eu-centre.ec.europa.eu/content-corner/news/eaa-comes-effect-june-2025-are-you-ready-2025-01-31_en" target="_blank" rel="noopener">accessible-eu-centre.ec.europa.eu/content-corner/news/eaa-comes-effect-june-2025-are-you-ready-2025-01-31_en</a> (дата звернення: 06.11.2026).</li>
+      <li>Верховна Рада України. Картка законопроєкту № 14278 «Про цифрову доступність в Україні». URL: <a href="https://itd.rada.gov.ua/billinfo/Bills/Card/59255" target="_blank" rel="noopener">itd.rada.gov.ua/billinfo/Bills/Card/59255</a> (дата звернення: 06.11.2026).</li>
+      <li>Budiu R. Evaluating AI-Simulated Behavior: Insights from Three Studies on Digital Twins and Synthetic Users. Nielsen Norman Group, 15.08.2025. URL: <a href="https://www.nngroup.com/articles/ai-simulations-studies/" target="_blank" rel="noopener">www.nngroup.com/articles/ai-simulations-studies</a> (дата звернення: 06.11.2026).</li>
+      <li>W3C WAI. An alt Decision Tree (Images Tutorial). URL: <a href="https://www.w3.org/WAI/tutorials/images/decision-tree/" target="_blank" rel="noopener">www.w3.org/WAI/tutorials/images/decision-tree</a> (дата звернення: 06.11.2026).</li>
+    </ol>
+  </section>
+  <!-- ================= 01. Огляд AI-інструментів для вебдизайну ================= -->
+  <section class="topic" id="tools" aria-labelledby="tools-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">01</span>
+      <h2 id="tools-h">Огляд AI-інструментів для вебдизайну</h2>
+    </div>
+
+    <p>Створення макета, верстка, збирання сайту в конструкторі: тепер майже на кожному з цих етапів з’явився помічник — <b>генеративний штучний інтелект</b> (AI, ШІ): моделі, які за текстовим запитом створюють текст, зображення, макет або код. Мовні моделі (LLM) не «знають» правильної відповіді: вони обчислюють найімовірніше продовження тексту. Тому результат звучить переконливо навіть тоді, коли він хибний. Такі помилки називають <b>галюцинаціями</b>: вигадані факти, цифри, джерела, неіснуючі функції чи бібліотеки.</p>
+
+    <p><b>Наскільки AI вже поширений.</b> За опитуванням Stack Overflow 2026 року (понад 30 000 респондентів із 169 країн, результати оприлюднено 6 жовтня 2026 року) лише 17,2 % розробників не використовують AI-інструменти в роботі; помічниками чи агентами для програмування користуються 66 %, універсальними чат-асистентами — 63 %. Водночас довіра умовна: приблизно половина довіряє результату лише тоді, коли може його легко перевірити, а для важливих рішень — лише 6,6 %. А звіт WebAIM Million 2026 (дані за лютий 2026 року) зафіксував погіршення доступності: помилки WCAG виявлено на 95,9 % з мільйона найпопулярніших головних сторінок проти 94,8 % у 2025 році. Автори звіту пов’язують це зокрема з поширенням автоматизованого й AI-асистованого програмування («vibe coding»). Висновок простий: AI пришвидшує роботу, але не гарантує якості.</p>
+
+    <p><b>Три типи AI-інструментів.</b> Щоб не загубитися серед сотень сервісів, корисно розрізняти три типи:</p>
+
+    <ul>
+      <li><b>Універсальні чат-асистенти</b> — ChatGPT (OpenAI), Claude (Anthropic), Gemini (Google), Microsoft Copilot. Вони вміють усе потроху: пишуть і редагують тексти, пояснюють і генерують код, аналізують документи, а частина з них створює зображення. Але не знають вашого проєкту, доки ви його не опишете.</li>
+      <li><b>AI-функції у звичних програмах</b> — агент у Figma, Magic Studio в Canva, AI Site Builder у Webflow, генеративні функції Adobe. Вони працюють усередині файлу чи сайту, тож результат одразу можна редагувати звичними інструментами.</li>
+      <li><b>Генератори «від промпту до сайту чи застосунку»</b> — v0, Bolt.new, Lovable, Figma Make, Google Stitch. За описом вони створюють інтерфейс разом із кодом і часто одразу публікують його. Такий спосіб роботи називають «vibe coding»: людина описує, що хоче, а код пише модель.</li>
+    </ul>
+
+    <p>Ці інструменти зручно впорядкувати за етапами створення сайту (рис. 1). Далі — найпоширеніші сервіси для кожного етапу. Тарифи й ліміти подано станом на листопад 2026 року: вони змінюються часто, тому перед роботою перевіряйте сторінку цін сервісу.</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 452" role="img" aria-label="Шість етапів створення сайту з прикладами AI-сервісів: бриф і дослідження, структура й макет, тексти, зображення, код, перевірка. На кожному етапі AI робить чернетку, а людина перевіряє: факти, бренд, права, безпеку, доступність." xmlns="http://www.w3.org/2000/svg"><rect x="20.0" y="20" width="136" height="300" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="32.0" y="44" font-size="11" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЕТАП 1</text><text x="32.0" y="68" font-size="14.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Бриф і</text><text x="32.0" y="87" font-size="14.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">дослідження</text><rect x="30.0" y="100" width="116" height="100" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="40.0" y="120" font-size="10.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">AI робить</text><text x="40.0" y="139" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">чат-асистенти,</text><text x="40.0" y="155" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Microsoft</text><text x="40.0" y="171" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Clarity</text><rect x="30.0" y="210" width="116" height="98" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="40.0" y="230" font-size="10.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">людина перевіряє</text><text x="40.0" y="251" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">факти,</text><text x="40.0" y="268" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">реальні</text><text x="40.0" y="285" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">користувачі</text><line x1="157.0" y1="170" x2="160.9" y2="170.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="165.8,170.0 159.4,172.9 159.4,167.1" fill="var(--ink-muted)"/><rect x="166.8" y="20" width="136" height="300" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="178.8" y="44" font-size="11" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЕТАП 2</text><text x="178.8" y="68" font-size="14.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Структура</text><text x="178.8" y="87" font-size="14.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">й макет</text><rect x="176.8" y="100" width="116" height="100" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="186.8" y="120" font-size="10.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">AI робить</text><text x="186.8" y="139" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">агент Figma,</text><text x="186.8" y="155" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Stitch, Uizard,</text><text x="186.8" y="171" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Webflow AI,</text><text x="186.8" y="187" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Wix Aria</text><rect x="176.8" y="210" width="116" height="98" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="186.8" y="230" font-size="10.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">людина перевіряє</text><text x="186.8" y="251" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">бриф, бренд,</text><text x="186.8" y="268" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">ліміти</text><text x="186.8" y="285" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">тарифу</text><line x1="303.8" y1="170" x2="307.70000000000005" y2="170.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="312.6,170.0 306.2,172.9 306.2,167.1" fill="var(--ink-muted)"/><rect x="313.6" y="20" width="136" height="300" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="325.6" y="44" font-size="11" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЕТАП 3</text><text x="325.6" y="68" font-size="14.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Тексти</text><rect x="323.6" y="100" width="116" height="100" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="333.6" y="120" font-size="10.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">AI робить</text><text x="333.6" y="139" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">чат-асистенти,</text><text x="333.6" y="155" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">DeepL,</text><text x="333.6" y="171" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Magic Write</text><rect x="323.6" y="210" width="116" height="98" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="333.6" y="230" font-size="10.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">людина перевіряє</text><text x="333.6" y="251" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">факти,</text><text x="333.6" y="268" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">обіцянки,</text><text x="333.6" y="285" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">тон бренду</text><line x1="450.6" y1="170" x2="454.50000000000006" y2="170.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="459.4,170.0 453.0,172.9 453.0,167.1" fill="var(--ink-muted)"/><rect x="460.40000000000003" y="20" width="136" height="300" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="472.40000000000003" y="44" font-size="11" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЕТАП 4</text><text x="472.40000000000003" y="68" font-size="14.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Зображення</text><rect x="470.40000000000003" y="100" width="116" height="100" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="480.40000000000003" y="120" font-size="10.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">AI робить</text><text x="480.40000000000003" y="139" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Firefly, Canva,</text><text x="480.40000000000003" y="155" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Recraft,</text><text x="480.40000000000003" y="171" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Midjourney</text><rect x="470.40000000000003" y="210" width="116" height="98" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="480.40000000000003" y="230" font-size="10.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">людина перевіряє</text><text x="480.40000000000003" y="251" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">права,</text><text x="480.40000000000003" y="268" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">позначки,</text><text x="480.40000000000003" y="285" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">alt-текст</text><line x1="597.4000000000001" y1="170" x2="601.3000000000001" y2="170.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="606.2,170.0 599.8,172.9 599.8,167.1" fill="var(--ink-muted)"/><rect x="607.2" y="20" width="136" height="300" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="619.2" y="44" font-size="11" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЕТАП 5</text><text x="619.2" y="68" font-size="14.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Код</text><rect x="617.2" y="100" width="116" height="100" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="627.2" y="120" font-size="10.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">AI робить</text><text x="627.2" y="139" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Copilot, Cursor,</text><text x="627.2" y="155" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">v0, Bolt.new,</text><text x="627.2" y="171" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Lovable</text><rect x="617.2" y="210" width="116" height="98" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="627.2" y="230" font-size="10.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">людина перевіряє</text><text x="627.2" y="251" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">безпека,</text><text x="627.2" y="268" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">пакети,</text><text x="627.2" y="285" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">валідатор</text><line x1="744.2" y1="170" x2="748.1" y2="170.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="753.0,170.0 746.6,172.9 746.6,167.1" fill="var(--ink-muted)"/><rect x="754.0" y="20" width="136" height="300" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><text x="766.0" y="44" font-size="11" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.04em" style="white-space:pre" xml:space="preserve">ЕТАП 6</text><text x="766.0" y="68" font-size="14.5" font-weight="800" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Перевірка</text><rect x="764.0" y="100" width="116" height="100" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.2"/><text x="774.0" y="120" font-size="10.5" font-weight="700" fill="var(--accent-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">AI робить</text><text x="774.0" y="139" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Lighthouse,</text><text x="774.0" y="155" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">WAVE, axe +</text><text x="774.0" y="171" font-size="11" font-weight="600" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">пояснення AI</text><rect x="764.0" y="210" width="116" height="98" rx="8" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.2"/><text x="774.0" y="230" font-size="10.5" font-weight="700" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">людина перевіряє</text><text x="774.0" y="251" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">клавіатура,</text><text x="774.0" y="268" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">зчитувач</text><text x="774.0" y="285" font-size="11" font-weight="600" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">екрана</text><rect x="20" y="340" width="860" height="64" rx="12" fill="var(--surface)" stroke="var(--task)" stroke-width="1.6" stroke-dasharray="6 4"/><text x="450" y="366" font-size="14" font-weight="800" fill="var(--task-ink)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Людина в контурі (human-in-the-loop)</text><text x="450" y="390" font-size="12.5" font-weight="600" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">ставить завдання → перевіряє кожен результат → відповідає перед замовником і законом</text><text x="20" y="436" font-size="12" font-weight="500" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Назви інструментів — приклади станом на листопад 2026 року; можливості й ліміти безкоштовних планів змінюються часто.</text></svg>
+      <figcaption>Рис. 1. AI на етапах створення сайту: на кожному етапі людина ставить завдання й перевіряє результат.</figcaption>
+    </figure>
+
+    <p><b>1. Дослідження й бриф.</b> Чат-асистенти допомагають підготуватися до проєкту: скласти питання для інтерв’ю із замовником, порівняти сайти конкурентів за переліком критеріїв, запропонувати структуру сторінок (карту сайту) й описати типових відвідувачів. Важливо: «типовий відвідувач», придуманий моделлю, — це гіпотеза, а не дослідження (розділ 4). Для вже працюючого сайту є <b>Microsoft Clarity</b> — безкоштовний сервіс поведінкової аналітики: теплові карти кліків і прокручування, записи сесій відвідувачів і позначки проблем на зразок «сердитих» повторних кліків чи кліків, які нічого не роблять. Вбудований помічник Clarity Copilot стисло підсумовує ці дані, але висновки про зміни в дизайні робить людина.</p>
+
+    <p><b>2. Макети й прототипи.</b> Тут найбільше нових інструментів:</p>
+
+    <ul>
+      <li><b>Агент у Figma</b> (Agents) створює й змінює макет просто у файлі. За довідкою Figma він доступний і на безкоштовному тарифі Starter, але кожна дія витрачає AI-кредити: на Starter — 500 на місяць і не більше 150 на день, на плані Education (для перевірених студентів і викладачів) — 3000 на місяць. На планах Professional і Education є також <b>First Draft</b> — генерація каркаса чи базового дизайну з вбудованої бібліотеки компонентів.</li>
+      <li><b>Figma Make</b> перетворює промпт або готовий макет Figma на інтерактивний прототип чи вебзастосунок: з ним працюють через чат з AI-агентом, можна редагувати код і опублікувати результат як сайт. За довідкою Figma, повний доступ мають повні місця (Full seats) на платних планах, інші можуть його випробувати.</li>
+      <li><b>Google Stitch</b> — експериментальний інструмент Google Labs, представлений 20 травня 2025 року на основі моделі Gemini 2.5 Pro. За текстовим описом або зображенням (ескізом, скриншотом, каркасом) він створює кілька варіантів інтерфейсу й фронтенд-код, а дизайн можна вставити у Figma. Stitch виріс із сервісу Galileo AI, який Google придбала 2025 року.</li>
+      <li><b>Uizard</b> (Autodesigner) за промптом англійською до 300 символів і описом стилю генерує кілька екранів, а Wireframe scanner перетворює фото ескізу, намальованого від руки, на редагований екран. На безкоштовному тарифі — 2 проєкти, до 5 екранів у проєкті й кілька генерацій на місяць.</li>
+    </ul>
+
+    <p><b>3. Конструктори сайтів з AI.</b> Майже всі конструктори додали генерацію сайту за описом бізнесу:</p>
+
+    <ul>
+      <li><b>Webflow AI Site Builder</b> (Dashboard → New site → AI Site Builder) пропонує структуру, генерує до п’яти сторінок, тему (кольори, шрифти, кнопки, відступи) і сторінку стильового посібника з набором класів. Обмеження: працює лише для нових сайтів; на безкоштовному Starter можна залишити дві статичні сторінки, а генерація й редагування текстів за допомогою Webflow AI потребують платного плану.</li>
+      <li><b>Framer</b> перетворює промпт чи бриф на структуру сторінки, секції й перші тексти; згенерований сайт лишається на полотні, де його доопрацьовують компонентами й точками перелому.</li>
+      <li><b>Wix Harmony</b> — редактор Wix з AI-агентом <b>Aria</b>: ви описуєте бізнес у чаті, Aria заповнює профіль сайту, складає промпт для дизайну й генерує сторінки, макети, кольори, стартові тексти й зображення. Сама довідка Wix попереджає, що Aria може помилятися, тож результат треба перевірити перед публікацією.</li>
+      <li><b>Weblium</b> — український конструктор. У його редакторі є функція AI Writing на основі ChatGPT, що допомагає писати чернетки текстів, а ще 2023 року Weblium тестував генерацію сайту за назвою компанії й коротким описом.</li>
+    </ul>
+
+    <p><b>4. Від промпту до коду.</b> Окрема група сервісів одразу пише робочий код інтерфейсу:</p>
+
+    <ul>
+      <li><b>v0</b> від компанії Vercel — AI-агент, що створює код інтерфейсів і повноцінних вебзастосунків на сучасному стеку (Next.js, Tailwind CSS, бібліотека компонентів shadcn/ui) і публікує їх в один клік на хостингу Vercel.</li>
+      <li><b>Bolt.new</b> від StackBlitz — агент, що в браузері, без встановлення програм, створює, запускає, редагує й публікує вебзастосунки; почати можна безкоштовно, а платні плани додають ліміти AI.</li>
+      <li><b>Lovable</b> — шведська компанія, заснована 2023 року в Стокгольмі. Безкоштовний план дає 5 кредитів на день (до 30 на місяць); за документацією сервісу код і вміст, створені користувачем, належать йому, а проєкт можна синхронізувати з репозиторієм GitHub.</li>
+    </ul>
+
+    <p>Такі генератори зручні для прототипу чи внутрішнього інструмента, але згенерований код треба розуміти й перевіряти: доступність, безпеку, залежності. Саме з поширенням «vibe coding» автори звіту WebAIM пов’язують зростання кількості помилок доступності.</p>
+
+    <p><b>5. Тексти й переклад.</b> Чат-асистенти пишуть заголовки, описи послуг, відповіді на часті запитання, мета-описи для SEO, скорочують і змінюють тон тексту. Для перекладу сайту зручний <b>DeepL</b>: українську мову в ньому додано 14 вересня 2022 року, а глосарій дає змогу закріпити переклад термінів бренду. Тексти генерують і вбудовані помічники, наприклад Magic Write у Canva. Саме в текстах найчастіше трапляються вигадані факти й надмірні обіцянки, тож кожну цифру й кожне «гарантуємо» перевіряють.</p>
+
+    <p><b>6. Зображення й графіка.</b> Для різних задач — різні генератори:</p>
+
+    <ul>
+      <li><b>Adobe Firefly.</b> Adobe заявляє, що моделі Firefly навчено на ліцензованому вмісті Adobe Stock і творах суспільного надбання, тому їхні результати комерційно безпечні, а до файлів автоматично додаються <b>Content Credentials</b> — позначка про використання AI. Firefly можна безкоштовно використовувати з обліковим записом Adobe.</li>
+      <li><b>Canva Magic Studio</b> об’єднує AI-функції Canva: Magic Media (зображення за текстом), Magic Design (дизайн за описом), Magic Edit, Magic Expand і Magic Grab (зміна, розширення й виокремлення частин фото), Magic Write (тексти). Canva повідомила про фонд у 200 мільйонів доларів на три роки для авторів, які погодилися, щоб їхній вміст використовували для навчання моделей Canva.</li>
+      <li><b>Recraft</b> генерує не лише растрові, а й <b>векторні</b> зображення та іконки з експортом у SVG — зручно для іконок сайту й ілюстрацій, які масштабуються без втрати якості. Безкоштовний акаунт дає до 30 генерацій на день, але комерційні права — лише на платних планах.</li>
+      <li><b>Midjourney</b> — один із найвідоміших генераторів художніх зображень, працює за платною підпискою: за довідкою сервісу безкоштовної пробної версії на сайті й у Discord немає.</li>
+      <li><b>Генерація в чат-асистентах і Figma.</b> Зображення створюють і в ChatGPT та Gemini, а у Figma, крім генерування, є прибирання фону, векторизація, підвищення роздільності; ці дії витрачають AI-кредити.</li>
+    </ul>
+
+    <p><b>7. Код.</b> Помічники програміста доповнюють код у редакторі, пояснюють його й виправляють помилки. <b>GitHub Copilot Free</b> дає до 2000 доповнень коду й обмежений доступ до інших функцій, а для студентів і викладачів GitHub пропонує окремі безкоштовні варіанти. <b>Cursor</b> — редактор коду з вбудованим AI-агентом, який може змінювати кілька файлів проєкту за одним завданням; безкоштовний план має обмежене використання. Чат-асистенти теж пишуть і пояснюють HTML і CSS. Згенерований код перевіряють тими самими інструментами, що й власний: DevTools і валідатор W3C.</p>
+
+    <p><b>8. Перевірка й аналітика.</b> AI допомагає пояснити помилки, які знаходять автоматичні перевірки доступності й продуктивності (Lighthouse, WAVE, axe), і підсумувати поведінку відвідувачів (Clarity Copilot). Як це робити й де межі автоматизації — у розділі 4.</p>
+
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Порівняльна таблиця AI-інструментів"><table class="cmp">
+      <thead><tr><th scope="col">Етап</th><th scope="col">Приклади сервісів</th><th scope="col">Що дає</th><th scope="col">На що зважати</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Дослідження</th><td>ChatGPT, Claude, Gemini, Microsoft Copilot; Microsoft Clarity</td><td>питання, структура сайту, аналіз поведінки відвідувачів</td><td>гіпотези ≠ дослідження; персональні дані</td></tr>
+        <tr><th scope="row">Макет</th><td>агент Figma, First Draft, Figma Make, Google Stitch, Uizard</td><td>кілька варіантів макета й прототипу за хвилини</td><td>ліміти кредитів; чужий стиль; тексти-заглушки</td></tr>
+        <tr><th scope="row">Конструктор</th><td>Webflow AI Site Builder, Framer, Wix Harmony (Aria), Weblium</td><td>структура сайту, тема, перші тексти й зображення</td><td>обмеження безкоштовних планів; перевірка перед публікацією</td></tr>
+        <tr><th scope="row">Код з промпту</th><td>v0, Bolt.new, Lovable</td><td>робочий прототип чи застосунок з кодом і публікацією</td><td>доступність, безпека, залежності; власність коду</td></tr>
+        <tr><th scope="row">Тексти</th><td>чат-асистенти, Magic Write, DeepL</td><td>чернетки текстів, SEO-описи, переклад</td><td>вигадані факти й обіцянки; глосарій бренду</td></tr>
+        <tr><th scope="row">Зображення</th><td>Adobe Firefly, Canva Magic Studio, Recraft, Midjourney</td><td>ілюстрації, банери, векторні іконки</td><td>права й ліцензія; маркування; alt-текст</td></tr>
+        <tr><th scope="row">Код у редакторі</th><td>GitHub Copilot, Cursor, чат-асистенти</td><td>доповнення, пояснення й виправлення коду</td><td>вразливості; неіснуючі пакети; доступність</td></tr>
+      </tbody>
+    </table></div>
+
+    <p><b>Де знайти ці сервіси.</b> Нижче — офіційні адреси всіх сервісів із цього розділу (перевірено 06.11.2026). Реєструйтеся лише на офіційних сайтах: шахрайські «копії» популярних AI-сервісів із схожими назвами — поширений спосіб викрасти облікові дані.</p>
+
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Офіційні адреси AI-сервісів"><table class="cmp">
+      <thead><tr><th scope="col">Сервіс</th><th scope="col">Розробник</th><th scope="col">Для чого</th><th scope="col">Адреса</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">ChatGPT</th><td>OpenAI</td><td>чат-асистент</td><td><a href="https://chatgpt.com/" target="_blank" rel="noopener">chatgpt.com</a></td></tr>
+        <tr><th scope="row">Claude</th><td>Anthropic</td><td>чат-асистент</td><td><a href="https://claude.com/product/overview" target="_blank" rel="noopener">claude.com/product/overview</a></td></tr>
+        <tr><th scope="row">Gemini</th><td>Google</td><td>чат-асистент</td><td><a href="https://gemini.google.com/" target="_blank" rel="noopener">gemini.google.com</a></td></tr>
+        <tr><th scope="row">Microsoft Copilot</th><td>Microsoft</td><td>чат-асистент</td><td><a href="https://copilot.microsoft.com/" target="_blank" rel="noopener">copilot.microsoft.com</a></td></tr>
+        <tr><th scope="row">Microsoft Clarity</th><td>Microsoft</td><td>поведінкова аналітика</td><td><a href="https://clarity.microsoft.com/" target="_blank" rel="noopener">clarity.microsoft.com</a></td></tr>
+        <tr><th scope="row">Figma (агент, First Draft)</th><td>Figma</td><td>макети</td><td><a href="https://www.figma.com/" target="_blank" rel="noopener">figma.com</a></td></tr>
+        <tr><th scope="row">Figma Make</th><td>Figma</td><td>прототипи й вебзастосунки</td><td><a href="https://www.figma.com/make/" target="_blank" rel="noopener">figma.com/make</a></td></tr>
+        <tr><th scope="row">Google Stitch</th><td>Google Labs</td><td>макети й фронтенд-код</td><td><a href="https://stitch.withgoogle.com/" target="_blank" rel="noopener">stitch.withgoogle.com</a></td></tr>
+        <tr><th scope="row">Uizard</th><td>Uizard</td><td>макети, ескіз → екран</td><td><a href="https://uizard.io/" target="_blank" rel="noopener">uizard.io</a></td></tr>
+        <tr><th scope="row">Webflow AI Site Builder</th><td>Webflow</td><td>конструктор сайтів</td><td><a href="https://webflow.com/ai-site-builder" target="_blank" rel="noopener">webflow.com/ai-site-builder</a></td></tr>
+        <tr><th scope="row">Framer</th><td>Framer</td><td>конструктор сайтів</td><td><a href="https://www.framer.com/" target="_blank" rel="noopener">framer.com</a></td></tr>
+        <tr><th scope="row">Wix Harmony</th><td>Wix</td><td>конструктор сайтів</td><td><a href="https://www.wix.com/harmony" target="_blank" rel="noopener">wix.com/harmony</a></td></tr>
+        <tr><th scope="row">Weblium</th><td>Weblium</td><td>конструктор сайтів</td><td><a href="https://weblium.com/" target="_blank" rel="noopener">weblium.com</a></td></tr>
+        <tr><th scope="row">v0</th><td>Vercel</td><td>код з промпту</td><td><a href="https://v0.app/" target="_blank" rel="noopener">v0.app</a></td></tr>
+        <tr><th scope="row">Bolt.new</th><td>StackBlitz</td><td>код з промпту</td><td><a href="https://bolt.new/" target="_blank" rel="noopener">bolt.new</a></td></tr>
+        <tr><th scope="row">Lovable</th><td>Lovable</td><td>код з промпту</td><td><a href="https://lovable.dev/" target="_blank" rel="noopener">lovable.dev</a></td></tr>
+        <tr><th scope="row">DeepL</th><td>DeepL</td><td>переклад</td><td><a href="https://www.deepl.com/translator" target="_blank" rel="noopener">deepl.com/translator</a></td></tr>
+        <tr><th scope="row">Canva Magic Studio</th><td>Canva</td><td>графіка й тексти</td><td><a href="https://www.canva.com/magic/" target="_blank" rel="noopener">canva.com/magic</a></td></tr>
+        <tr><th scope="row">Adobe Firefly</th><td>Adobe</td><td>зображення</td><td><a href="https://www.adobe.com/products/firefly.html" target="_blank" rel="noopener">adobe.com/products/firefly.html</a></td></tr>
+        <tr><th scope="row">Recraft</th><td>Recraft</td><td>векторна графіка, іконки</td><td><a href="https://www.recraft.ai/" target="_blank" rel="noopener">recraft.ai</a></td></tr>
+        <tr><th scope="row">Midjourney</th><td>Midjourney</td><td>зображення</td><td><a href="https://www.midjourney.com/" target="_blank" rel="noopener">midjourney.com</a></td></tr>
+        <tr><th scope="row">GitHub Copilot</th><td>GitHub</td><td>помічник програміста</td><td><a href="https://github.com/features/copilot" target="_blank" rel="noopener">github.com/features/copilot</a></td></tr>
+        <tr><th scope="row">Cursor</th><td>Cursor</td><td>редактор коду з AI</td><td><a href="https://cursor.com/" target="_blank" rel="noopener">cursor.com</a></td></tr>
+        <tr><th scope="row">Lighthouse</th><td>Google</td><td>перевірка сторінки</td><td><a href="https://developer.chrome.com/docs/lighthouse/overview" target="_blank" rel="noopener">developer.chrome.com/docs/lighthouse/overview</a></td></tr>
+        <tr><th scope="row">WAVE</th><td>WebAIM</td><td>перевірка доступності</td><td><a href="https://wave.webaim.org/" target="_blank" rel="noopener">wave.webaim.org</a></td></tr>
+        <tr><th scope="row">axe</th><td>Deque</td><td>перевірка доступності</td><td><a href="https://www.deque.com/axe/" target="_blank" rel="noopener">deque.com/axe</a></td></tr>
+      </tbody>
+    </table></div>
+
+    <p><b>Як обрати AI-інструмент.</b> Перед тим як радити сервіс замовнику чи брати його в роботу, дайте відповідь на шість запитань:</p>
+
+    <ul>
+      <li><b>Задача.</b> Що потрібно: ідеї, макет, готовий код чи одна ілюстрація? Універсальний асистент часто кращий за вузький сервіс, а для готового сайту — навпаки.</li>
+      <li><b>Ліміти й ціна.</b> Скільки генерацій дає безкоштовний план і що буде, коли вони закінчаться посеред роботи.</li>
+      <li><b>Мова.</b> Чи якісно інструмент працює з українською — і в інтерфейсі, і в згенерованих текстах.</li>
+      <li><b>Права на результат.</b> Чи можна використовувати результат комерційно на вашому тарифі (як у Recraft, де комерційні права лише на платних планах) і кому належать код і зображення.</li>
+      <li><b>Дані.</b> Чи використовує сервіс ваш вміст для навчання моделей і чи можна це вимкнути (розділ 3).</li>
+      <li><b>Експорт і стабільність.</b> Чи можна вивантажити результат (код, SVG, файл Figma) і що буде, якщо сервіс змінить умови, як Galileo AI, що став частиною Google Stitch. Зважайте й на походження сервісу: для українського бізнесу це питання репутації й безпеки.</li>
+    </ul>
+
+    <p><b>Людина в контурі.</b> Жоден із цих інструментів не знає вашого замовника, його бренду, законодавства й реальних користувачів. Тому працює правило «людини в контурі» (human-in-the-loop): AI робить чернетку, а людина ставить завдання, перевіряє, виправляє й відповідає за результат. Це правило повторюється в усіх наступних розділах.</p>
+
+    <div class="box test" id="test-1">
+      <div class="box-title"><span class="box-tag">ТЕСТ 1</span> Цифри від AI<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Чат-асистент написав для лендінгу юридичної компанії фразу «Понад 10 000 задоволених клієнтів і 99 % виграних справ». У брифі таких даних немає. Що робити?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>залишити: AI навчався на мільйонах сайтів, тож цифри, імовірно, правдиві</span></button>
+        <button class="test-opt" type="button"><span>вважати це можливою галюцинацією: запитати підтверджені дані в замовника, а без них — прибрати</span></button>
+        <button class="test-opt" type="button"><span>замінити цифри на «понад 5000» і «95 %», щоб звучало скромніше</span></button>
+        <button class="test-opt" type="button"><span>попросити той самий AI перевірити свої цифри й залишити, якщо він їх підтвердить</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+  </section>
+  <!-- ================= 02. Промпт-інжиніринг: як ставити завдання AI ================= -->
+  <section class="topic" id="prompts" aria-labelledby="prompts-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">02</span>
+      <h2 id="prompts-h">Промпт-інжиніринг: як ставити завдання AI</h2>
+    </div>
+
+    <p><b>Промпт</b> (prompt) — текстовий запит до AI-моделі, а <b>промпт-інжиніринг</b> — уміння сформулювати його так, щоб отримати корисний результат з першої-другої спроби. Довідка Anthropic радить уявляти модель як «блискучого, але нового працівника, який не знає ваших правил і процесів»: усе, що він має врахувати, треба сказати. Ключова перевірка — показати промпт колезі, який нічого не знає про проєкт: якщо він не зрозуміє, що робити, модель теж не зрозуміє.</p>
+
+    <p>Добрий промпт для вебдизайну складається з п’яти частин (рис. 2):</p>
+
+    <ul>
+      <li><b>Роль</b> — ким має «бути» модель: «Ти — копірайтер вебстудії, який пише для малого бізнесу».</li>
+      <li><b>Контекст</b> — для кого й навіщо: аудиторія, мета сторінки, тон бренду. Пояснюйте причину вимог: «тексти читатимуть з телефона, тому речення короткі».</li>
+      <li><b>Завдання</b> — що саме зробити: «напиши заголовок H1, підзаголовок і текст кнопки для першого екрана».</li>
+      <li><b>Формат</b> — у якому вигляді віддати: кількість варіантів, довжина, таблиця, список, мова. Кажіть, що робити, а не лише чого не робити.</li>
+      <li><b>Обмеження</b> — межі: «лише факти з брифу нижче», «без слів “гарантуємо” й “найкращий”», «без персональних даних».</li>
+    </ul>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 414" role="img" aria-label="Анатомія промпту з п’яти частин: роль, контекст, завдання, формат, обмеження, плюс бриф у тегах. Праворуч цикл уточнення: промпт, відповідь, перевірка, уточнення — одна зміна за раз." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">ПРОМПТ</text><rect x="20" y="42" width="560" height="330" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.4"/><rect x="36" y="60" width="112" height="40" rx="7" fill="var(--accent)"/><text x="92" y="84.5" font-size="11.5" font-weight="800" fill="var(--surface)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">РОЛЬ</text><text x="162" y="85" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Ти — копірайтер вебстудії.</text><rect x="36" y="110" width="112" height="62" rx="7" fill="var(--task)"/><text x="92" y="145.5" font-size="11.5" font-weight="800" fill="var(--surface)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">КОНТЕКСТ</text><text x="162" y="135" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Лендінг «Старт для ФОП», аудиторія — нові ФОП,</text><text x="162" y="157" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">читають з телефона, бояться штрафів.</text><rect x="36" y="182" width="112" height="40" rx="7" fill="var(--test)"/><text x="92" y="206.5" font-size="11.5" font-weight="800" fill="var(--surface)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">ЗАВДАННЯ</text><text x="162" y="207" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">H1, підзаголовок і кнопка першого екрана.</text><rect x="36" y="232" width="112" height="40" rx="7" fill="var(--ink-soft)"/><text x="92" y="256.5" font-size="11.5" font-weight="800" fill="var(--surface)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">ФОРМАТ</text><text x="162" y="257" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">3 варіанти; H1 ≤ 60 символів, кнопка ≤ 3 слів.</text><rect x="36" y="282" width="112" height="40" rx="7" fill="var(--fail)"/><text x="92" y="306.5" font-size="11.5" font-weight="800" fill="var(--surface)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">ОБМЕЖЕННЯ</text><text x="162" y="307" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Лише факти з &lt;brief&gt;, без «гарантуємо».</text><text x="36" y="356" font-size="11.5" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">+ бриф у тегах &lt;brief&gt;…&lt;/brief&gt;, за потреби 2–3 приклади</text><text x="610" y="30" font-size="12" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">ЦИКЛ УТОЧНЕННЯ</text><circle cx="735" cy="200" r="100" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="5 5"/><rect x="675" y="83" width="120" height="34" rx="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.8"/><text x="735" y="105" font-size="12.5" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">1 промпт</text><rect x="775" y="183" width="120" height="34" rx="17" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.8"/><text x="835" y="205" font-size="12.5" font-weight="800" fill="var(--accent)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">2 відповідь</text><rect x="675" y="283" width="120" height="34" rx="17" fill="var(--surface)" stroke="var(--task)" stroke-width="1.8"/><text x="735" y="305" font-size="12.5" font-weight="800" fill="var(--task)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">3 перевірка</text><rect x="575" y="183" width="120" height="34" rx="17" fill="var(--surface)" stroke="var(--test)" stroke-width="1.8"/><text x="635" y="205" font-size="12.5" font-weight="800" fill="var(--test)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">4 уточнення</text><text x="735" y="188" font-size="11.5" font-weight="700" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">одна</text><text x="735" y="204" font-size="11.5" font-weight="700" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">зміна</text><text x="735" y="220" font-size="11.5" font-weight="700" fill="var(--ink-soft)" text-anchor="middle" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">за раз</text><line x1="781" y1="108" x2="826.2289110577975" y2="173.9588286259547" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="829.0,178.0 823.0,174.3 827.7,171.1" fill="var(--ink-muted)"/><line x1="829" y1="222" x2="783.7710889422025" y2="287.9588286259547" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="781.0,292.0 782.3,285.1 787.0,288.3" fill="var(--ink-muted)"/><line x1="689" y1="292" x2="643.7710889422025" y2="226.0411713740453" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="641.0,222.0 647.0,225.7 642.3,228.9" fill="var(--ink-muted)"/><line x1="641" y1="178" x2="686.2289110577975" y2="112.04117137404529" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="689.0,108.0 687.7,114.9 683.0,111.7" fill="var(--ink-muted)"/><text x="20" y="400" font-size="12.5" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Перевірка — ваша робота: факти, бренд, доступність, права. Модель може «підтвердити» власну помилку.</text></svg>
+      <figcaption>Рис. 2. Анатомія промпту й цикл уточнення: промпт → відповідь → перевірка → уточнення.</figcaption>
+    </figure>
+
+    <p><b>Приклади працюють краще за описи.</b> Якщо потрібен певний стиль, дайте моделі 2–3 зразки (так званий few-shot): наприклад, два вдалі описи послуг вашого замовника. Довідка Anthropic рекомендує 3–5 різноманітних прикладів і радить відокремлювати їх від інструкцій мітками на зразок <code>&lt;example&gt;</code>. Так само виділяйте вхідні дані: бриф, тексти, фрагмент коду.</p>
+
+    <p>Порівняйте два запити для одного завдання:</p>
+
+    <pre class="codeblock"><code>Слабкий:  Напиши текст для сайту юриста.
+
+Сильний:  Ти — копірайтер вебстудії. Пишемо перший екран лендінгу
+«Старт для ФОП» юридичної компанії. Аудиторія — ФОП-початківці,
+які бояться штрафів; читають з телефона. Напиши 3 варіанти:
+H1 до 60 символів, підзаголовок до 140 символів, текст кнопки
+до 3 слів. Використовуй лише факти з брифу в тегах &lt;brief&gt;.
+Без слів «гарантуємо», «найкращий», без цифр, яких немає в брифі.
+&lt;brief&gt;…&lt;/brief&gt;</code></pre>
+
+    <p><b>Ітерації.</b> Перша відповідь — чернетка. Уточнюйте <b>по одній зміні за раз</b> і вказуйте, чого не чіпати: «скороти підзаголовок до 100 символів, H1 не змінюй». Корисні прийоми: попросити модель перелічити припущення, які вона зробила; попросити кілька різних варіантів замість одного «ідеального»; попросити перевірити власну відповідь за вашим списком вимог. Але пам’ятайте: перевірка моделлю самої себе не замінює вашої — модель може «підтвердити» власну вигадку.</p>
+
+    <p><b>Промпти для різних завдань.</b> Для <b>зображення</b> описують предмет, композицію, стиль, кольори бренду й формат (наприклад, «горизонтальний банер 16:9, багато вільного місця ліворуч під заголовок»). Для <b>коду</b> вказують технологію й обмеження: «чистий HTML і CSS без фреймворків, семантичні теги, mobile-first, контраст тексту не менше 4,5:1». Для <b>alt-тексту</b> дають контекст сторінки: той самий знімок офісу на сторінці «Контакти» і в статті про оренду описують по-різному.</p>
+
+    <p><b>Типові пастки:</b> занадто загальний запит дає «середній» результат, схожий на тисячі інших сайтів; у довгому чаті модель «забуває» ранні умови — краще почати новий чат із повним промптом; модель схильна погоджуватися з вами, тож питання «це ж правильно?» підштовхує до відповіді «так». Збережіть вдалі промпти як шаблони — це ваш професійний інструмент, як бібліотека компонентів.</p>
+
+    <div class="box test" id="test-2">
+      <div class="box-title"><span class="box-tag">ТЕСТ 2</span> Найкращий промпт<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Потрібен alt-текст для фото на сторінці «Контакти» юридичної клініки коледжу. Який промпт найкращий?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button"><span>«Опиши це фото»</span></button>
+        <button class="test-opt" type="button"><span>«Напиши дуже детальний опис зображення на 500 слів, щоб людина з порушенням зору нічого не пропустила»</span></button>
+        <button class="test-opt" type="button"><span>«Ти — редактор сайту. Фото стоїть на сторінці “Контакти” юридичної клініки коледжу поруч з адресою. Напиши alt-текст одним коротким реченням: що допоможе відвідувачу знайти вхід. Без слів “зображення” чи “фото”»</span></button>
+        <button class="test-opt" type="button"><span>«Напиши alt-текст із ключовими словами “юрист”, “консультація”, “безкоштовно”, щоб покращити SEO»</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="box task" id="task-1">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 1</span> Промпт-лабораторія для свого лендінгу<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Візьміть свій лендінг. Оберіть будь-який доступний вам чат-асистент (ChatGPT, Claude, Gemini, Copilot). Не вводьте в нього персональних даних — ні своїх, ні чужих.</li>
+        <li>Надішліть <b>слабкий</b> промпт: «Напиши текст для першого екрана мого сайту». Збережіть відповідь.</li>
+        <li>Складіть <b>сильний</b> промпт із п’яти частин (рис. 2): роль, контекст (аудиторія, мета, тон), завдання, формат (3 варіанти: H1 до 60 символів, підзаголовок до 140, кнопка до 3 слів), обмеження (лише факти з вашого брифу, без «гарантуємо»). Вставте бриф у теги <code>&lt;brief&gt;</code>. Порівняйте результати.</li>
+        <li>Зробіть дві ітерації по одній зміні: наприклад, «зроби тон дружнішим, довжину не змінюй» і «перелічи припущення, які ти зробив». Запишіть, що змінилося.</li>
+        <li>Попросіть alt-текст для головного зображення лендінгу, описавши, де і навіщо воно стоїть. Перевірте його за деревом рішень W3C (An alt Decision Tree): чи потрібен тут опис, чи зображення декоративне й має отримати порожній <code>alt=&quot;&quot;</code>.</li>
+        <li>Підкресліть у фінальному тексті кожен факт і кожну цифру. Те, чого немає у брифі, видаліть або підтвердіть.</li>
+        <li>Заповніть таблицю: промпт → що вийшло → що змінили вручну → оцінка від 1 до 5. Оновіть тексти на сайті й опублікуйте його.</li>
+      </ol>
+      <div class="box-close">Надішліть у Classroom таблицю промптів, скриншоти відповідей на слабкий і сильний промпти та посилання на оновлений сайт.</div>
+    </div>
+
+  </section>
+  <!-- ================= 03. Етика, право й безпека використання AI ================= -->
+  <section class="topic" id="law" aria-labelledby="law-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">03</span>
+      <h2 id="law-h">Етика, право й безпека використання AI</h2>
+    </div>
+
+    <p><b>Хто автор згенерованого?</b> В Україні з 1 січня 2023 року діє Закон «Про авторське право і суміжні права» № 2811-IX. Його стаття 33 запровадила <b>право особливого роду (sui generis)</b> на неоригінальні об’єкти, «згенеровані комп’ютерною програмою» без безпосередньої участі фізичної особи. Воно діє <b>25 років</b> (з 1 січня року, наступного за роком генерування), дає лише майнові права, без немайнових (особистих) прав автора, і належить авторам програми, їхнім правонаступникам або правомірному користувачу програми. Умови охорони: об’єкт має відрізнятися від уже наявних подібних, а твори, використані під час генерування, мають бути використані правомірно. Хто саме є правовласником у вашому випадку, часто визначають умови використання конкретного сервісу, тому їх треба читати.</p>
+
+    <p>У США підхід інший. Бюро авторського права у звіті від 29 січня 2025 року дійшло висновку, що сам лише промпт не робить людину автором: охороняється тільки те, де людина визначила достатньо творчих елементів, — наприклад, власний твір, помітний у результаті, або творчий добір, упорядкування й зміни згенерованого матеріалу. Принцип «автором може бути лише людина» підтвердили суди у справі Thaler v. Perlmutter; 2 березня 2026 року Верховний суд США відмовився її переглядати. Практичний висновок для дизайнера: чим більше вашої творчої роботи в остаточному макеті, тим міцніші ваші права, а використання AI варто фіксувати (наприклад, у журналі промптів).</p>
+
+    <p><b>Маркування AI-контенту.</b> У ЄС з <b>2 серпня 2026 року</b> застосовується стаття 50 Регламенту про штучний інтелект (AI Act). Постачальники систем, що спілкуються з людьми (чат-ботів), мають повідомляти, що людина розмовляє з AI, якщо це не очевидно. Згенеровані аудіо, зображення, відео й текст мають позначатися у машинозчитуваному форматі; для систем, виведених на ринок до 2 серпня 2026 року, цей обов’язок діє з 2 грудня 2026 року. Ті, хто публікує <b>діпфейки</b>, мають про це повідомляти, а AI-текст на суспільно важливі теми — позначати, якщо він не пройшов редакторської перевірки людиною. Для вебдизайнера це означає: чат-бот на сайті клієнта з ЄС має представлятися як AI, а реалістичні згенеровані «фото людей» потребують позначки. Технічний стандарт таких позначок — <b>C2PA Content Credentials</b>: криптографічно захищений запис про походження файлу (чим створено, які були зміни).</p>
+
+    <p>В Україні спеціального закону про AI поки немає. Мінцифри 26 червня 2024 року представило <b>Білу книгу</b> з регулювання AI: підхід «знизу вгору» — спершу інструменти й рекомендації для бізнесу, потім закон-аналог європейського AI Act; у червні 2026 року міністерство повідомило, що робоча група готує такий закон протягом 2026 року. Уже є рекомендації: для медіа (24.01.2024) — чітко розмежовувати авторський і згенерований нейромережею контент і ставити людину на перше місце; для закладів вищої освіти (01.05.2025) — прозорість, конфіденційність даних і людський контроль.</p>
+
+    <p><b>Персональні дані.</b> Чинним є Закон України «Про захист персональних даних» 2010 року. Новий закон, наближений до європейського GDPR (законопроєкт № 8153), Верховна Рада ухвалила в першому читанні 20 листопада 2024 року, але станом на кінець жовтня 2026 року остаточно його не прийнято. Незалежно від цього правило просте: те, що ви вставляєте в AI-сервіс, ви передаєте третій стороні. Заявки з форми сайту, бази клієнтів, договори, паролі й ключі API в запит не потрапляють. Перевіряйте налаштування сервісу: наприклад, у Figma на командах Starter і Professional використання вмісту для навчання моделей за замовчуванням увімкнене (його може вимкнути адміністратор команди), а дані акаунтів Figma for Education для навчання не використовуються (рис. 3).</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 410" role="img" aria-label="«Світлофор» даних для AI-сервісів. Можна: опубліковані тексти, власні чернетки, код без ключів, бриф без імен. Лише знеособлено: відгуки, статистика, листування, скриншоти. Не можна: заявки з форм, бази клієнтів і договори, паролі й ключі API, медичні й фінансові дані, фото людей без згоди." xmlns="http://www.w3.org/2000/svg"><rect x="20" y="20" width="274" height="300" rx="12" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.6"/><circle cx="50" cy="50" r="11" fill="var(--task)"/><text x="70" y="55" font-size="13" font-weight="800" fill="var(--task-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">МОЖНА</text><rect x="34" y="78" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="46" y="101" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">опубліковані тексти сайту</text><rect x="34" y="124" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="46" y="147" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">власні чернетки й ідеї</text><rect x="34" y="170" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="46" y="193" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">фрагмент коду без ключів</text><rect x="34" y="216" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="46" y="239" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">бриф без імен і контактів</text><rect x="34" y="262" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="46" y="285" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">загальнодоступні факти</text><rect x="313" y="20" width="274" height="300" rx="12" fill="var(--test-tint)" stroke="var(--test)" stroke-width="1.6"/><circle cx="343" cy="50" r="11" fill="var(--test)"/><text x="363" y="55" font-size="13" font-weight="800" fill="var(--test-ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">ЛИШЕ ЗНЕОСОБЛЕНО</text><rect x="327" y="78" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="339" y="101" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">відгуки клієнтів → без імен</text><rect x="327" y="124" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="339" y="147" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">статистика заявок → підсумки</text><rect x="327" y="170" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="339" y="193" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">листування → без контактів</text><rect x="327" y="216" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="339" y="239" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">скриншоти → з розмиттям</text><rect x="327" y="262" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="339" y="285" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">внутрішні документи → дозвіл</text><rect x="606" y="20" width="274" height="300" rx="12" fill="var(--fail-tint)" stroke="var(--fail)" stroke-width="1.6"/><circle cx="636" cy="50" r="11" fill="var(--fail)"/><text x="656" y="55" font-size="13" font-weight="800" fill="var(--fail)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">НЕ МОЖНА</text><rect x="620" y="78" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="632" y="101" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">заявки з форм (ПІБ, телефони)</text><rect x="620" y="124" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="632" y="147" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">бази клієнтів, договори</text><rect x="620" y="170" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="632" y="193" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">паролі, ключі API, токени</text><rect x="620" y="216" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="632" y="239" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">медичні й фінансові дані</text><rect x="620" y="262" width="246" height="36" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.1"/><text x="632" y="285" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">фото людей без їхньої згоди</text><rect x="20" y="338" width="860" height="56" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.4"/><text x="36" y="362" font-size="12.5" font-weight="700" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Перед роботою перевірте налаштування сервісу: чи використовує він ваш вміст для навчання моделей.</text><text x="36" y="382" font-size="12.5" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Приклад: у Figma на командах Starter і Professional це за замовчуванням увімкнено; Figma for Education — ні.</text></svg>
+      <figcaption>Рис. 3. «Світлофор» даних: що можна, що лише знеособлено, а що не можна передавати AI-сервісу.</figcaption>
+    </figure>
+
+    <p><b>Безпека.</b> Проєкт OWASP склав перелік <b>10 головних ризиків</b> застосунків на основі мовних моделей (2025). Перші два — <b>ін’єкція промпту</b> (prompt injection: шкідливі інструкції, сховані, наприклад, у тексті вебсторінки чи документа, змушують модель діяти не так, як задумано) і <b>розкриття чутливої інформації</b>. Ще один ризик стосується всіх, хто генерує код: дослідження 576 000 зразків коду показало, що <b>19,7 %</b> рекомендованих моделями пакетів (бібліотек) не існують — це 205 474 унікальні вигадані назви; у комерційних моделей частка становила 5,2 %, у відкритих — 21,7 %. Зловмисники реєструють такі назви й підкладають під ними шкідливий код (цей прийом називають slopsquatting). Тому перед встановленням пакета перевіряйте, що він справді існує, має історію й документацію; не вставляйте в код ключі доступу; перевіряйте згенерований код так само ретельно, як чужий.</p>
+
+    <div class="tbl-wrap" tabindex="0" role="region" aria-label="Документи, які регулюють використання AI"><table class="cmp">
+      <thead><tr><th scope="col">Документ</th><th scope="col">Що регулює</th><th scope="col">Що це означає для вебдизайнера</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Закон України № 2811-IX, ст. 33</th><td>право sui generis на згенеровані програмою об’єкти, 25 років</td><td>читати умови сервісу; фіксувати власний творчий внесок</td></tr>
+        <tr><th scope="row">AI Act ЄС, ст. 50 (з 02.08.2026)</th><td>прозорість: чат-боти, машинозчитувані позначки, діпфейки</td><td>чат-бот представляється як AI; реалістичні згенеровані зображення позначають</td></tr>
+        <tr><th scope="row">Закон України «Про захист персональних даних»</th><td>обробка персональних даних</td><td>не передавати дані клієнтів AI-сервісам без підстав; знеособлювати</td></tr>
+        <tr><th scope="row">Рекомендації Мінцифри (медіа, освіта)</th><td>відповідальне використання AI</td><td>розмежовувати авторський і згенерований контент, людський контроль</td></tr>
+        <tr><th scope="row">OWASP Top 10 for LLM (2025)</th><td>ризики безпеки LLM-застосунків</td><td>ін’єкції промпту, витоки даних, перевірка пакетів і коду</td></tr>
+      </tbody>
+    </table></div>
+
+    <p><b>Етика.</b> Крім закону, є професійна відповідальність: не видавати згенероване за повністю власне, якщо замовник чи викладач питає про внесок; не генерувати зображення «під стиль» конкретного живого художника для комерційного проєкту; не використовувати фото реальних людей без згоди; пам’ятати про упередженість моделей — згенеровані «команди» й «клієнти» часто однакові на вигляд, і це теж дизайнерське рішення, яке ви або приймаєте, або виправляєте.</p>
+
+    <div class="box test" id="test-3">
+      <div class="box-title"><span class="box-tag">ТЕСТ 3</span> Право на згенероване<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Студент згенерував ілюстрацію для сайту за одним коротким промптом, нічого в ній не змінюючи. Що з наведеного відповідає українському Закону «Про авторське право і суміжні права» (2022)?</div>
+      <div class="quiz" data-correct="2">
+        <button class="test-opt" type="button"><span>студент — повноправний автор, бо саме він написав промпт</span></button>
+        <button class="test-opt" type="button"><span>такі об’єкти взагалі не охороняються жодним правом, тож будь-хто може вільно їх використовувати</span></button>
+        <button class="test-opt" type="button"><span>неоригінальний об’єкт, згенерований програмою, може охоронятися правом особливого роду (sui generis) 25 років, лише майновими правами; правовласника визначає закон і умови використання сервісу</span></button>
+        <button class="test-opt" type="button"><span>автором вважається нейромережа, тож потрібен договір з її розробником</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+  </section>
+  <!-- ================= 04. AI для доступності та UX ================= -->
+  <section class="topic" id="a11y" aria-labelledby="a11y-h">
+    <div class="topic-head">
+      <span class="topic-num" aria-hidden="true">04</span>
+      <h2 id="a11y-h">AI для доступності та UX</h2>
+    </div>
+
+    <p><b>Стан доступності.</b> За звітом WebAIM Million 2026 на головних сторінках у середньому 56,1 помилки (у 2025 році — 51). Найчастіші проблеми майже не змінюються роками: низький контраст тексту (83,9 % сторінок), відсутній альтернативний текст зображень (53,1 %), поля форм без підписів (51 %), порожні посилання (46,3 %) і кнопки (30,6 %), не вказана мова документа (13,5 %). Усі шість — саме ті речі, які AI-генератори коду й макетів часто роблять неправильно, і ті, з якими AI може допомогти, якщо ним правильно керувати (рис. 4).</p>
+
+    <figure class="diagram">
+      <svg viewBox="0 0 900 460" role="img" aria-label="Частка головних сторінок з проблемою доступності за WebAIM Million 2026: низький контраст 83,9 %, немає alt-тексту 53,1 %, поля без підписів 51 %, порожні посилання 46,3 %, порожні кнопки 30,6 %, не вказано мову 13,5 %. Аудит: автоматична перевірка, пояснення від AI, ручна перевірка, повторний тест. Автоматичні тести знаходять 57 % проблем, решту — лише вручну." xmlns="http://www.w3.org/2000/svg"><text x="24" y="30" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">WEBAIM MILLION 2026 · ЧАСТКА ГОЛОВНИХ СТОРІНОК З ПРОБЛЕМОЮ</text><line x1="250.0" y1="44" x2="250.0" y2="248" stroke="var(--line)" stroke-width="1"/><text x="250.0" y="264" font-size="10.5" font-weight="600" fill="var(--ink-muted)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">0 %</text><line x1="400.0" y1="44" x2="400.0" y2="248" stroke="var(--line)" stroke-width="1"/><text x="400.0" y="264" font-size="10.5" font-weight="600" fill="var(--ink-muted)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">25 %</text><line x1="550.0" y1="44" x2="550.0" y2="248" stroke="var(--line)" stroke-width="1"/><text x="550.0" y="264" font-size="10.5" font-weight="600" fill="var(--ink-muted)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">50 %</text><line x1="700.0" y1="44" x2="700.0" y2="248" stroke="var(--line)" stroke-width="1"/><text x="700.0" y="264" font-size="10.5" font-weight="600" fill="var(--ink-muted)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">75 %</text><line x1="850.0" y1="44" x2="850.0" y2="248" stroke="var(--line)" stroke-width="1"/><text x="850.0" y="264" font-size="10.5" font-weight="600" fill="var(--ink-muted)" text-anchor="middle" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">100 %</text><text x="238" y="66" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="end" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Низький контраст тексту</text><rect x="250" y="52" width="503.4" height="20" rx="4" fill="var(--accent)"/><text x="761.4" y="67" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">83,9 %</text><text x="238" y="100" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="end" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Немає alt-тексту зображень</text><rect x="250" y="86" width="318.6" height="20" rx="4" fill="var(--accent)"/><text x="576.6" y="101" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">53,1 %</text><text x="238" y="134" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="end" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Поля форм без підписів</text><rect x="250" y="120" width="306.0" height="20" rx="4" fill="var(--accent)"/><text x="564.0" y="135" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">51,0 %</text><text x="238" y="168" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="end" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Порожні посилання</text><rect x="250" y="154" width="277.8" height="20" rx="4" fill="var(--accent)"/><text x="535.8" y="169" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">46,3 %</text><text x="238" y="202" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="end" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Порожні кнопки</text><rect x="250" y="188" width="183.6" height="20" rx="4" fill="var(--accent)"/><text x="441.6" y="203" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">30,6 %</text><text x="238" y="236" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="end" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Не вказано мову документа</text><rect x="250" y="222" width="81.0" height="20" rx="4" fill="var(--accent)"/><text x="339.0" y="237" font-size="12" font-weight="700" fill="var(--ink)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" style="white-space:pre" xml:space="preserve">13,5 %</text><text x="24" y="290" font-size="11.5" font-weight="700" fill="var(--ink-muted)" text-anchor="start" font-family="'JetBrains Mono', 'DejaVu Sans Mono', Consolas, monospace" letter-spacing="0.03em" style="white-space:pre" xml:space="preserve">AI-АСИСТОВАНИЙ АУДИТ</text><rect x="20" y="304" width="200" height="62" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="34" y="328" font-size="13" font-weight="800" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">1 Автотест</text><text x="34" y="350" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Lighthouse, WAVE, axe</text><line x1="222" y1="335" x2="233.1" y2="335.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="238.0,335.0 231.6,337.9 231.6,332.1" fill="var(--ink-muted)"/><rect x="240" y="304" width="200" height="62" rx="10" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.4"/><text x="254" y="328" font-size="13" font-weight="800" fill="var(--accent-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">2 Пояснення AI</text><text x="254" y="350" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">причина + чернетка коду</text><line x1="442" y1="335" x2="453.1" y2="335.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="458.0,335.0 451.6,337.9 451.6,332.1" fill="var(--ink-muted)"/><rect x="460" y="304" width="200" height="62" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="474" y="328" font-size="13" font-weight="800" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">3 Ручна перевірка</text><text x="474" y="350" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">клавіатура, зчитувач</text><line x1="662" y1="335" x2="673.1" y2="335.0" stroke="var(--ink-muted)" stroke-width="1.4"/><polygon points="678.0,335.0 671.6,337.9 671.6,332.1" fill="var(--ink-muted)"/><rect x="680" y="304" width="200" height="62" rx="10" fill="var(--task-tint)" stroke="var(--task)" stroke-width="1.4"/><text x="694" y="328" font-size="13" font-weight="800" fill="var(--task-ink)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">4 Повторний тест</text><text x="694" y="350" font-size="11.5" font-weight="600" fill="var(--ink-soft)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">до і після виправлень</text><rect x="20" y="394" width="490.2" height="30" rx="6" fill="var(--accent)"/><rect x="510.2" y="394" width="369.8" height="30" rx="6" fill="var(--task)"/><text x="34" y="414" font-size="12.5" font-weight="800" fill="var(--surface)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">57 % проблем знайшли автоматичні тести</text><text x="524.1999999999999" y="414" font-size="12.5" font-weight="800" fill="var(--surface)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">43 % — лише вручну</text><text x="20" y="446" font-size="11.5" font-weight="600" fill="var(--ink-muted)" text-anchor="start" font-family="Manrope, 'DejaVu Sans', 'Segoe UI', sans-serif" style="white-space:pre" xml:space="preserve">Дослідження Deque (2021): понад 2000 аудитів, ~13 000 сторінок, ~300 000 проблем; частка — за кількістю проблем.</text></svg>
+      <figcaption>Рис. 4. Найчастіші проблеми доступності (WebAIM Million 2026) і AI-асистований аудит: автоматична перевірка, AI-пояснення, ручна перевірка людиною.</figcaption>
+    </figure>
+
+    <p><b>Де AI справді допомагає:</b></p>
+
+    <ul>
+      <li><b>Чернетки alt-текстів.</b> Модель описує зображення, а ви вирішуєте, чи потрібен опис у цьому контексті, і скорочуєте його до суті. Декоративні зображення отримують порожній <code>alt=&quot;&quot;</code>.</li>
+      <li><b>Пояснення помилок.</b> Автоматичні перевірки (Lighthouse у Chrome DevTools, WAVE, axe) видають технічні повідомлення; AI пояснює їх простими словами й пропонує виправлення коду.</li>
+      <li><b>Зрозуміла мова.</b> AI спрощує складні тексти (наприклад, юридичні) й пропонує описові тексти посилань замість «детальніше».</li>
+      <li><b>Субтитри й транскрипти</b> для відео та аудіо — з обов’язковою вичиткою.</li>
+      <li><b>Підбір кольорів</b> із достатнім контрастом у межах палітри бренду — з перевіркою в контраст-чекері.</li>
+    </ul>
+
+    <p><b>Межі автоматизації.</b> Дослідження компанії Deque (2021, понад 2000 аудитів, близько 13 000 сторінок і майже 300 000 проблем) показало, що автоматичні тести виявили в середньому <b>57 %</b> проблем доступності за їхньою кількістю. Решту знаходять лише вручну: навігація клавіатурою, робота зі зчитувачем екрана (безкоштовний NVDA для Windows, VoiceOver на iPhone і Mac, TalkBack на Android), зрозумілість текстів і логіка фокусу. Обережно з «AI-віджетами доступності», які обіцяють виправити все одним рядком коду: у квітні 2025 року Федеральна торгова комісія США (FTC) затвердила рішення, за яким компанія accessiBe сплачує 1 мільйон доларів за оманливі твердження, що її AI-інструмент робить будь-який сайт відповідним WCAG, і за подання проплачених відгуків як незалежних.</p>
+
+    <p><b>Доступність і закон.</b> У ЄС з <b>28 червня 2025 року</b> застосовується Європейський акт про доступність (EAA), що охоплює зокрема вебсайти й мобільні застосунки для низки продуктів і послуг. В Україні діє національний стандарт ДСТУ EN 301 549:2022 з вимогами до доступності ІКТ. Урядовий законопроєкт № 14278 «Про цифрову доступність в Україні», зареєстрований 5 грудня 2025 року, за даними картки на сайті Верховної Ради відкликано 16 липня 2026 року. Тож орієнтир для практики — WCAG 2.2 і вимоги замовника.</p>
+
+    <p><b>AI в UX-дослідженнях.</b> AI допомагає згрупувати сотні відгуків за темами, скласти чернетку сценарію інтерв’ю, згенерувати кілька варіантів сторінки для A/B-тесту. Але «синтетичні користувачі» — AI-персонажі, які «відповідають» замість людей, — реальних користувачів не замінюють. Nielsen Norman Group за підсумками трьох досліджень (серпень 2025 року) дійшла висновку, що такі симуляції загалом відтворюють тенденції, але не передають розмаху й різноманітності реальної поведінки, можуть бути упередженими й мають <b>доповнювати, а не замінювати</b> дослідження з людьми.</p>
+
+    <p><b>Персоналізація</b> — показ різного вмісту різним відвідувачам — корисна, якщо прозора: людина має розуміти, чому бачить саме це, і мати змогу відмовитися. Межа проходить там, де дизайн маніпулює: AI Act ЄС з 2 лютого 2025 року забороняє AI-системи, що застосовують маніпулятивні чи обманні техніки, які суттєво спотворюють поведінку людини на її шкоду. «Темні патерни» (приховані підписки, тиск таймером, плутані кнопки відмови) лишаються неетичними незалежно від того, хто їх згенерував — людина чи AI.</p>
+
+    <div class="box test" id="test-4">
+      <div class="box-title"><span class="box-tag">ТЕСТ 4</span> AI-віджет доступності<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <div class="test-q">Замовник знайшов AI-віджет, який «автоматично робить сайт відповідним WCAG за один рядок коду», і пропонує не робити ручної перевірки. Що відповісти?</div>
+      <div class="quiz" data-correct="1">
+        <button class="test-opt" type="button"><span>погодитися: AI-віджет перевіряє 100 % критеріїв WCAG</span></button>
+        <button class="test-opt" type="button"><span>автоматичні інструменти знаходять лише частину проблем (у дослідженні Deque — 57 % за кількістю), тому потрібна ручна перевірка клавіатурою й зчитувачем екрана; FTC вже штрафувала за подібні обіцянки</span></button>
+        <button class="test-opt" type="button"><span>достатньо перевірити сайт у Lighthouse: якщо оцінка 100, сайт повністю доступний</span></button>
+        <button class="test-opt" type="button"><span>доступність не стосується сайтів, які не продають товари</span></button>
+        <div class="test-feedback" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="box task" id="task-2">
+      <div class="box-title"><span class="box-tag">ЗАВДАННЯ 2</span> AI-асистований аудит доступності<span class="box-check">✓</span><span class="box-progress" data-progress></span></div>
+      <ol>
+        <li>Відкрийте свій опублікований лендінг у Google Chrome. Запустіть перевірку: F12 (або меню ⋮ → Інші інструменти (More tools) → Інструменти розробника (Developer tools)) → вкладка <b>Lighthouse</b> → позначте категорію <b>Accessibility</b> (Доступність) → <b>Analyze page load</b> (Проаналізувати завантаження сторінки). За бажанням додатково перевірте сторінку у WAVE (wave.webaim.org).</li>
+        <li>Випишіть усі знайдені проблеми в таблицю: проблема → елемент → критерій WCAG.</li>
+        <li>Для трьох проблем попросіть AI-асистента пояснити причину й запропонувати виправлення. Вставляйте лише фрагмент коду, без персональних даних і ключів доступу.</li>
+        <li>Перевірте кожну пропозицію AI: контраст — у WebAIM Contrast Checker; alt-тексти — за деревом рішень W3C; підписи полів — клацнувши по підпису (курсор має перейти в поле).</li>
+        <li>Пройдіть сторінку <b>лише клавіатурою</b>: Tab, Shift+Tab, Enter, пробіл. Чи видно фокус? Чи всі кнопки й посилання досяжні? Чи логічний порядок? Увімкніть зчитувач екрана (NVDA, VoiceOver або TalkBack) і прослухайте перший екран.</li>
+        <li>Виправте знайдене в конструкторі чи коді й повторіть перевірку Lighthouse. Додайте у футер сайту короткий рядок про використання AI (наприклад, «Ілюстрації створено за допомогою AI»), якщо на сайті є згенерований вміст.</li>
+        <li>Напишіть 4–5 речень: що AI пояснив правильно, де помилився, що знайшла лише ручна перевірка.</li>
+      </ol>
+      <div class="box-close">Надішліть у Classroom таблицю проблем, скриншоти звіту Lighthouse до і після виправлень і висновки.</div>
+    </div>
+
+    <p><b>Де це знадобиться.</b> AI вже став звичайним робочим інструментом, і роботодавці чекають від фахівця не вміння «натиснути кнопку», а вміння поставити завдання, перевірити результат і взяти за нього відповідальність. Фахівець з інформаційних систем оцінює, які дані можна передавати AI-сервісам, перевіряє згенерований код і залежності, вбудовує AI у процеси так, щоб не порушити безпеку. Майбутній юрист розбирається, кому належать права на згенеровані макети й тексти, чи потрібне маркування за AI Act, чи законно передавати персональні дані, і може скласти для компанії політику використання AI. Маркетолог за годину отримує кілька варіантів банера й тексту для A/B-тесту, але відповідає за правдивість кожної обіцянки в рекламі. І всім трьом потрібна доступність: сайт, яким не можуть користуватися люди з порушенням зору чи моторики, втрачає клієнтів і створює юридичні ризики.</p>
+
+  </section>
+</main>
+
+<footer>
+  <span>Лекція 10 · Тема 10 · Курс «Вебдизайн»</span>
+  <button class="reset-btn" id="resetBtn" type="button">↺ скинути прогрес</button>
+  <span class="mono">оновлено: 06.11.2026</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = 'lecture10-progress-v1';
+
+  function loadState(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+
+  var state = loadState();
+
+  /* ---------- task checklists ---------- */
+  var taskBoxes = Array.prototype.slice.call(document.querySelectorAll('.box.task'));
+
+  function renderTaskBox(box){
+    var id = box.id;
+    var items = state[id] || [];
+    var lis = box.querySelectorAll('ol > li');
+    var doneCount = 0;
+    lis.forEach(function(li, i){
+      var checked = !!items[i];
+      if (checked) doneCount++;
+      var chk = li.querySelector('.chk');
+      if (chk){
+        chk.checked = checked;
+        li.querySelector('.step').classList.toggle('checked', checked);
+      }
+    });
+    var pill = box.querySelector('[data-progress]');
+    if (pill) pill.textContent = doneCount + ' / ' + lis.length + ' виконано';
+    box.classList.toggle('done', lis.length > 0 && doneCount === lis.length);
+    return { done: doneCount, total: lis.length };
+  }
+
+  taskBoxes.forEach(function(box){
+    var id = box.id;
+    var lis = Array.prototype.slice.call(box.querySelectorAll('ol > li'));
+    lis.forEach(function(li, i){
+      var step = document.createElement('label');
+      step.className = 'step';
+      var num = document.createElement('span');
+      num.className = 'num';
+      num.textContent = (i + 1);
+      var chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.className = 'chk';
+      chk.setAttribute('aria-label', 'Крок ' + (i + 1) + ' виконано');
+      var textSpan = document.createElement('span');
+      textSpan.className = 'step-text';
+      while (li.firstChild) textSpan.appendChild(li.firstChild);
+      step.appendChild(chk);
+      step.appendChild(num);
+      step.appendChild(textSpan);
+      li.appendChild(step);
+      chk.addEventListener('change', function(){
+        if (!state[id]) state[id] = [];
+        state[id][i] = chk.checked;
+        saveState(state);
+        renderTaskBox(box);
+        updateOverall();
+      });
+    });
+    renderTaskBox(box);
+  });
+
+  /* ---------- quiz boxes ---------- */
+  var quizzes = Array.prototype.slice.call(document.querySelectorAll('.quiz'));
+  quizzes.forEach(function(quiz){
+    var box = quiz.closest('.box');
+    var boxId = box.id;
+    var correct = parseInt(quiz.getAttribute('data-correct'), 10);
+    var buttons = Array.prototype.slice.call(quiz.querySelectorAll('.test-opt'));
+    var feedback = quiz.querySelector('.test-feedback');
+
+    function applyAnswer(chosenIdx){
+      buttons.forEach(function(btn, i){
+        btn.disabled = true;
+        if (i === correct) btn.classList.add('is-correct');
+        if (i === chosenIdx && chosenIdx !== correct) btn.classList.add('is-wrong');
+      });
+      feedback.classList.add('show');
+      if (chosenIdx === correct){
+        feedback.textContent = '✓ Правильно!';
+        feedback.classList.add('correct');
+      } else {
+        feedback.textContent = '✗ Неправильно. Правильна відповідь виділена зеленим.';
+        feedback.classList.add('wrong');
+      }
+      var pill = box.querySelector('[data-progress]');
+      if (pill) pill.textContent = 'пройдено';
+      box.classList.add('done');
+    }
+
+    buttons.forEach(function(btn, i){
+      btn.addEventListener('click', function(){
+        state[boxId] = i;
+        saveState(state);
+        applyAnswer(i);
+        updateOverall();
+      });
+    });
+
+    if (typeof state[boxId] === 'number'){
+      applyAnswer(state[boxId]);
+    }
+  });
+
+  /* ---------- overall progress ---------- */
+  function updateOverall(){
+    var totalSteps = 0, doneSteps = 0;
+    taskBoxes.forEach(function(box){
+      var r = renderTaskBox(box);
+      totalSteps += r.total;
+      doneSteps += r.done;
+    });
+    quizzes.forEach(function(quiz){
+      totalSteps += 1;
+      var box = quiz.closest('.box');
+      if (box.classList.contains('done')) doneSteps += 1;
+    });
+    var pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+    var fill = document.getElementById('progressFill');
+    var label = document.getElementById('tocProgress');
+    if (fill) fill.style.width = pct + '%';
+    if (label) label.innerHTML = 'прогрес: <b>' + pct + '%</b>';
+  }
+  updateOverall();
+
+  /* ---------- reset ---------- */
+  var resetBtn = document.getElementById('resetBtn');
+  if (resetBtn){
+    resetBtn.addEventListener('click', function(){
+      try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+
+  /* ---------- scrollspy ---------- */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic[id]'));
+  var tocLinks = {};
+  Array.prototype.slice.call(document.querySelectorAll('.toc-inner a[data-toc]')).forEach(function(a){
+    tocLinks[a.getAttribute('data-toc')] = a;
+  });
+  if ('IntersectionObserver' in window && sections.length){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        var link = tocLinks[entry.target.id];
+        if (!link) return;
+        if (entry.isIntersecting){
+          Object.keys(tocLinks).forEach(function(k){ tocLinks[k].classList.remove('active'); });
+          link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(function(s){ observer.observe(s); });
+  }
+})();
+</script>
 </body>
 </html>
